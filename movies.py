@@ -13,16 +13,29 @@ def load_movies(path: Path):
     movies = []
     if not path.exists():
         return movies
-    with path.open("r", encoding="utf-8") as f:
-        for ln in (ln.strip() for ln in f if ln.strip()):
+    with path.open("r", encoding="utf-8-sig") as f:
+        for num, ln in enumerate(ln.strip() for ln in f if ln.strip()):
+
+            if '*' in ln:
+                mark = 'star'
+            elif '✓' in ln:
+                mark = 'check'
+            else:
+                mark = None
+
+            ln = ln.replace('*', '')
+            ln = ln.replace('✓', '')
+
             m = pat.match(ln)
             if m:
                 title = m.group(1).strip()
                 raw_year = (m.group(2) or "").replace("’", "'").strip()
                 year = raw_year.lstrip("'") if raw_year else None
-                movies.append({"title": title, "year": year})
+                movie = {"title": title, "year": year}
             else:
-                movies.append({"title": ln, "year": None})
+                movie = {"title": ln, "year": None}
+            movie |= {'mark': mark, 'num': num + 1}
+            movies.append(movie)
     return movies
 
 
@@ -52,16 +65,17 @@ def matches(mv, q):
 filtered = [m for m in movies if matches(m, query)]
 
 # --- Compact grid render -----------------------------------------------------
-cols_per_row = 4
+cols_per_row = 1
 for i in range(0, len(filtered), cols_per_row):
     row = filtered[i:i + cols_per_row]
     cols = st.columns(cols_per_row)
     for col, mv in zip(cols, row):
         with col:
+            num = mv['num']
             if mv["year"]:
-                st.markdown(f"**{mv['title']}** · *{mv['year']}*")
+                st.markdown(f"{num}. **{mv['title']}** · *{mv['year']}*")
             else:
-                st.markdown(f"**{mv['title']}**")
+                st.markdown(f"{num}. **{mv['title']}**")
 
 # Status
 st.caption(f"Showing {len(filtered)} of {len(movies)}")
