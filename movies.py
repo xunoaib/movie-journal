@@ -31,11 +31,11 @@ def load_movies(path: Path):
         for num, ln in enumerate(ln.strip() for ln in f if ln.strip()):
 
             if '*' in ln:
-                mark = 'star'
+                icon = '⭐'
             elif '✓' in ln:
-                mark = 'check'
+                icon = '✅'
             else:
-                mark = None
+                icon = None
 
             ln = ln.replace('*', '')
             ln = ln.replace('✓', '')
@@ -48,7 +48,7 @@ def load_movies(path: Path):
                 movie = {"title": title, "year": year}
             else:
                 movie = {"title": ln, "year": None}
-            movie |= {'mark': mark, 'num': num + 1}
+            movie |= {'icon': icon, 'num': num + 1}
             movies.append(movie)
     return movies
 
