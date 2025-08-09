@@ -53,12 +53,12 @@ if not movies:
 
 # --- Live search (updates every keystroke) -----------------------------------
 
-st.subheader('Search')
+# st.subheader('Search')
 query = st_keyup(
     "Search",
     key="query",
     placeholder="Type to filter...",
-    label_visibility='hidden',
+    # label_visibility='hidden',
 ) or ""
 query = query.strip().lower()
 
@@ -73,17 +73,12 @@ def matches(mv, q):
 filtered = [m for m in movies if matches(m, query)]
 
 # --- Compact grid render -----------------------------------------------------
-cols_per_row = 1
-for i in range(0, len(filtered), cols_per_row):
-    row = filtered[i:i + cols_per_row]
-    cols = st.columns(cols_per_row)
-    for col, mv in zip(cols, row):
-        with col:
-            num = mv['num']
-            if mv["year"]:
-                st.markdown(f"{num}. **{mv['title']}** · *{mv['year']}*")
-            else:
-                st.markdown(f"{num}. **{mv['title']}**")
+for mv in filtered:
+    num = mv['num']
+    if mv["year"]:
+        st.markdown(f"{num}. **{mv['title']}** · *{mv['year']}*")
+    else:
+        st.markdown(f"{num}. **{mv['title']}**")
 
 # Status
 st.caption(f"Showing {len(filtered)} of {len(movies)}")
