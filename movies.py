@@ -88,10 +88,12 @@ filtered = [m for m in movies if matches(m, query)]
 # --- Compact grid render -----------------------------------------------------
 for mv in filtered:
     num = mv['num']
+    icon = mv['icon'] or ''
+    out = f"{num}. **{mv['title']}** {icon}"
     if mv["year"]:
-        st.markdown(f"{num}. **{mv['title']}** · *{mv['year']}*")
+        st.markdown(f"{out}· *{mv['year']}*")
     else:
-        st.markdown(f"{num}. **{mv['title']}**")
+        st.markdown(f"{out}")
 
 st.markdown('')
 
