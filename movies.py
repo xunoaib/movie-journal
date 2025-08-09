@@ -1,10 +1,11 @@
+import datetime
 import re
 from pathlib import Path
 
 import streamlit as st
 from st_keyup import st_keyup
 
-st.title("🎬 Movie Journal")
+LAST_UPDATE = datetime.date(2025, 3, 30)
 
 
 @st.cache_data
@@ -42,15 +43,22 @@ def load_movies(path: Path):
 path = Path("movie_journal.txt")
 movies = load_movies(path)
 
+st.title("🎬 Movie Journal")
+st.write(f"You've seen **{len(movies)} movies!**")
+st.caption(f"Last updated on {LAST_UPDATE.strftime('%B %d, %Y')}")
+
 if not movies:
     st.info("movie_journal.txt not found or empty.")
     st.stop()
 
 # --- Live search (updates every keystroke) -----------------------------------
+
+st.subheader('Search')
 query = st_keyup(
     "Search",
     key="query",
-    placeholder="Type to filter…",
+    placeholder="Type to filter...",
+    label_visibility='hidden',
 ) or ""
 query = query.strip().lower()
 
