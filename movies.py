@@ -120,11 +120,13 @@ for mv in filtered:
     if mark_filter not in ('All', None):
         icon = ''
 
-    out = f"{num}. **{mv['title']}** {icon}"
+    out = f"{num}. **{mv['title']}**"
     if mv["year"]:
-        st.markdown(f"{out}· *{mv['year']}*")
+        out += f" · *{mv['year']}*"
     else:
-        st.markdown(f"{out}")
+        out += ''
+
+    st.markdown(out + f' &nbsp;{icon}')
 
 st.markdown('')
 
