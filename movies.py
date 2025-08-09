@@ -73,12 +73,15 @@ def matches(mv, q):
 filtered = [m for m in movies if matches(m, query)]
 
 # --- Compact grid render -----------------------------------------------------
+lines = []
 for mv in filtered:
     num = mv['num']
     if mv["year"]:
-        st.markdown(f"{num}. **{mv['title']}** · *{mv['year']}*")
+        lines.append(f"{num}. **{mv['title']}** · *{mv['year']}*")
     else:
-        st.markdown(f"{num}. **{mv['title']}**")
+        lines.append(f"{num}. **{mv['title']}**")
+
+st.markdown('\n'.join(lines))
 
 # Status
 st.caption(f"Showing {len(filtered)} of {len(movies)}")
