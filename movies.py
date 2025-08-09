@@ -66,14 +66,37 @@ if not movies:
 
 # --- Live search (updates every keystroke) -----------------------------------
 
-# st.subheader('Search')
+# --- Live search (updates every keystroke) -----------------------------------
 query = st_keyup(
     "Search",
     key="query",
     placeholder="Type to filter...",
-    # label_visibility='hidden',
 ) or ""
 query = query.strip().lower()
+
+mark_filter = st.radio(
+    "Filter by mark",
+    ["All", "⭐ Star", "✅ Check", "— None"],
+    horizontal=True,
+)
+
+
+def matches_text(mv, q: str) -> bool:
+    if not q:
+        return True
+    return (q in mv["title"].lower()
+            ) or (mv["year"] and q in mv["year"].lower())
+
+
+def matches_mark(mv) -> bool:
+    if mark_filter == "All":
+        return True
+    if mark_filter.startswith("⭐"):
+        return mv["icon"] == "⭐"
+    if mark_filter.startswith("✅"):
+        return mv["icon"] == "✅"
+    # "— None"
+    return mv["icon"] is None
 
 
 def matches(mv, q):
@@ -83,12 +106,19 @@ def matches(mv, q):
             ) or (mv["year"] and q in mv["year"].lower())
 
 
-filtered = [m for m in movies if matches(m, query)]
+# filtered = [m for m in movies if matches(m, query)]
+filtered = [m for m in movies if matches_text(m, query) and matches_mark(m)]
 
 # --- Compact grid render -----------------------------------------------------
 for mv in filtered:
     num = mv['num']
+
     icon = mv['icon'] or ''
+
+    # Don't show icon when filtering by icon
+    if mark_filter not in ('All', None):
+        icon = ''
+
     out = f"{num}. **{mv['title']}** {icon}"
     if mv["year"]:
         st.markdown(f"{out}· *{mv['year']}*")
