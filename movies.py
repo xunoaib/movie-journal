@@ -77,7 +77,13 @@ query = query.strip().lower()
 
 mark_filter = st.radio(
     "Filter by mark",
-    ["All", "⭐ Star", "✅ Check", "— None"],
+    [
+        "All",
+        "✅ Check",
+        "⭐ Star",
+        CHECK_OR_STAR := "✅⭐ Check or Star",
+        "— None",
+    ],
     horizontal=True,
 )
 
@@ -92,6 +98,8 @@ def matches_text(mv, q: str) -> bool:
 def matches_mark(mv) -> bool:
     if mark_filter == "All":
         return True
+    if mark_filter.startswith("✅⭐"):
+        return mv["icon"] in ("✅", "⭐")
     if mark_filter.startswith("⭐"):
         return mv["icon"] == "⭐"
     if mark_filter.startswith("✅"):
@@ -117,7 +125,7 @@ for mv in filtered:
     icon = mv['icon'] or ''
 
     # Don't show icon when filtering by icon
-    if mark_filter not in ('All', None):
+    if mark_filter not in ('All', None, CHECK_OR_STAR):
         icon = ''
 
     out = f"{num}. **{mv['title']}**"
