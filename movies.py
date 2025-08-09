@@ -5,7 +5,7 @@ from pathlib import Path
 import streamlit as st
 from st_keyup import st_keyup
 
-LAST_UPDATE = datetime.date(2025, 3, 30)
+LAST_UPDATE = datetime.date(2025, 8, 9)
 
 st.markdown(
     """
@@ -58,7 +58,7 @@ movies = load_movies(path)
 
 st.title("🎬 Movie Journal")
 st.write(f"You've seen **{len(movies)} movies!**")
-st.caption(f"Last updated on {LAST_UPDATE.strftime('%B %d, %Y')}")
+st.caption(f"Last updated on {LAST_UPDATE.strftime('%B %-d, %Y')}")
 
 if not movies:
     st.info("movie_journal.txt not found or empty.")
