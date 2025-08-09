@@ -39,6 +39,7 @@ def load_movies(path: Path):
 
             ln = ln.replace('*', '')
             ln = ln.replace('✓', '')
+            ln = ln.strip()
 
             m = pat.match(ln)
             if m:
