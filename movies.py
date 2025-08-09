@@ -7,6 +7,19 @@ from st_keyup import st_keyup
 
 LAST_UPDATE = datetime.date(2025, 3, 30)
 
+st.markdown(
+    """
+<style>
+ol {
+    margin-top: 0.2rem;   /* reduce space above list */
+    margin-bottom: 0.2rem;/* reduce space below list */
+    padding-left: 1.2rem; /* keep indentation nice */
+}
+</style>
+""",
+    unsafe_allow_html=True
+)
+
 
 @st.cache_data
 def load_movies(path: Path):
@@ -73,15 +86,14 @@ def matches(mv, q):
 filtered = [m for m in movies if matches(m, query)]
 
 # --- Compact grid render -----------------------------------------------------
-lines = []
 for mv in filtered:
     num = mv['num']
     if mv["year"]:
-        lines.append(f"{num}. **{mv['title']}** · *{mv['year']}*")
+        st.markdown(f"{num}. **{mv['title']}** · *{mv['year']}*")
     else:
-        lines.append(f"{num}. **{mv['title']}**")
+        st.markdown(f"{num}. **{mv['title']}**")
 
-st.markdown('\n'.join(lines))
+st.markdown('')
 
 # Status
 st.caption(f"Showing {len(filtered)} of {len(movies)}")
