@@ -7,6 +7,12 @@ from st_keyup import st_keyup
 
 LAST_UPDATE = datetime.date(2025, 8, 10)
 
+st.set_page_config(
+    page_title="Movie Journal",
+    page_icon="🎥",  # optional emoji or path to an icon file
+    layout="centered"  # or "wide"
+)
+
 st.markdown(
     """
 <style>
