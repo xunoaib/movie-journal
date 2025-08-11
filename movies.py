@@ -115,8 +115,14 @@ def matches(mv, q):
             ) or (mv["year"] and q in mv["year"].lower())
 
 
+flip_order = st.toggle("Newest first", value=False)
+
 # filtered = [m for m in movies if matches(m, query)]
 filtered = [m for m in movies if matches_text(m, query) and matches_mark(m)]
+
+# Apply order flipping
+if flip_order:
+    filtered = list(reversed(filtered))
 
 # --- Compact grid render -----------------------------------------------------
 for mv in filtered:
