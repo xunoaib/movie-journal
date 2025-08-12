@@ -455,7 +455,7 @@ Jack Reacher *
 49th Parallel
 Dean Spanley ✓
 Anastasia ✓
-The Shoot Horses, Don't They?
+They Shoot Horses, Don't They?
 Nashville
 The McKenzie Break *
 The Man in the Grey Flannel Suit
@@ -973,5 +973,5 @@ The Gangster ('47)
 Killer's Kiss ('55)
 Rogue Nation ('15)
 Passenger 57 ('92)
-Assault on Precinct 13 ('05)
+Assault on Precinct 13 (bomb) ('05)
 The Naked Gun ('2025)
