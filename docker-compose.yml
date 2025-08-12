@@ -9,3 +9,14 @@ services:
       - "40000:40000"
     command: bash -c "pip install --no-cache-dir streamlit streamlit-keyup && streamlit run movies.py --server.port 40000 --server.address 0.0.0.0"
     restart: always
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared_tunnel
+    depends_on:
+      - movies
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    restart: always
+
