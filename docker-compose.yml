@@ -19,4 +19,4 @@ services:
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     restart: always
-
+    stop_grace_period: 2s
