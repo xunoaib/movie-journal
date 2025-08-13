@@ -1,7 +1,7 @@
 ﻿Silent Running
 Guns of Navarone
 Von Ryan's Express
-The Oxbow Incident
+The Ox-Bow Incident
 Green Pastures
 The Eiger Sanction
 The 39 Steps
@@ -56,13 +56,13 @@ The Big Sleep
 Ulysses
 The Thomas Crown Affair (both) ✓
 Wall Street
-The Sweet Smell of Success
+Sweet Smell of Success
 Nevada Smith
 And Then There Were None
 THX 1138
 Logan's Run
 Goodfellas ✓
-Seven Percent Solution
+Seven-Per-Cent Solution
 Gunga Din
 Beau Geste
 Wyatt Earp
@@ -104,7 +104,7 @@ The Mortal Storm ✓
 The Man Who Never Was
 Three Days of the Condor ✓
 Aguirre, the Wrath of God
-The Taking of Pelham 123 (2)
+The Taking of Pelham One Two Three (2)
 The Innocents
 The Incident
 The French Connection I/II
@@ -137,12 +137,12 @@ Casablanca
 The Man Who Would Be King
 Lawrence of Arabia
 Night of the Generals
-Dr. Zhivago *
+Doctor Zhivago *
 Citizen Kane
 All the King's Men
 Giant
 The Mouse that Roared
-Bridge Over the River Kwai *
+The Bridge on the River Kwai *
 The Great Escape
 Stalag 17
 The Man Who Knew Too Much
@@ -184,7 +184,7 @@ The Day of the Jackal ✓
 Ace in the Hole
 Patton
 Lonely Are the Brave
-Run Silent, Run Deep
+Run Silent Run Deep
 Seven Days in May
 Big Jake
 The Red Tent
@@ -198,7 +198,7 @@ Suspicion
 Forbidden Planet
 Our Man in Havana *
 Double Indemnity
-Dracula, Still Dead and Loving It
+Dracula: Dead and Loving It
 Wait Until Dark
 Destination Tokyo
 The Grapes of Wrath
@@ -213,10 +213,10 @@ Love and Death
 Out of the Past
 Stir Crazy
 The Last Hurrah
-Whatever Happened to Aunt Alice?
+What Ever Happened to Aunt Alice?
 In Like Flint
 The Great Dictator
-The Fireman's Ball
+The Firemen's Ball
 Manhunt
 Bad Day at Black Rock
 Duel
@@ -231,8 +231,8 @@ Forbidden Games
 Wuthering Heights
 Rollerball
 Westworld
-Mrs. Minever
 The Kremlin Letter
+Mrs. Miniver
 Get Carter
 Sands of the Kalahari *
 The Treasure of the Sierra Madre
@@ -241,17 +241,17 @@ Diabolique *
 The World of Henry Orient
 Jane Eyre
 Devotion
-The Mask of Demetrios
+The Mask of Dimitrios
 The Anderson Tapes
 The Lady Eve
 Mildred Pierce
 Oscar Wilde
 Sullivan's Travels
-A Yank in the R.A.F.
+A Yank in the RAF
 Crime and Punishment, USA
-Portrait of Jenny
+Portrait of Jennie
 The Shawshank Redemption
-Whatever Happened to Baby Jane?
+What Ever Happened to Baby Jane?
 I Saw What You Did
 Beast with Five Fingers
 Angel Baby
@@ -261,11 +261,11 @@ Marathon Man
 The Apartment
 A Clockwork Orange
 Repulsion *
-A Touch of Evil
+Touch of Evil
 Swing Kids
 Five Graves to Cairo
 Kidnapped
-Lloyds of London
+Lloyd's of London
 Jezebel
 All the President's Men
 The Sea Wolf
@@ -292,9 +292,9 @@ No Way Out *
 Bride of Frankenstein
 The White Ribbon
 For Whom the Bell Tolls
-Sahara (Rex Ingram) *
+Sahara ('43) *
 Conspiracy
-Point Blank (typo? Point Break)
+Point Blank ('67)
 Grand Hotel **
 Pale Rider
 The House of 92nd Street
@@ -311,7 +311,7 @@ Rebel Without a Cause *
 The Birth of a Nation
 Midnight Cowboy *
 The Conformist
-From Noon Until Three *
+From Noon Till Three *
 Moby Dick
 The Deer Hunter *
 Far From the Madding Crowd
@@ -352,7 +352,7 @@ Murphy's War ✓
 Potemkin
 Letter to Three Wives *
 Panic in the Streets
-14 Hours
+Fourteen Hours
 Executive Suite
 Tim's Vermeer ✓
 The Life of Emile Zola ✓
@@ -360,13 +360,13 @@ Anatomy of a Murder
 The Old Man and the Sea
 The Thin Man
 Foreign Correspondent ✓
-The Russians Are Coming, the Russians are Coming
+The Russians Are Coming the Russians Are Coming
 The Fighting Sullivans *
 The Last Picture Show ✓
 Twelve O'Clock High *
 In the Heat of the Night *
 Catch 22 ✓
-Slaughterhouse 5 *
+Slaughterhouse-Five *
 The Pawnbroker
 The Sting **
 Hannah and Her Sisters
@@ -420,18 +420,18 @@ Charly
 The Heiress *
 The Moon and Sixpence
 The Seventh Seal
-The Browning Edition *
+The Browning Version *
 Lady on a Train
 Longitude (A&E)
 Lost Horizon ✓
-Damned the Defiant
+Damn the Defiant!
 Raw Deal
 The Amazing Dr. Clitterhouse
 Dead End *
 The Verdict *
 The Great Gatsby
 Breakheart Pass
-The Blackboard Jungle ✓
+Blackboard Jungle ✓
 The Ipcress File
 Gone With the Wind *
 Sabrina
@@ -458,7 +458,7 @@ Anastasia ✓
 They Shoot Horses, Don't They?
 Nashville
 The McKenzie Break *
-The Man in the Grey Flannel Suit
+The Man in the Gray Flannel Suit
 Love at First Bite
 Singin' in the Rain
 Sands of Iwo Jima
@@ -471,9 +471,9 @@ The Burmese Harp *
 Saving Private Ryan *
 The Philadelphia Story
 Unforgiven ✓
-The Village of the Damned
+Village of the Damned
 Shooter
-13 Rue Madelaine ✓
+13 Rue Madeleine ✓
 The Vikings
 Duck Soup
 The Man from U.N.C.L.E.
@@ -485,7 +485,7 @@ Koyaanisqatsi *
 Taken
 Saturday Night Fever
 Dog Day Afternoon ✓
-Taken II ✓
+Taken 2 ✓
 The Brain That Wouldn't Die
 A Walk Among the Tombstones ✓
 Shaft
@@ -525,7 +525,7 @@ Gorky Park *
 Quantum of Solace
 Ten Little Indians
 D.O.A.
-The Trouble With the Curve
+Trouble With the Curve
 Walking Tall *
 A Free Soul
 Marty
@@ -533,7 +533,7 @@ The Stranger
 Harper *
 The Friends of Eddie Coyle
 The Stepford Wives
-Lacombe Lucien *
+Lacombe, Lucien *
 The Sixth Sense ✓
 Zero Hour
 Kes *
@@ -543,7 +543,7 @@ Sophie's Choice
 The Catcher Was a Spy
 Tokyo Story ✓
 Funeral in Berlin
-The Macintosh Man
+The Mackintosh Man
 The Shootist
 Somebody Up There Likes Me
 36 Hours
@@ -576,7 +576,7 @@ Murder She said
 Fried Green Tomatoes
 The Gunfighter
 Top Hat
-Gunfight at the OK Corral
+Gunfight at the O.K. Corral
 Clear and Present Danger
 Father Goose
 A Kiss Before Dying
@@ -600,7 +600,7 @@ Murder At The Gallop
 The Adventures Of Prince Achmed
 Knives Out
 Street Scene
-Good Morning Miss Dove
+Good Morning, Miss Dove
 The Last House on The Left
 Things to Come
 Mark of The Vampire
@@ -628,7 +628,7 @@ The Corn Is Green
 Murder, My Sweet
 Team America: World Police
 A Man for All Seasons
-Passage to Marseilles
+Passage to Marseille
 Five Easy Pieces
 Destination Moon
 Juarez
@@ -645,7 +645,7 @@ Gilda
 The Most Dangerous Game
 Django Unchained
 The Women
-Bell, Book and Candle
+Bell Book and Candle
 Murder Ahoy
 Farewell, My Lovely
 Where Danger Lives
@@ -664,7 +664,7 @@ I See a Dark Stranger
 Act of Violence
 The Mouse on the Moon
 Seance on a Wet Afternoon
-Shadow on a Wall
+Shadow on the Wall
 A Trip to the Moon
 Old Acquaintance
 Every Which Way But Loose
@@ -682,7 +682,7 @@ The Conspirators
 The Woman in White
 Cast a Dark Shadow
 The White Tower
-Deadline USA
+Deadline - U.S.A.
 Penn & Teller Get Killed
 The Old Maid
 Tight Spot
@@ -697,8 +697,8 @@ Lady on a Train
 The Blue Dahlia *
 From the Mixed-Up Files of Mrs. Basil E. Frankweiler
 The Getaway
-Kill Bill: Vol 1
-Kill Bill: Vol 2
+Kill Bill: Vol. 1
+Kill Bill: Vol. 2
 Firefox
 Night at the Opera
 The Onion Field
@@ -725,7 +725,7 @@ The Solid Gold Cadillac
 The Caddy
 The High and the Mighty
 The Last Emperor
-Anchorman
+Anchorman: The Legend of Ron Burgundy
 Watch on the Rhine ✓
 Pitfall
 Abe Lincoln in Illinois
@@ -744,7 +744,7 @@ My Name Is Julia Ross ✓
 The Killer Is Loose
 Stella Dallas
 Voyage to the Bottom of the Sea
-Anchorman II
+Anchorman 2: The Legend Continues
 High Anxiety
 Cry Macho
 The Cheap Detective
@@ -752,7 +752,7 @@ Plan 9 From Outer Space
 The Guilty ✓
 Zoolander
 The Letter
-Thieves Highway *
+Thieves' Highway *
 I Want to Live!
 Shipmates Forever
 Dinner at Eight
@@ -803,7 +803,7 @@ The Illustrated Man ('69)
 Cage of Evil ('60)
 The Killers ('46)
 The Unfaithful ('47)
-The Setup ('49)
+The Set-Up ('49)
 Walk Softly, Stranger ('50)
 In a Lonely Place ('51)
 Kind Hearts and Coronets ('49)
@@ -830,7 +830,7 @@ Marlowe ('69)
 PT 109 ('63)
 Lightning Strikes Twice ('51)
 Breakfast at Tiffany's ('61)
-Mr. and Mrs. Smith ('41)
+Mr. & Mrs. Smith ('41)
 Flags of Our Fathers ('06)
 The Sea Hawk ('40)
 To Have and Have Not ('44)
@@ -838,7 +838,7 @@ My Man Godfrey ('36)
 Fahrenheit 451 ('18)
 Murder on the Orient Express ('74)
 Bride of Frankenstein ('35)
-When Dinosaurs Rules the Earth ('70)
+When Dinosaurs Ruled the Earth ('70)
 There Will Be Blood ('07)
 Land of the Pharaohs ('55)
 All Through The Night ('42)
@@ -860,7 +860,7 @@ O Brother, Where Art Thou ('00)
 They Came to Cordura ('59)
 The Tarnished Angels ('58)
 Gun Crazy ('50)
-Pay of Die! ('60)
+Pay or Die! ('60)
 Flaxy Martin ('49)
 Confidential Agent ('45)
 The Loved One ('65)
@@ -879,7 +879,7 @@ The Parallax View ('74)
 Beware, My Lovely ('52)
 Mystery House ('38)
 Three Godfathers ('36)
-Airforce One ('97) ✓
+Air Force One ('97) ✓
 The Man I Love ('46)
 The Man Who Laughs ('28)
 First Knight ('95)
@@ -887,14 +887,14 @@ I Died A Thousand Times ('55)
 The Racker ('51)
 Detour ('45)
 Woman in Hiding ('49) ✓
-U.S. Marshalls ('98)
+U.S. Marshals ('98)
 History is Made at NIght ('37)
 The Fortune Cookie ('66)
 Algiers ('38)
 Men of Honor ('00) ✓
 Miracle ('04)
 Odd Man Out ('47)
-King's Row ('42) *
+Kings Row ('42) *
 The Drowning Pool ('76)
 The Seventh Victim ('43)
 The Great Ziegfeld ('36)
@@ -908,7 +908,7 @@ Torn Curtain ('66)
 The Woman in Green ('64)
 The Red Balloon ('56)
 The Big Knife ('55)
-Slapshot ('77)
+Slap Shot ('77)
 The Nutty Professor ('63)
 Night Nurse ('31)
 Red Light ('49)
@@ -919,9 +919,9 @@ The Narrow Margin ('52)
 Libeled Lady ('36) ✓
 The Strange Love of Martha Ivers ('46)
 The Black Cat ('34)
-The Bridges at Toko Ri ('54)
+The Bridges at Toko-Ri ('54)
 The Hill ('65) ✓
-The Island of Lost Souls ('33)
+Island of Lost Souls ('33)
 Champion ('49)
 In This Our Life ('42)
 The Wonderful World of the Brothers Grimm ('62)
@@ -963,7 +963,7 @@ The Prowler ('51)
 Whiplash ('48)
 Murders in the Rue Morgue ('32)
 Hotel Berlin ('45)
-Kusama - Infinity ('18)
+Kusama: Infinity ('18)
 The Wreck of the Mary Deare ('59)
 Alexander Nevsky ('38)
 Sorry, Wrong Number ('48) *
