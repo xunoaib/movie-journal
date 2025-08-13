@@ -40,6 +40,9 @@ def load_movies(path: Path):
                 icon = '⭐'
             elif '✓' in ln:
                 icon = '✅'
+            elif ln.endswith('(bomb)'):
+                ln = ln.replace('(bomb)', '')
+                icon = '💣'
             else:
                 icon = None
 
