@@ -5,7 +5,7 @@ from pathlib import Path
 import streamlit as st
 from st_keyup import st_keyup
 
-LAST_UPDATE = datetime.date(2025, 8, 10)
+LAST_UPDATE = datetime.date(2025, 8, 16)
 
 st.set_page_config(
     page_title="Movie Journal",
@@ -75,8 +75,6 @@ if not movies:
     st.stop()
 
 # --- Live search (updates every keystroke) -----------------------------------
-
-# --- Live search (updates every keystroke) -----------------------------------
 query = st_keyup(
     "Search",
     key="query",
@@ -87,16 +85,17 @@ query = query.strip().lower()
 mark_filter = st.radio(
     "Filter by mark", [
         "All",
-        "✅ Check",
-        "⭐ Star",
-        CHECK_OR_STAR := "✅⭐ Check or Star",
+        "✅",
+        "⭐",
+        "✅/⭐",
+        "💣",
         "No mark",
     ],
     horizontal=True,
     help='\n\n'.join(
         [
-            '✅ Checks denote exceptional films.',
             '⭐ Stars denote particularly exceptional films.',
+            '✅ Checks denote exceptional films.',
             '💣 Bombs are dangerous. Run!!',
         ]
     )
@@ -115,10 +114,12 @@ def matches_text(mv, q: str) -> bool:
 def matches_mark(mv) -> bool:
     if mark_filter == "All":
         return True
-    if mark_filter.startswith("✅⭐"):
+    if '✅' in mark_filter and '⭐' in mark_filter:
         return mv["icon"] in ("✅", "⭐")
     if mark_filter.startswith("⭐"):
         return mv["icon"] == "⭐"
+    if mark_filter.startswith("💣"):
+        return mv["icon"] == "💣"
     if mark_filter.startswith("✅"):
         return mv["icon"] == "✅"
     # "— None"
