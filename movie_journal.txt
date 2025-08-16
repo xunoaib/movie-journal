@@ -178,7 +178,7 @@ King Rat
 Hard Times
 The Mechanic
 Chinatown
-The Man Who Shot Liberty Valence
+The Man Who Shot Liberty Valance
 The Manchurian Candidate
 The Day of the Jackal ✓
 Ace in the Hole
@@ -297,7 +297,7 @@ Conspiracy
 Point Blank ('67)
 Grand Hotel **
 Pale Rider
-The House of 92nd Street
+The House on 92nd Street
 The Lavender Hill Mob
 Westward the Women *
 It's a Wonderful Life
@@ -336,7 +336,7 @@ The Defiant Ones
 The Hunger Games
 The Dirty Dozen ✓
 Who's Afraid of Virginia Woolf? ✓
-Dial "M" for Murder *
+Dial M for Murder *
 Tootsie
 Mommie Dearest
 The Bad and the Beautiful *
