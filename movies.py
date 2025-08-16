@@ -82,9 +82,9 @@ query = query.strip().lower()
 mark_filter = st.radio(
     "Filter by mark", [
         "All",
-        "✅",
         "⭐",
-        "✅/⭐",
+        "✅",
+        "⭐/✅",
         "💣",
         "No mark",
     ],
