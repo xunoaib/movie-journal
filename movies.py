@@ -139,9 +139,9 @@ for mv in filtered:
 
     icon = mv['icon'] or ''
 
-    # Don't show icon when filtering by icon
-    if mark_filter not in ('All', None, CHECK_OR_STAR):
-        icon = ''
+    # # Don't show icon when filtering by icon
+    # if mark_filter not in ('All', None):
+    #     icon = ''
 
     out = f"{num}. **{mv['title']}**"
     if mv["year"]:
