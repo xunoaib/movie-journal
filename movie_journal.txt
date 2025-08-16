@@ -110,7 +110,7 @@ The Incident
 The French Connection I/II
 The Godfather I/II
 The Searchers
-2001
+2001: A Space Odyssey
 Morituri
 Pulp Fiction
 Bonnie and Clyde
@@ -152,7 +152,7 @@ Duck Soup
 Night at the Opera
 Sleuth
 Where Eagles Dare
-Ben Hur
+Ben-Hur
 Those Magnificent Men in Their Flying Machines
 The Blue Max
 The Longest Day
@@ -365,7 +365,7 @@ The Fighting Sullivans *
 The Last Picture Show ✓
 Twelve O'Clock High *
 In the Heat of the Night *
-Catch 22 ✓
+Catch-22 ✓
 Slaughterhouse-Five *
 The Pawnbroker
 The Sting **
@@ -715,7 +715,7 @@ The Hard Way
 Adam's Rib
 You Can't Take It With You
 Designing Woman
-The Thief of Baghdad ✓
+The Thief of Bagdad ✓
 Red Dawn
 The Devil and Daniel Webster ✓
 Chariots of Fire
@@ -975,5 +975,5 @@ Rogue Nation ('15)
 Passenger 57 ('92)
 Assault on Precinct 13 (bomb) ('05)
 The Naked Gun ('2025)
-America America ('1963)
+America America ('1963) *
 Dodgeball (2004)
