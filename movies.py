@@ -85,16 +85,24 @@ query = st_keyup(
 query = query.strip().lower()
 
 mark_filter = st.radio(
-    "Filter by mark",
-    [
+    "Filter by mark", [
         "All",
         "✅ Check",
         "⭐ Star",
         CHECK_OR_STAR := "✅⭐ Check or Star",
-        "— None",
+        "No mark",
     ],
     horizontal=True,
+    help='\n\n'.join(
+        [
+            '✅ Checks denote exceptional films.',
+            '⭐ Stars denote particularly exceptional films.',
+            '💣 Bombs are dangerous. Run!!',
+        ]
+    )
 )
+
+flip_order = st.toggle("Newest first", value=True)
 
 
 def matches_text(mv, q: str) -> bool:
@@ -123,8 +131,6 @@ def matches(mv, q):
     return (q in mv["title"].lower()
             ) or (mv["year"] and q in mv["year"].lower())
 
-
-flip_order = st.toggle("Newest first", value=True)
 
 # filtered = [m for m in movies if matches(m, query)]
 filtered = [m for m in movies if matches_text(m, query) and matches_mark(m)]
