@@ -3,6 +3,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+import altair as alt
+import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
@@ -121,65 +123,84 @@ def main():
     st.title("🎬 Movie Journal")
     st.markdown(
         f"You've seen **{len(movies)} movies!**",
-        help=
-        '**NOTE:** Some sequels were watched together and share a list number.\n\nThe total count is correct, but individual list numbers may be slightly off.'
+        help=(
+            '**NOTE:** Some sequels were watched together and share a list number.\n\n'
+            'The total count is correct, but individual list numbers may be slightly off.'
+        )
     )
 
     if not movies:
         st.info("movie_journal.txt not found or empty.")
         st.stop()
 
-    query = st_keyup(
-        "Search",
-        key="query",
-        placeholder="Type to filter...",
-    ) or ""
-    query = query.strip().lower()
+    tab_list, tab_hist = st.tabs(["List", "Histogram"])
 
-    mark_filter = st.radio(
-        "Filter by mark", [
-            "All",
-            "⭐",
-            "✅",
-            "⭐|✅",
-            "💣",
-            "No mark",
-        ],
-        horizontal=True,
-        help='\n\n'.join(
-            [
-                '⭐ Stars denote particularly exceptional films.',
-                '✅ Checks denote exceptional films.',
-                '💣 Bombs are dangerous. Run!!',
-            ]
+    with tab_list:
+        query = st_keyup(
+            "Search",
+            key="query",
+            placeholder="Type to filter...",
+        ) or ""
+        query = query.strip().lower()
+
+        mark_filter = st.radio(
+            "Filter by mark", [
+                "All",
+                "⭐",
+                "✅",
+                "⭐|✅",
+                "💣",
+                "No mark",
+            ],
+            horizontal=True,
+            help='\n\n'.join(
+                [
+                    '⭐ Stars denote particularly exceptional films.',
+                    '✅ Checks denote exceptional films.',
+                    '💣 Bombs are dangerous. Run!!',
+                ]
+            )
         )
-    )
 
-    flip_order = st.toggle("Newest first", value=True)
+        flip_order = st.toggle("Newest first", value=True)
 
-    filtered = [
-        m for m in movies
-        if matches_text(m, query) and matches_mark(m, mark_filter)
-    ]
+        filtered = [
+            m for m in movies
+            if matches_text(m, query) and matches_mark(m, mark_filter)
+        ]
 
-    if flip_order:
-        filtered = list(reversed(filtered))
+        if flip_order:
+            filtered = list(reversed(filtered))
 
-    for mv in filtered:
-        num = mv.position
-        icon = mv.mark or ''
+        for mv in filtered:
+            num = mv.position
+            icon = mv.mark or ''
+            out = f"{num}. **{mv.title}**"
+            if mv.year:
+                out += f" · *{mv.year}*"
+            st.markdown(out + f' &nbsp;{icon}')
 
-        out = f"{num}. **{mv.title}**"
-        if mv.year:
-            out += f" · *{mv.year}*"
-        else:
-            out += ''
+        st.caption(f"Showing {len(filtered)} of {len(movies)}")
 
-        st.markdown(out + f' &nbsp;{icon}')
+    with tab_hist:
+        # Only include entries with a year
+        year_entries = [m for m in movies if m.year and m.year.isdigit()]
+        df = pd.DataFrame(
+            [int(m.year) for m in year_entries], columns=["year"]
+        )
+        df_counts = df.value_counts().reset_index(name="count").rename(
+            columns={"year": "year"}
+        )
 
-    st.markdown('')
-
-    st.caption(f"Showing {len(filtered)} of {len(movies)}")
+        chart = (
+            alt.Chart(df_counts).mark_bar().encode(
+                x=alt.X(
+                    "year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)
+                ),
+                y="count"
+            )
+        )
+        st.altair_chart(chart, use_container_width=True)
 
 
 if __name__ == '__main__':
