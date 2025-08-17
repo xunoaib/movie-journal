@@ -24,8 +24,6 @@ class LogEntry:
         return hash(self.position)
 
 
-LAST_UPDATE = datetime.date(2025, 8, 16)
-
 st.set_page_config(
     page_title="Movie Journal", page_icon="🎥", layout="centered"
 )
@@ -125,7 +123,6 @@ def main():
         help=
         '**NOTE:** Some sequels were watched together and share a list number.\n\nThis total count is correct, but individual list numbers may be slightly off.'
     )
-    st.caption(f"Last updated on {LAST_UPDATE.strftime('%B %-d, %Y')}")
 
     if not movies:
         st.info("movie_journal.txt not found or empty.")
