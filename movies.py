@@ -109,11 +109,11 @@ def matches_mark(mv, mark_filter) -> bool:
     return mv.mark is None
 
 
-def matches(mv, q):
+def matches(mv: LogEntry, q):
     if not q:
         return True
-    return (q in mv["title"].lower()
-            ) or (mv["year"] and q in mv["year"].lower())
+    return (q in mv.title.lower()
+            ) or (mv.year is not None and q in mv.year.lower())
 
 
 def main():
