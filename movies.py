@@ -10,6 +10,7 @@ from st_keyup import st_keyup
 @dataclass(frozen=True)
 class LogEntry:
     position: int
+    subnum: int  # subnumber, to disambiguate multiple films on the same line
     title: str
     mark: str | None
     year: str | None
@@ -17,7 +18,7 @@ class LogEntry:
     def __eq__(self, other):
         if not isinstance(other, LogEntry):
             return NotImplementedError
-        return self.position == other.position
+        return self.position == other.position and self.subnum == self.subnum
 
     def __hash__(self):
         return hash(self.position)
@@ -43,7 +44,7 @@ ol {
 )
 
 
-def parse_single_entry(line: str, num: int):
+def parse_single_entry(line: str, num: int, subnum: int):
     if '*' in line:
         icon = '⭐'
     elif '✓' in line:
@@ -69,11 +70,14 @@ def parse_single_entry(line: str, num: int):
         title = line
         year = None
 
-    return LogEntry(num, title, icon, year)
+    return LogEntry(num, subnum, title, icon, year)
 
 
 def parse_line_entries(line: str, num: int) -> list[LogEntry]:
-    return [parse_single_entry(segment, num) for segment in line.split(' :: ')]
+    return [
+        parse_single_entry(segment, num, i)
+        for i, segment in enumerate(line.split(' :: '))
+    ]
 
 
 def parse_movie_log(path) -> list[LogEntry]:
