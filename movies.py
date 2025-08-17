@@ -8,9 +8,7 @@ from st_keyup import st_keyup
 LAST_UPDATE = datetime.date(2025, 8, 16)
 
 st.set_page_config(
-    page_title="Movie Journal",
-    page_icon="🎥",  # optional emoji or path to an icon file
-    layout="centered"  # or "wide"
+    page_title="Movie Journal", page_icon="🎥", layout="centered"
 )
 
 st.markdown(
@@ -74,7 +72,6 @@ if not movies:
     st.info("movie_journal.txt not found or empty.")
     st.stop()
 
-# --- Live search (updates every keystroke) -----------------------------------
 query = st_keyup(
     "Search",
     key="query",
@@ -122,7 +119,6 @@ def matches_mark(mv) -> bool:
         return mv["icon"] == "💣"
     if mark_filter.startswith("✅"):
         return mv["icon"] == "✅"
-    # "— None"
     return mv["icon"] is None
 
 
@@ -133,22 +129,14 @@ def matches(mv, q):
             ) or (mv["year"] and q in mv["year"].lower())
 
 
-# filtered = [m for m in movies if matches(m, query)]
 filtered = [m for m in movies if matches_text(m, query) and matches_mark(m)]
 
-# Apply order flipping
 if flip_order:
     filtered = list(reversed(filtered))
 
-# --- Compact grid render -----------------------------------------------------
 for mv in filtered:
     num = mv['num']
-
     icon = mv['icon'] or ''
-
-    # # Don't show icon when filtering by icon
-    # if mark_filter not in ('All', None):
-    #     icon = ''
 
     out = f"{num}. **{mv['title']}**"
     if mv["year"]:
@@ -160,5 +148,4 @@ for mv in filtered:
 
 st.markdown('')
 
-# Status
 st.caption(f"Showing {len(filtered)} of {len(movies)}")
