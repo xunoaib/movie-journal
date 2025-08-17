@@ -72,13 +72,16 @@ def main():
         st.info("movie_journal.txt not found or empty.")
         st.stop()
 
-    tab_list, tab_hist = st.tabs(["List", "Histogram"])
+    tab_list, tab_hist, tab_table = st.tabs(["List", "Histogram", "Table"])
 
     with tab_list:
         render_tab_list(movies)
 
     with tab_hist:
         render_tab_hist(movies)
+
+    with tab_table:
+        render_tab_table(movies)
 
 
 def render_tab_list(movies: list[LogEntry]):
@@ -142,6 +145,19 @@ def render_tab_hist(movies: list[LogEntry]):
         )
     )
     st.altair_chart(chart, use_container_width=True)
+
+
+def render_tab_table(movies: list[LogEntry]):
+    df = pd.DataFrame([e.__dict__ for e in movies])
+    df_display = df[['position', 'title', 'year', 'mark']].rename(
+        columns={
+            "position": "Watch #",
+            "year": "Release Year",
+            "title": "Title",
+            "mark": "Mark"
+        }
+    )
+    st.dataframe(df_display, hide_index=True)
 
 
 if __name__ == '__main__':
