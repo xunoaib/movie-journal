@@ -82,7 +82,7 @@ def parse_line_entries(line: str, num: int) -> list[LogEntry]:
 
 def parse_movie_log(path) -> list[LogEntry]:
     movies = []
-    with open(path, encoding="utf-8-sig") as f:
+    with open(path) as f:
         lines = [ln.strip() for ln in f if ln.strip()]
         for num, ln in enumerate(lines, start=1):
             movies += parse_line_entries(ln, num)
