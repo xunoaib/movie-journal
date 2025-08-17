@@ -1,9 +1,27 @@
 import datetime
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 import streamlit as st
 from st_keyup import st_keyup
+
+
+@dataclass(frozen=True)
+class LogEntry:
+    position: int
+    title: str
+    mark: str | None
+    year: str | None
+
+    def __eq__(self, other):
+        if not isinstance(other, LogEntry):
+            return NotImplementedError
+        return self.position == other.position
+
+    def __hash__(self):
+        return hash(self.position)
+
 
 LAST_UPDATE = datetime.date(2025, 8, 16)
 
@@ -25,13 +43,10 @@ ol {
 )
 
 
-@st.cache_data
-def load_movies(path: Path):
+def parse_movie_log(path):
     pat = re.compile(r"^(.*?)(?:\s*\(\s*([’']?\d{2,4})\s*\))?$")
     movies = []
-    if not path.exists():
-        return movies
-    with path.open("r", encoding="utf-8-sig") as f:
+    with open(path, encoding="utf-8-sig") as f:
         for num, ln in enumerate(ln.strip() for ln in f if ln.strip()):
 
             if '*' in ln:
@@ -53,16 +68,23 @@ def load_movies(path: Path):
                 title = m.group(1).strip()
                 raw_year = (m.group(2) or "").replace("’", "'").strip()
                 year = raw_year.lstrip("'") if raw_year else None
-                movie = {"title": title, "year": year}
+                # movie = {"title": title, "year": year}
             else:
-                movie = {"title": ln, "year": None}
-            movie |= {'icon': icon, 'num': num + 1}
-            movies.append(movie)
+                # movie = {"title": ln, "year": None}
+                title = ln
+                year = None
+
+            # movie |= {'icon': icon, 'num': num + 1}
+
+            entry = LogEntry(num + 1, title, icon, year)
+            movies.append(entry)
+
     return movies
 
 
 path = Path("movie_journal.txt")
-movies = load_movies(path)
+# movies = load_movies(path)
+movies = parse_movie_log(path)
 
 st.title("🎬 Movie Journal")
 st.write(f"You've seen **{len(movies)} movies!**")
@@ -112,14 +134,14 @@ def matches_mark(mv) -> bool:
     if mark_filter == "All":
         return True
     if '✅' in mark_filter and '⭐' in mark_filter:
-        return mv["icon"] in ("✅", "⭐")
+        return mv.mark in ("✅", "⭐")
     if mark_filter.startswith("⭐"):
-        return mv["icon"] == "⭐"
+        return mv.mark == "⭐"
     if mark_filter.startswith("💣"):
-        return mv["icon"] == "💣"
+        return mv.mark == "💣"
     if mark_filter.startswith("✅"):
-        return mv["icon"] == "✅"
-    return mv["icon"] is None
+        return mv.mark == "✅"
+    return mv.mark is None
 
 
 def matches(mv, q):
@@ -135,12 +157,12 @@ if flip_order:
     filtered = list(reversed(filtered))
 
 for mv in filtered:
-    num = mv['num']
-    icon = mv['icon'] or ''
+    num = mv.position
+    icon = mv.mark or ''
 
-    out = f"{num}. **{mv['title']}**"
-    if mv["year"]:
-        out += f" · *{mv['year']}*"
+    out = f"{num}. **{mv.title}**"
+    if mv.year:
+        out += f" · *{mv.year}*"
     else:
         out += ''
 
