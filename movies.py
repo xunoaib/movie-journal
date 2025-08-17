@@ -186,18 +186,16 @@ def main():
         # Only include entries with a year
         year_entries = [m for m in movies if m.year and m.year.isdigit()]
         df = pd.DataFrame(
-            [int(m.year) for m in year_entries], columns=["year"]
+            [int(m.year) for m in year_entries], columns=["Year"]
         )
-        df_counts = df.value_counts().reset_index(name="count").rename(
-            columns={"year": "year"}
-        )
+        df_counts = df.value_counts().reset_index(name="Count")
 
         chart = (
             alt.Chart(df_counts).mark_bar().encode(
                 x=alt.X(
-                    "year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)
+                    "Year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)
                 ),
-                y="count"
+                y="Count"
             )
         )
         st.altair_chart(chart, use_container_width=True)
