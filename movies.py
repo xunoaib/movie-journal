@@ -43,84 +43,45 @@ ol {
 )
 
 
-def parse_movie_log(path):
+def parse_single_entry(line: str, num: int):
+    if '*' in line:
+        icon = '⭐'
+    elif '✓' in line:
+        icon = '✅'
+    elif '(bomb)' in line:
+        line = line.replace('(bomb)', '')
+        icon = '💣'
+    else:
+        icon = None
+
+    line = line.replace('*', '')
+    line = line.replace('✓', '')
+    line = line.strip()
+
     pat = re.compile(r"^(.*?)(?:\s*\(\s*([’']?\d{2,4})\s*\))?$")
+    m = pat.match(line)
+
+    if m:
+        title = m.group(1).strip()
+        raw_year = (m.group(2) or "").replace("’", "'").strip()
+        year = raw_year.lstrip("'") if raw_year else None
+    else:
+        title = line
+        year = None
+
+    return LogEntry(num, title, icon, year)
+
+
+def parse_line_entries(line: str, num: int) -> list[LogEntry]:
+    return [parse_single_entry(segment, num) for segment in line.split(' :: ')]
+
+
+def parse_movie_log(path) -> list[LogEntry]:
     movies = []
     with open(path, encoding="utf-8-sig") as f:
         for num, ln in enumerate(ln.strip() for ln in f if ln.strip()):
-
-            if '*' in ln:
-                icon = '⭐'
-            elif '✓' in ln:
-                icon = '✅'
-            elif '(bomb)' in ln:
-                ln = ln.replace('(bomb)', '')
-                icon = '💣'
-            else:
-                icon = None
-
-            ln = ln.replace('*', '')
-            ln = ln.replace('✓', '')
-            ln = ln.strip()
-
-            m = pat.match(ln)
-            if m:
-                title = m.group(1).strip()
-                raw_year = (m.group(2) or "").replace("’", "'").strip()
-                year = raw_year.lstrip("'") if raw_year else None
-                # movie = {"title": title, "year": year}
-            else:
-                # movie = {"title": ln, "year": None}
-                title = ln
-                year = None
-
-            # movie |= {'icon': icon, 'num': num + 1}
-
-            entry = LogEntry(num + 1, title, icon, year)
-            movies.append(entry)
-
+            movies += parse_line_entries(ln, num)
     return movies
-
-
-path = Path("movie_journal.txt")
-# movies = load_movies(path)
-movies = parse_movie_log(path)
-
-st.title("🎬 Movie Journal")
-st.write(f"You've seen **{len(movies)} movies!**")
-st.caption(f"Last updated on {LAST_UPDATE.strftime('%B %-d, %Y')}")
-
-if not movies:
-    st.info("movie_journal.txt not found or empty.")
-    st.stop()
-
-query = st_keyup(
-    "Search",
-    key="query",
-    placeholder="Type to filter...",
-) or ""
-query = query.strip().lower()
-
-mark_filter = st.radio(
-    "Filter by mark", [
-        "All",
-        "⭐",
-        "✅",
-        "⭐|✅",
-        "💣",
-        "No mark",
-    ],
-    horizontal=True,
-    help='\n\n'.join(
-        [
-            '⭐ Stars denote particularly exceptional films.',
-            '✅ Checks denote exceptional films.',
-            '💣 Bombs are dangerous. Run!!',
-        ]
-    )
-)
-
-flip_order = st.toggle("Newest first", value=True)
 
 
 def matches_text(mv, q: str) -> bool:
@@ -130,7 +91,7 @@ def matches_text(mv, q: str) -> bool:
             ) or (mv["year"] and q in mv["year"].lower())
 
 
-def matches_mark(mv) -> bool:
+def matches_mark(mv, mark_filter) -> bool:
     if mark_filter == "All":
         return True
     if '✅' in mark_filter and '⭐' in mark_filter:
@@ -151,23 +112,70 @@ def matches(mv, q):
             ) or (mv["year"] and q in mv["year"].lower())
 
 
-filtered = [m for m in movies if matches_text(m, query) and matches_mark(m)]
+def main():
+    path = Path("movie_journal.txt")
+    movies = parse_movie_log(path)
 
-if flip_order:
-    filtered = list(reversed(filtered))
+    st.title("🎬 Movie Journal")
+    st.write(f"You've seen **{len(movies)} movies!**")
+    st.caption(f"Last updated on {LAST_UPDATE.strftime('%B %-d, %Y')}")
 
-for mv in filtered:
-    num = mv.position
-    icon = mv.mark or ''
+    if not movies:
+        st.info("movie_journal.txt not found or empty.")
+        st.stop()
 
-    out = f"{num}. **{mv.title}**"
-    if mv.year:
-        out += f" · *{mv.year}*"
-    else:
-        out += ''
+    query = st_keyup(
+        "Search",
+        key="query",
+        placeholder="Type to filter...",
+    ) or ""
+    query = query.strip().lower()
 
-    st.markdown(out + f' &nbsp;{icon}')
+    mark_filter = st.radio(
+        "Filter by mark", [
+            "All",
+            "⭐",
+            "✅",
+            "⭐|✅",
+            "💣",
+            "No mark",
+        ],
+        horizontal=True,
+        help='\n\n'.join(
+            [
+                '⭐ Stars denote particularly exceptional films.',
+                '✅ Checks denote exceptional films.',
+                '💣 Bombs are dangerous. Run!!',
+            ]
+        )
+    )
 
-st.markdown('')
+    flip_order = st.toggle("Newest first", value=True)
 
-st.caption(f"Showing {len(filtered)} of {len(movies)}")
+    filtered = [
+        m for m in movies
+        if matches_text(m, query) and matches_mark(m, mark_filter)
+    ]
+
+    if flip_order:
+        filtered = list(reversed(filtered))
+
+    for mv in filtered:
+        num = mv.position
+        icon = mv.mark or ''
+
+        out = f"{num}. **{mv.title}**"
+        if mv.year:
+            out += f" · *{mv.year}*"
+        else:
+            out += ''
+
+        st.markdown(out + f' &nbsp;{icon}')
+
+    st.markdown('')
+
+    st.caption(f"Showing {len(filtered)} of {len(movies)}")
+
+
+if __name__ == '__main__':
+    main()
