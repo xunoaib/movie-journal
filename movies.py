@@ -1,6 +1,5 @@
 import datetime
 import re
-from dataclasses import dataclass
 from pathlib import Path
 
 import altair as alt
@@ -8,23 +7,7 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-
-@dataclass(frozen=True)
-class LogEntry:
-    position: int
-    subnum: int  # subnumber, to disambiguate multiple films on the same line
-    title: str
-    mark: str | None
-    year: str | None
-
-    def __eq__(self, other):
-        if not isinstance(other, LogEntry):
-            return NotImplementedError
-        return self.position == other.position and self.subnum == self.subnum
-
-    def __hash__(self):
-        return hash(self.position)
-
+from models import LogEntry
 
 st.set_page_config(
     page_title="Movie Journal", page_icon="🎥", layout="centered"
