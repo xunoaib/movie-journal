@@ -121,7 +121,7 @@ def main():
     st.markdown(
         f"You've seen **{len(movies)} movies!**",
         help=
-        '**NOTE:** Some sequels were watched together and share a list number.\n\nThis total count is correct, but individual list numbers may be slightly off.'
+        '**NOTE:** Some sequels were watched together and share a list number.\n\nThe total count is correct, but individual list numbers may be slightly off.'
     )
 
     if not movies:
