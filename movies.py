@@ -89,7 +89,8 @@ def parse_movie_log(path) -> list[LogEntry]:
 def matches_text(mv: LogEntry, q: str) -> bool:
     if not q:
         return True
-    return (q in mv.title.lower()) or (mv.year and q in mv.year.lower())
+    return (q in mv.title.lower()
+            ) or (mv.year is not None and q in mv.year.lower())
 
 
 def matches_mark(mv, mark_filter) -> bool:
