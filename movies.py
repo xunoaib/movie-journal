@@ -75,69 +75,73 @@ def main():
     tab_list, tab_hist = st.tabs(["List", "Histogram"])
 
     with tab_list:
-        query = st_keyup(
-            "Search",
-            key="query",
-            placeholder="Type to filter...",
-        ) or ""
-        query = query.strip().lower()
-
-        mark_filter = st.radio(
-            "Filter by mark", [
-                "All",
-                "⭐",
-                "✅",
-                "⭐|✅",
-                "💣",
-                "No mark",
-            ],
-            horizontal=True,
-            help='\n\n'.join(
-                [
-                    '⭐ Stars denote particularly exceptional films.',
-                    '✅ Checks denote exceptional films.',
-                    '💣 Bombs are dangerous. Run!!',
-                ]
-            )
-        )
-
-        flip_order = st.toggle("Newest first", value=True)
-
-        filtered = [
-            m for m in movies
-            if matches_text(m, query) and matches_mark(m, mark_filter)
-        ]
-
-        if flip_order:
-            filtered = list(reversed(filtered))
-
-        for mv in filtered:
-            num = mv.position
-            icon = mv.mark or ''
-            out = f"{num}. **{mv.title}**"
-            if mv.year:
-                out += f" · *{mv.year}*"
-            st.markdown(out + f' &nbsp;{icon}')
-
-        st.caption(f"Showing {len(filtered)} of {len(movies)}")
+        render_tab_list(movies)
 
     with tab_hist:
-        # Only include entries with a year
-        year_entries = [m for m in movies if m.year and m.year.isdigit()]
-        df = pd.DataFrame(
-            [int(m.year) for m in year_entries], columns=["Year"]
-        )
-        df_counts = df.value_counts().reset_index(name="Count")
+        render_tab_hist(movies)
 
-        chart = (
-            alt.Chart(df_counts).mark_bar().encode(
-                x=alt.X(
-                    "Year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)
-                ),
-                y="Count"
-            )
+
+def render_tab_list(movies: list[LogEntry]):
+    query = st_keyup(
+        "Search",
+        key="query",
+        placeholder="Type to filter...",
+    ) or ""
+    query = query.strip().lower()
+
+    mark_filter = st.radio(
+        "Filter by mark", [
+            "All",
+            "⭐",
+            "✅",
+            "⭐|✅",
+            "💣",
+            "No mark",
+        ],
+        horizontal=True,
+        help='\n\n'.join(
+            [
+                '⭐ Stars denote particularly exceptional films.',
+                '✅ Checks denote exceptional films.',
+                '💣 Bombs are dangerous. Run!!',
+            ]
         )
-        st.altair_chart(chart, use_container_width=True)
+    )
+
+    flip_order = st.toggle("Newest first", value=True)
+
+    filtered = [
+        m for m in movies
+        if matches_text(m, query) and matches_mark(m, mark_filter)
+    ]
+
+    if flip_order:
+        filtered = list(reversed(filtered))
+
+    for mv in filtered:
+        num = mv.position
+        icon = mv.mark or ''
+        out = f"{num}. **{mv.title}**"
+        if mv.year:
+            out += f" · *{mv.year}*"
+        st.markdown(out + f' &nbsp;{icon}')
+
+    st.caption(f"Showing {len(filtered)} of {len(movies)}")
+
+
+def render_tab_hist(movies: list[LogEntry]):
+    # Only include entries with a year
+    year_entries = [m for m in movies if m.year and m.year.isdigit()]
+    df = pd.DataFrame([int(m.year) for m in year_entries], columns=["Year"])
+    df_counts = df.value_counts().reset_index(name="Count")
+
+    chart = (
+        alt.Chart(df_counts).mark_bar().encode(
+            x=alt.X("Year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)),
+            y="Count"
+        )
+    )
+    st.altair_chart(chart, use_container_width=True)
 
 
 if __name__ == '__main__':
