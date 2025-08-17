@@ -1,5 +1,6 @@
 import datetime
 import re
+from collections import defaultdict
 from pathlib import Path
 
 import altair as alt
@@ -72,7 +73,9 @@ def main():
         st.info("movie_journal.txt not found or empty.")
         st.stop()
 
-    tab_list, tab_hist, tab_table = st.tabs(["List", "Histogram", "Table"])
+    tab_list, tab_hist, tab_table, tab_dupes = st.tabs(
+        ["List", "Histogram", "Table", "Duplicates"]
+    )
 
     with tab_list:
         render_tab_list(movies)
@@ -82,6 +85,9 @@ def main():
 
     with tab_table:
         render_tab_table(movies)
+
+    with tab_dupes:
+        duplicate_check(movies)
 
 
 def render_tab_list(movies: list[LogEntry]):
@@ -158,6 +164,25 @@ def render_tab_table(movies: list[LogEntry]):
         }
     )
     st.dataframe(df_display, hide_index=True)
+
+
+def duplicate_check(movies: list[LogEntry]):
+    d = defaultdict(list)
+
+    for m in movies:
+        d[m.title, m.year].append(m)
+
+    rows = []
+    for (title, year), v in d.items():
+        if len(v) > 1:
+            positions = ', '.join(str(e.position) for e in v)
+            rows.append({"Title": title, "Year": year, "Positions": positions})
+
+    if rows:
+        df = pd.DataFrame(rows)
+        st.dataframe(df, hide_index=True)
+    else:
+        st.info("No duplicates found ✅")
 
 
 if __name__ == '__main__':
