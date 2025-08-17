@@ -126,8 +126,7 @@ def main():
     st.markdown(
         f"You've seen **{len(movies)} movies!**",
         help=(
-            '**NOTE:** Some sequels were watched together and share a list number.\n\n'
-            'The total count is correct, but individual list numbers may be slightly off.'
+            'Some sequels and remakes share a list number, so numbering may differ -- but the total count is accurate.'
         )
     )
 
