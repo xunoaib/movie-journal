@@ -79,7 +79,7 @@ The Right Stuff ('1983)
 My Life as a Dog ('1985)
 My Dinner with Andre ('1981)
 The War of the Roses ('1989)
-To Hell and Back
+To Hell and Back ('1955)
 Cabaret ('1972)
 Kramer vs. Kramer ('1979)
 Topkapi ('1964)
@@ -88,7 +88,7 @@ Moulin Rouge! ('2001)
 One Flew Over the Cuckoo's Nest ('1975)
 Lust for Life ('1956)
 Scarlet Street ('1945)
-The Three Musketeers (2)
+The Three Musketeers ('1973)
 A Man Called Peter ('1955)
 Mr. Smith Goes to Washington ('1939)
 Mister Roberts ('1955)
@@ -107,8 +107,8 @@ Aguirre, the Wrath of God ('1972)
 The Taking of Pelham One Two Three (2)
 The Innocents ('1961)
 The Incident ('1967)
-The French Connection I/II
-The Godfather I/II
+The French Connection ('1971)
+The Godfather ('1972)
 The Searchers ('1956)
 2001: A Space Odyssey ('1968)
 Morituri ('1965)
@@ -206,7 +206,7 @@ Soylent Green ('1973)
 The Eagle Has Landed ('1976)
 Bullitt ('1968)
 Babe ('1995)
-Jungle Book
+Jungle Book ('1942)
 The Enigma of Kaspar Hauser ('1974)
 Tight Spot ('1955)
 Love and Death ('1975)
@@ -248,7 +248,7 @@ Mildred Pierce ('1945)
 Oscar Wilde ('1960)
 Sullivan's Travels ('1941)
 A Yank in the RAF ('1941)
-Crime and Punishment, USA
+Crime and Punishment, USA ('1959)
 Portrait of Jennie ('1948)
 The Shawshank Redemption ('1994)
 What Ever Happened to Baby Jane? ('1962)
@@ -328,7 +328,7 @@ The Night of the Iguana ('1964)
 M*A*S*H ('1970) *
 Comfort and Joy ('1984)
 The Wild One ('1953) *
-Abandon Ship
+Seven Days from Now (Abandon Ship!) ('1957)
 Billy Liar ('1963)
 Topaz ('1969) *
 Hackers ('1995)
@@ -349,7 +349,7 @@ The Man in the White Suit ('1951)
 The North Star ('1943)
 The General ('1926)
 Murphy's War ('1971) ✓
-Potemkin
+Battleship Potemkin ('1925)
 A Letter to Three Wives ('1949) *
 Panic in the Streets ('1950)
 Fourteen Hours ('1951)
@@ -365,7 +365,7 @@ The Fighting Sullivans ('1944) *
 The Last Picture Show ('1971) ✓
 Twelve O'Clock High ('1949) *
 In the Heat of the Night ('1967) *
-Catch 22 ✓
+Catch-22 ('1970) ✓
 Slaughterhouse-Five ('1972) *
 The Pawnbroker ('1964)
 The Sting ('1973) *
@@ -407,7 +407,7 @@ Fail Safe (Apr 9, 2000) TV
 Macbeth ('1948) ✓
 The Phantom of the Opera ('1925)
 Horror of Dracula ('1958) ✓
-The Seven Samurai ✓
+The Seven Samurai ('1954) ✓
 M ('1951) *
 The Life and Death of Colonel Blimp ('1943) ✓
 The Lion in Winter ('1968) *
@@ -420,7 +420,7 @@ Charly ('1968)
 The Heiress ('1949) *
 The Moon and Sixpence ('1942)
 The Seventh Seal ('1957)
-The Browning Version *
+The Browning Version ('1951) *
 Lady on a Train ('1945)
 Longitude (A&E)
 Lost Horizon ('1937) ✓
@@ -444,7 +444,7 @@ The Guns of Navarone ('1961)
 Apollo 13 ('1995)
 Gentleman's Agreement ('1947) ✓
 Nosferatu: A Symphony of Horror ('1922)
-Faust
+Faust ('1926)
 Raging Bull ('1980)
 Detropia ('2012) ✓
 The Desperate Hours ('1955) *
@@ -491,19 +491,19 @@ A Walk Among the Tombstones ('2014) ✓
 Shaft ('1971)
 The Proud Rebel ('1958)
 Black Narcissus ('1947)
-Lord Jim
+Lord Jim ('1965)
 Fury ('2014)
 Hangmen Also Die! ('1943)
 The Razor's Edge ('1946) *
 The Private Affairs of Bel Ami ('1947)
-Home of the Brave *
+Home of the Brave ('1949) *
 A Boy and His Dog ('1975)
 Platoon ('1986)
 Dances with Wolves ('1990)
 The Big Clock ('1948) *
 Prince of Players ('1955) ✓
 Close Encounters of the Third Kind ('1977) (bomb)
-Casino Royale
+Casino Royale ('1967)
 The List of Adrian Messenger ('1963)
 Boomerang! ('1947)
 The Jazz Singer ('1927)
@@ -520,7 +520,7 @@ Treasure Island ('1950)
 The Picture of Dorian Gray ('1945)
 Anthropoid ('2016)
 Baby Doll ('1956)
-Assassination
+Assassination ('1987)
 Gorky Park ('1983) *
 Quantum of Solace ('2008)
 Ten Little Indians ('1965)
@@ -703,7 +703,7 @@ Firefox ('1982)
 A Night at the Opera ('1935)
 The Onion Field ('1979)
 The Beast with Five Fingers ('1946)
-Atlantic City
+Atlantic City ('1980)
 Sounder ('1972) *
 The Prize ('1963)
 Wild River ('1960)
@@ -764,7 +764,7 @@ Stranger on the Third Floor ('1940) ✓
 The Case of the Black Cat ('1936)
 The Time Machine ('1960)
 The Secret Garden ('1949)
-Mysterious Island
+Mysterious Island ('1961)
 BUtterfield 8 ('1960) *
 The Entertainer ('1960)
 Madame Bovary ('1949)
@@ -775,7 +775,7 @@ Airport ('1970) ✓
 You Can't Cheat an Honest Man ('1939)
 Marked Woman ('1937)
 Dead of Night ('1945)
-Five Fingers
+5 Fingers ('1952)
 The Prisoner of Zenda ('1937)
 Action in the North Atlantic ('1943)
 It Came from Outer Space ('1953)
@@ -867,7 +867,7 @@ The Loved One ('1965)
 The Hitch-Hiker ('1953)
 After the Thin Man ('1936)
 A Night to Remember ('1942)
-John Wick 1, 2, 3
+John Wick ('2014)
 Million Dollar Baby ('2004)
 Isle of the Dead ('1945)
 An Affair to Remember ('1957) ✓
@@ -977,3 +977,8 @@ Assault on Precinct 13 ('2005) (bomb)
 The Naked Gun ('2025)
 America America ('1963)
 Dodgeball: A True Underdog Story ('2004)
+The French Connection II ('1975)
+The Godfather Part II ('1974)
+John Wick: Chapter 2 ('2017)
+John Wick: Chapter 3 - Parabellum ('2019)
+The Three Musketeers ('1948)
