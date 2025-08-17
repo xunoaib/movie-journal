@@ -1,6 +1,5 @@
 import datetime
 import re
-from parser import parse_movie_log
 from pathlib import Path
 
 import altair as alt
@@ -9,6 +8,7 @@ import streamlit as st
 from st_keyup import st_keyup
 
 from models import LogEntry
+from parsers import parse_movie_log
 
 
 def matches_text(mv: LogEntry, q: str) -> bool:
