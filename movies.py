@@ -147,6 +147,7 @@ def main():
 
     with tab_cleanup:
         render_duplicates(duplicates)
+        render_missing_tids(movies)
 
 
 def render_tab_list(movies: list[LogEntry]):
@@ -282,6 +283,20 @@ def find_duplicates(movies: list[LogEntry]):
     for m in movies:
         d[m.title, m.year].append(m)
     return {k: v for k, v in d.items() if len(v) > 1}
+
+
+def render_missing_tids(movies: list[LogEntry]):
+    missing = [
+        {
+            'Title': m.title,
+            'Year': m.year,
+            'Position': m.position,
+        } for m in movies if m.tid is None
+    ]
+    if missing:
+        st.subheader('Titles Missing an IMDb ID')
+        df = pd.DataFrame(missing)
+        st.dataframe(df)
 
 
 if __name__ == '__main__':
