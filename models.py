@@ -15,7 +15,7 @@ class LogEntry:
         return self.position == other.position and self.subnum == self.subnum
 
     def __hash__(self):
-        return hash(self.position)
+        return hash(f'{self.position}_{self.subnum}')
 
 
 @dataclass(frozen=True)
