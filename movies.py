@@ -58,6 +58,11 @@ def main():
         margin-top: 0.2rem;   /* reduce space above list */
         margin-bottom: 0.2rem;/* reduce space below list */
         padding-left: 1.2rem; /* keep indentation nice */
+
+    /* Disable URL colors and underline */
+    a.no-style {
+        color: inherit !important;
+        text-decoration: none !important;
     }
     </style>
     """,
@@ -138,12 +143,14 @@ def render_tab_list(movies: list[LogEntry]):
         out = f"**{mv.title}**"
 
         if mv.tid:
-            out = f'[{out}](https://www.imdb.com/title/{mv.tid})'
+            out = f'<a class="no-style" href="https://www.imdb.com/title/{mv.tid}">{out}<a>'
 
         if mv.year:
             out += f" · *{mv.year}*"
 
-        st.markdown(f'{num}. ' + out + f' &nbsp;{icon}')
+        st.markdown(
+            f'{num}. ' + out + f' &nbsp;{icon}', unsafe_allow_html=True
+        )
 
     st.caption(f"Showing {len(filtered)} of {len(movies)}")
 
