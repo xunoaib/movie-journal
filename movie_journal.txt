@@ -12,7 +12,7 @@ The Train ('1964) *
 Topaz ('1969)
 Les Miserables ('1935)
 The Eagle Has Landed ('1976)
-A Matter of Life and Death (Stairway to Heaven) ('1946)
+A Matter of Life and Death (aka Stairway to Heaven) ('1946)
 The Beguiled ('1971)
 A Tree Grows in Brooklyn ('1945)
 Zulu ('1964)
@@ -166,11 +166,11 @@ Fail Safe ('1964)
 Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb ('1964) *
 Blade Runner ('1982) *
 The Bad Seed ('1956)
-Airplane! (see Zero Hour)
+Airplane! ('1980)
 Blazing Saddles ('1974)
 Lifeboat ('1944)
 The Night of the Hunter ('1955)
-Cape Fear (1+2)
+Cape Fear ('1962) :: Cape Fear ('1991)
 The Third Man ('1949) *
 Sunset Boulevard ('1950)
 The Flight of the Phoenix ('1965)
@@ -320,7 +320,7 @@ The Magnificent Ambersons ('1942)
 Unfaithfully Yours ('1948)
 Madame Bovary ('1949)
 The Desert Rats ('1953)
-Les Parapluies de Cherbourg (The Umbrellas of Cherbourg) *
+Les Parapluies de Cherbourg (aka The Umbrellas of Cherbourg) *
 Becket ('1964)
 Brief Encounter ('1945) *
 Gravity ('2013) *
@@ -328,7 +328,7 @@ The Night of the Iguana ('1964)
 M*A*S*H ('1970) *
 Comfort and Joy ('1984)
 The Wild One ('1953) *
-Seven Days from Now (Abandon Ship!) ('1957)
+Seven Days from Now (aka Abandon Ship!) ('1957)
 Billy Liar ('1963)
 Topaz ('1969) *
 Hackers ('1995)
@@ -422,7 +422,7 @@ The Moon and Sixpence ('1942)
 The Seventh Seal ('1957)
 The Browning Version ('1951) *
 Lady on a Train ('1945)
-Longitude (A&E)
+Longitude (A&E) ('2002)
 Lost Horizon ('1937) ✓
 Damn the Defiant! ('1962)
 Raw Deal ('1948)
@@ -452,7 +452,7 @@ Fitzcarraldo ('1982)
 City Lights ('1931)
 Enemy at the Gates ('2001)
 Jack Reacher ('2012) *
-The Invaders (49th Parallel) ('1941)
+The Invaders (aka 49th Parallel) ('1941)
 Dean Spanley ('2008) ✓
 Anastasia ('1956) ✓
 They Shoot Horses, Don't They? ('1969)
@@ -564,7 +564,7 @@ The Fighting 69th ('1940)
 Dr. Jekyll and Mr. Hyde ('1931)
 Rashomon ('1950)
 The Killing ('1956)
-Die Brucke (The Bridge)
+Die Brücke (aka The Bridge)
 Balloon ('2018)
 Escape ('1940)
 Hombre ('1967)
