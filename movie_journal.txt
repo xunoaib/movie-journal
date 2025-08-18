@@ -284,7 +284,7 @@ The Scarlet Pimpernel ('1934) *
 Guess Who's Coming to Dinner ('1967)
 The Four Feathers ('1939)
 Ulzana's Raid ('1972)
-The Trip ('2010)
+The Trip ('2010) [tt1740047]
 The Mark of Zorro ('1940)
 The Graduate ('1967)
 The Boy with Green Hair ('1948)
@@ -292,7 +292,7 @@ No Way Out ('1987) *
 Bride of Frankenstein ('1935)
 The White Ribbon ('2009)
 For Whom the Bell Tolls ('1943)
-Sahara ('1943) *
+Sahara ('1943) * [tt0036323]
 Conspiracy ('2001)
 Point Blank ('1967)
 Grand Hotel ('1932) *
@@ -689,7 +689,7 @@ Tight Spot ('1955)
 Thunderball ('1965)
 Each Dawn I Die ('1939)
 Blithe Spirit ('1945)
-The Artist ('2011)
+The Artist ('2011) [tt1655442]
 They Drive by Night ('1940)
 Lady in the Lake ('1946)
 The Shop Around the Corner ('1940) *
