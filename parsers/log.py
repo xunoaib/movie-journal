@@ -3,20 +3,24 @@ import re
 from models import LogEntry
 
 
-def parse_single_entry(line: str, num: int, subnum: int):
+def parse_and_remove_mark(line: str):
     if '*' in line:
         icon = '⭐'
     elif '✓' in line:
         icon = '✅'
     elif '(bomb)' in line:
-        line = line.replace('(bomb)', '')
         icon = '💣'
     else:
         icon = None
 
-    line = line.replace('*', '')
-    line = line.replace('✓', '')
-    line = line.strip()
+    for s in ['(bomb)', '*', '✓']:
+        line = line.replace(s, '')
+
+    return icon, line.strip()
+
+
+def parse_single_entry(line: str, num: int, subnum: int):
+    icon, line = parse_and_remove_mark(line)
 
     pat = re.compile(r"^(.*?)(?:\s*\(\s*([’']?\d{2,4})\s*\))?$")
     m = pat.match(line)
