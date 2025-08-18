@@ -44,6 +44,9 @@ def main():
     path = Path("movie_journal.txt")
     movies = parse_movie_log(path)
 
+    duplicates = find_duplicates(movies)
+    num_duplicates = sum(len(v) - 1 for v in duplicates.values())
+
     st.set_page_config(
         page_title="Movie Journal", page_icon="🎥", layout="centered"
     )
@@ -63,7 +66,7 @@ def main():
 
     st.title("🎬 Movie Journal")
     st.markdown(
-        f"You've seen **{len(movies)} movies!**",
+        f"You've seen **{len(movies)-num_duplicates} movies!**",
         help=(
             'Some sequels and remakes share a list number, so numbering may differ -- but the total count is accurate.'
         )
@@ -87,7 +90,7 @@ def main():
         render_tab_table(movies)
 
     with tab_dupes:
-        duplicate_check(movies)
+        duplicate_check(duplicates)
 
 
 def render_tab_list(movies: list[LogEntry]):
@@ -166,23 +169,28 @@ def render_tab_table(movies: list[LogEntry]):
     st.dataframe(df_display, hide_index=True)
 
 
-def duplicate_check(movies: list[LogEntry]):
-    d = defaultdict(list)
-
-    for m in movies:
-        d[m.title, m.year].append(m)
-
+def duplicate_check(duplicates: dict[str, list[LogEntry]]):
     rows = []
-    for (title, year), v in d.items():
+    for (title, year), v in duplicates.items():
         if len(v) > 1:
             positions = ', '.join(str(e.position) for e in v)
             rows.append({"Title": title, "Year": year, "Positions": positions})
 
     if rows:
         df = pd.DataFrame(rows)
-        st.dataframe(df, hide_index=True)
+        # st.dataframe(df, hide_index=True)
+        st.dataframe(df)
     else:
         st.info("No duplicates found ✅")
+
+
+def find_duplicates(movies: list[LogEntry]):
+    d = defaultdict(list)
+
+    for m in movies:
+        d[m.title, m.year].append(m)
+
+    return {k: v for k, v in d.items() if len(v) > 1}
 
 
 if __name__ == '__main__':
