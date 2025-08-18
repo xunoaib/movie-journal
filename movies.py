@@ -143,10 +143,29 @@ def render_tab_list(movies: list[LogEntry]):
 
 
 def render_tab_hist(movies: list[LogEntry]):
-    # Only include entries with a year
-    year_entries = [m for m in movies if m.year and m.year.isdigit()]
-    df = pd.DataFrame([int(m.year) for m in year_entries], columns=["Year"])
+
+    year_entries = []
+    noyear_entries = []
+    for m in movies:
+        if m.year and m.year.isdigit():
+            year_entries.append(m)
+        else:
+            noyear_entries.append(m)
+
+    years = [int(m.year) for m in year_entries]
+
+    if not years:
+        st.info("No movies with year information.")
+        return
+
+    df = pd.DataFrame(years, columns=["Year"])
+
+    all_years = pd.DataFrame({"Year": range(min(years), max(years) + 1)})
     df_counts = df.value_counts().reset_index(name="Count")
+    df_counts = (
+        all_years.merge(df_counts, on="Year",
+                        how="left").fillna(0).astype({"Count": int})
+    )
 
     chart = (
         alt.Chart(df_counts).mark_bar().encode(
@@ -154,7 +173,12 @@ def render_tab_hist(movies: list[LogEntry]):
             y="Count"
         )
     )
+
     st.altair_chart(chart, use_container_width=True)
+
+    if noyear_entries:
+        out = '\n\n'.join(f'- {m.title}' for m in noyear_entries)
+        st.markdown(f'The following films are missing a year:\n\n{out}')
 
 
 def render_tab_table(movies: list[LogEntry]):
