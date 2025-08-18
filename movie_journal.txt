@@ -10,7 +10,7 @@ Play Misty for Me ('1971)
 I Remember Mama ('1948)
 The Train ('1964) *
 Topaz ('1969)
-Les Miserables ('1935)
+Les Misérables ('1935)
 The Eagle Has Landed ('1976)
 A Matter of Life and Death (aka Stairway to Heaven) ('1946)
 The Beguiled ('1971)
@@ -407,7 +407,7 @@ Fail Safe (TV, Apr 9, 2000) ('2000)
 Macbeth ('1948) ✓
 The Phantom of the Opera ('1925)
 Horror of Dracula ('1958) ✓
-The Seven Samurai ('1954) ✓
+Seven Samurai ('1954) ✓
 M ('1951) *
 The Life and Death of Colonel Blimp ('1943) ✓
 The Lion in Winter ('1968) *
@@ -715,7 +715,7 @@ The Hard Way ('1943)
 Adam's Rib ('1949)
 You Can't Take It with You ('1938)
 Designing Woman ('1957)
-The Thief of Baghdad ('1940) ✓
+The Thief of Bagdad ('1940) ✓
 Red Dawn ('1984)
 The Devil and Daniel Webster ('1941) ✓
 Chariots of Fire ('1981)
@@ -758,7 +758,7 @@ Shipmates Forever ('1935)
 Dinner at Eight ('1933)
 A Slight Case of Murder ('1938)
 It Should Happen to You ('1954)
-G-Men ('1935)
+'G' Men ('1935)
 Manhattan Melodrama ('1934)
 Stranger on the Third Floor ('1940) ✓
 The Case of the Black Cat ('1936)
@@ -971,7 +971,7 @@ Blade Runner 2049 ('2017)
 This Side of the Law ('1950)
 The Gangster ('1947)
 Killer's Kiss ('1955)
-Mission Impossible: Rogue Nation ('2015)
+Mission: Impossible - Rogue Nation ('2015)
 Passenger 57 ('1992)
 Assault on Precinct 13 ('2005) (bomb)
 The Naked Gun ('2025)
