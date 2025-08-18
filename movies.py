@@ -171,11 +171,13 @@ def render_tab_table(movies: list[LogEntry]):
 
 
 def duplicate_check(duplicates: dict[str, list[LogEntry]]):
+
     rows = []
     for (title, year), v in duplicates.items():
         if len(v) > 1:
-            positions = ', '.join(str(e.position) for e in v)
-            rows.append({"Title": title, "Year": year, "Positions": positions})
+            d = {"Title": title, "Year": year}
+            d |= {f'Pos #{i+1}': e.position for i, e in enumerate(v)}
+            rows.append(d)
 
     if rows:
         df = pd.DataFrame(rows)
