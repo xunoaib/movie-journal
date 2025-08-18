@@ -109,6 +109,11 @@ def main():
         color: inherit !important;
         text-decoration: none !important;
     }
+
+    /* Underline hovered links */
+    a.no-style:hover {
+        text-decoration: underline !important;
+    }
     </style>
     """,
         unsafe_allow_html=True
