@@ -132,8 +132,8 @@ def main():
         st.info("movie_journal.txt not found or empty.")
         st.stop()
 
-    tab_list, tab_hist, tab_table, tab_dupes = st.tabs(
-        ["List", "Histogram", "Table", "Duplicates"]
+    tab_list, tab_hist, tab_table, tab_cleanup = st.tabs(
+        ["List", "Histogram", "Table", "Clean-up"]
     )
 
     with tab_list:
@@ -145,7 +145,7 @@ def main():
     with tab_table:
         render_tab_table(movies)
 
-    with tab_dupes:
+    with tab_cleanup:
         render_duplicates(duplicates)
 
 
@@ -265,6 +265,7 @@ def render_duplicates(duplicates: dict[str, list[LogEntry]]):
             d |= {f'Pos #{i+1}': e.position for i, e in enumerate(v)}
             rows.append(d)
     if rows:
+        st.subheader('Duplicates')
         st.write(
             "These titles appear multiple times but are excluded from the final film count."
         )
