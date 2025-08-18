@@ -134,10 +134,16 @@ def render_tab_list(movies: list[LogEntry]):
     for mv in filtered:
         num = mv.position
         icon = mv.mark or ''
-        out = f"{num}. **{mv.title}**"
+
+        out = f"**{mv.title}**"
+
+        if mv.tid:
+            out = f'[{out}](https://www.imdb.com/title/{mv.tid})'
+
         if mv.year:
             out += f" · *{mv.year}*"
-        st.markdown(out + f' &nbsp;{icon}')
+
+        st.markdown(f'{num}. ' + out + f' &nbsp;{icon}')
 
     st.caption(f"Showing {len(filtered)} of {len(movies)}")
 

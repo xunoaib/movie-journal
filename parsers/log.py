@@ -19,8 +19,21 @@ def parse_and_remove_mark(line: str):
     return icon, line.strip()
 
 
+def parse_and_remove_tid(line: str):
+    '''Find and remove tid in the form: [tt...] '''
+
+    pattern = r'\[(tt.*)\]'
+    if m := re.search(pattern, line):
+        tid = m.group(1)
+        line = re.sub(pattern, '', line)
+        line = re.sub(r'\s+', ' ', line).strip()
+        return tid, line
+    return None, line
+
+
 def parse_single_entry(line: str, num: int, subnum: int):
     icon, line = parse_and_remove_mark(line)
+    tid, line = parse_and_remove_tid(line)
 
     pat = re.compile(r"^(.*?)(?:\s*\(\s*([’']?\d{2,4})\s*\))?$")
     m = pat.match(line)
@@ -33,7 +46,7 @@ def parse_single_entry(line: str, num: int, subnum: int):
         title = line
         year = None
 
-    return LogEntry(num, subnum, title, icon, year)
+    return LogEntry(num, subnum, title, icon, year, tid)
 
 
 def parse_line_entries(line: str, num: int) -> list[LogEntry]:

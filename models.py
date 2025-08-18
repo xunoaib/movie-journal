@@ -8,6 +8,7 @@ class LogEntry:
     title: str
     mark: str | None
     year: str | None
+    tid: str | None
 
     def __eq__(self, other):
         if not isinstance(other, LogEntry):
