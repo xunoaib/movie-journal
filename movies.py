@@ -9,7 +9,7 @@ import streamlit as st
 from st_keyup import st_keyup
 
 from models import LogEntry
-from parsers import parse_movie_log
+from parsers.log import parse_movie_log
 
 
 def matches_text(mv: LogEntry, q: str) -> bool:
