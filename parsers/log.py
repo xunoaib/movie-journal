@@ -13,8 +13,10 @@ def parse_and_remove_mark(line: str):
     else:
         icon = None
 
-    for s in ['(bomb)', '*', '✓']:
-        line = line.replace(s, '')
+    for s in ['(bomb)', ' *', '✓']:
+        line = line.replace(s, ' ')
+
+    line = re.sub(r'\s+', ' ', line)
 
     return icon, line.strip()
 
@@ -22,7 +24,7 @@ def parse_and_remove_mark(line: str):
 def parse_and_remove_tid(line: str):
     '''Find and remove tid in the form: [tt...] '''
 
-    pattern = r'\[(tt.*)\]'
+    pattern = r'\[(tt.*?)\]'
     if m := re.search(pattern, line):
         tid = m.group(1)
         line = re.sub(pattern, '', line)
