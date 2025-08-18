@@ -30,7 +30,12 @@ def main():
         pickle.dump(j_matches, open(cache, 'wb'))
 
     for j, matches in j_matches.items():
-        print(f'{len(matches)} => {j.title} ({j.year})')
+        # print(f'{len(matches)} => {j.title} ({j.year})')
+        if len(matches) > 1:
+            print(f'# {j.title}')
+            for m in matches:
+                print(f'  {m}')
+            print()
 
 
 if __name__ == '__main__':
