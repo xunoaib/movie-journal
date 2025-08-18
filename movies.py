@@ -206,6 +206,8 @@ def render_duplicates(duplicates: dict[str, list[LogEntry]]):
             "These titles have multiple entries but are excluded from the final count"
         )
         df = pd.DataFrame(rows)
+        if "Pos #2" in df.columns:
+            df = df.sort_values(by="Pos #2", na_position="last")
         st.dataframe(df)
     else:
         st.info("No duplicates found ✅")
