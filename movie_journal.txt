@@ -12,7 +12,7 @@ The Train ('1964) *
 Topaz ('1969)
 Les Misérables ('1935)
 The Eagle Has Landed ('1976)
-A Matter of Life and Death (aka Stairway to Heaven) ('1946)
+A Matter of Life and Death (aka Stairway to Heaven) ('1946) [tt0038733]
 The Beguiled ('1971)
 A Tree Grows in Brooklyn ('1945)
 Zulu ('1964)
@@ -44,7 +44,7 @@ Blade Runner ('1982) *
 The Postman Always Rings Twice ('1946)
 The Spy Who Came in from the Cold ('1965)
 The Last Detail ('1973)
-The Lost Battalion ('2001)
+The Lost Battalion ('2001) [tt0287535]
 Paths of Glory ('1957)
 Local Hero ('1983)
 The Eye of the Needle ('1963)
@@ -107,7 +107,7 @@ Aguirre, the Wrath of God ('1972)
 The Taking of Pelham One Two Three ('1974) :: The Taking of Pelham 123 ('2009)
 The Innocents ('1961)
 The Incident ('1967)
-The French Connection ('1971) :: The French Connection II ('1975)
+The French Connection ('1971) :: French Connection II ('1975)
 The Godfather ('1972) :: The Godfather Part II ('1974)
 The Searchers ('1956)
 2001: A Space Odyssey ('1968)
@@ -206,7 +206,7 @@ Soylent Green ('1973)
 Die Hard 2 ('1990)
 Bullitt ('1968)
 Babe ('1995)
-Jungle Book ('1942)
+The Jungle Book ('1942) [tt0034928]
 The Enigma of Kaspar Hauser ('1974)
 Tight Spot ('1955)
 Love and Death ('1975)
@@ -219,7 +219,7 @@ The Great Dictator ('1940)
 The Firemen's Ball ('1967)
 Manhunt ('1976)
 Bad Day at Black Rock ('1955)
-Duel ('1971)
+Duel ('1971) [tt0067023]
 The Last Metro ('1980) *
 The Deadly Affair ('1967)
 The Naked Prey ('1965)
@@ -248,7 +248,7 @@ Mildred Pierce ('1945)
 Oscar Wilde ('1960)
 Sullivan's Travels ('1941)
 A Yank in the RAF ('1941)
-Crime and Punishment, USA ('1959)
+Crime and Punishment, USA ('1959) [tt0052711]
 Portrait of Jennie ('1948)
 The Shawshank Redemption ('1994)
 What Ever Happened to Baby Jane? ('1962)
@@ -270,7 +270,7 @@ Jezebel ('1938)
 All the President's Men ('1976)
 The Sea Wolf ('1941)
 The French Lieutenant's Woman ('1981)
-Joyeaux Noel ('2005)
+Joyeux Noel ('2005)
 The Snake Pit ('1948)
 The Dam Busters ('1955)
 The One That Got Away ('1957) *
@@ -293,7 +293,7 @@ Bride of Frankenstein ('1935)
 The White Ribbon ('2009)
 For Whom the Bell Tolls ('1943)
 Sahara ('1943) * [tt0036323]
-Conspiracy ('2001)
+Conspiracy ('2001) [tt0266425]
 Point Blank ('1967)
 Grand Hotel ('1932) *
 Pale Rider ('1985)
@@ -320,7 +320,7 @@ The Magnificent Ambersons ('1942)
 Unfaithfully Yours ('1948)
 Madame Bovary ('1949)
 The Desert Rats ('1953)
-Les Parapluies de Cherbourg (aka The Umbrellas of Cherbourg) ('1964) *
+Les Parapluies de Cherbourg (aka The Umbrellas of Cherbourg) ('1964) * [tt0058450]
 Becket ('1964)
 Brief Encounter ('1945) *
 Gravity ('2013) *
@@ -328,7 +328,7 @@ The Night of the Iguana ('1964)
 M*A*S*H ('1970) *
 Comfort and Joy ('1984)
 The Wild One ('1953) *
-Seven Days from Now (aka Abandon Ship!) ('1957)
+Seven Days from Now (aka Abandon Ship!) ('1957) [tt0050091]
 Billy Liar ('1963)
 Topaz ('1969) *
 Hackers ('1995)
@@ -342,7 +342,7 @@ Mommie Dearest ('1981)
 The Bad and the Beautiful ('1952) *
 The Thing from Another World ('1951)
 The Hindenburg ('1975)
-Gargoyles ('1972)
+Gargoyles ('1972) [tt0068622]
 Trog ('1970)
 The Wrong Man ('1956)
 The Man in the White Suit ('1951)
@@ -396,14 +396,14 @@ The Imitation Game ('2014) *
 Requiem for a Heavyweight ('1962)
 Drums Along the Mohawk ('1939)
 Belle de Jour ('1967)
-The Bicycle Thief ('1948)
+The Bicycle Thief ('1948) [tt0040522]
 No Country for Old Men ('2007)
 The Blues Brothers ('1980)
 Infernal Affairs ('2002)
 Dodsworth ('1936) *
 The King's Speech ('2010) ✓
 The Tree of Life ('2011)
-Fail Safe (TV, Apr 9, 2000) ('2000)
+Fail Safe (TV, Apr 9, 2000) ('2000) [tt0058083]
 Macbeth ('1948) ✓
 The Phantom of the Opera ('1925)
 Horror of Dracula ('1958) ✓
@@ -422,7 +422,7 @@ The Moon and Sixpence ('1942)
 The Seventh Seal ('1957)
 The Browning Version ('1951) *
 Lady on a Train ('1945)
-Longitude (A&E) ('2002)
+Longitude (A&E) ('2002) [tt0192263]
 Lost Horizon ('1937) ✓
 Damn the Defiant! ('1962)
 Raw Deal ('1948)
@@ -452,7 +452,7 @@ Fitzcarraldo ('1982)
 City Lights ('1931)
 Enemy at the Gates ('2001)
 Jack Reacher ('2012) *
-The Invaders (aka 49th Parallel) ('1941)
+The Invaders (aka 49th Parallel) ('1941) [tt0033627]
 Dean Spanley ('2008) ✓
 Anastasia ('1956) ✓
 They Shoot Horses, Don't They? ('1969)
@@ -564,7 +564,7 @@ The Fighting 69th ('1940)
 Dr. Jekyll and Mr. Hyde ('1931)
 Rashomon ('1950)
 The Killing ('1956)
-Die Brücke (aka The Bridge) ('1959)
+Die Brücke (aka The Bridge) ('1959) [tt0052654]
 Balloon ('2018)
 Escape ('1940)
 Hombre ('1967)
@@ -665,7 +665,7 @@ Act of Violence ('1948)
 The Mouse on the Moon ('1963)
 Seance on a Wet Afternoon ('1964)
 Shadow on the Wall ('1950)
-A Trip to the Moon ('1917)
+A Trip to the Moon ('1917) [tt0955345]
 Old Acquaintance ('1943)
 Every Which Way But Loose ('1978)
 Captain Blood ('1935)
@@ -851,7 +851,7 @@ The Fugitive ('1993)
 Amadeus ('1984)
 The Hunt for Red October ('1990)
 Clash by Night ('1952)
-The First Men in the Moon ('1964)
+The First Men in the Moon ('1964) [tt0058100]
 The Untouchables ('1987)
 The Wolf Man ('1941)
 Eight Below ('2006)
@@ -874,7 +874,7 @@ An Affair to Remember ('1957) ✓
 Bad for Each Other ('1953)
 From Beyond the Grave ('1974)
 Hairspray ('1988)
-The Devil's Bride ('1968)
+The Devil Rides Out ('1968) [tt0062885]
 The Parallax View ('1974)
 Beware, My Lovely ('1952)
 Mystery House ('1938)
@@ -884,7 +884,7 @@ The Man I Love ('1946)
 The Man Who Laughs ('1928)
 First Knight ('1995)
 I Died a Thousand Times ('1955)
-The Racker ('1951)
+The Racket ('1951)
 Detour ('1945)
 Woman in Hiding ('1950) ✓
 U.S. Marshals ('1998)
@@ -906,7 +906,7 @@ Grand Central Murder ('1942)
 The Masque of the Red Death ('1964)
 Torn Curtain ('1966)
 The Woman in Green ('1945)
-The Red Balloon ('1956)
+Le ballon rouge (aka The Red Balloon) ('1956) [tt0048980]
 The Big Knife ('1955)
 Slap Shot ('1977)
 The Nutty Professor ('1963)
@@ -932,7 +932,7 @@ The Colossus of Rhodes ('1961)
 The Big Combo ('1955)
 The Other ('1972)
 Too Late for Tears ('1949) ✓
-The Day After ('1983)
+The Day After ('1983) [tt0085404]
 Red Eye ('2005)
 Repeat Performance ('1947)
 Eraserhead ('1977)
@@ -940,10 +940,10 @@ Deadline at Dawn ('1946)
 Nobody Lives Forever ('1946)
 Confessions of a Nazi Spy ('1939)
 Woman on the Run ('1950)
-The Spy In Black ('1939)
+U-Boat 29 (aka The Spy In Black) ('1939) [tt0031968]
 A Shot in the Dark ('1964)
 Young and Innocent ('1937)
-Roadhouse ('1989)
+Roadhouse ('1989) [tt0098206]
 Background to Danger ('1943)
 Johnny O'Clock ('1947)
 The Purple Rose of Cairo ('1985) ✓
