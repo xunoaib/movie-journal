@@ -20,12 +20,16 @@ def generate_matches(journal: list[LogEntry], movies: list[ImdbEntry]):
 def main():
     journal = parse_movie_log('movie_journal.txt')
     imdbs = parse_imdb_movies('data/movie_directors.csv')
+    j_matches = find_matches(journal, imdbs)
 
-    find_matches(journal, imdbs)
+    for j, matches in j_matches.items():
+        if j.tid is not None:
+            print(f'{len(matches)}! => {j.title} ({j.year})')
+        else:
+            print(f'{len(matches)} => {j.title} ({j.year})')
 
 
 def find_matches(journal: list[LogEntry], imdbs: list[ImdbEntry]):
-
     cache = Path('parse_imdb_matches.pkl')
     if cache.exists():
         print('Loading matches')
@@ -34,13 +38,7 @@ def find_matches(journal: list[LogEntry], imdbs: list[ImdbEntry]):
         print('Generating and caching matches...')
         j_matches = generate_matches(journal, imdbs)
         pickle.dump(j_matches, open(cache, 'wb'))
-
-    for j, matches in j_matches.items():
-        if len(matches) > 1:
-            print(f'# {j.title}')
-            for m in matches:
-                print(f'  {m}')
-            print()
+    return j_matches
 
 
 if __name__ == '__main__':
