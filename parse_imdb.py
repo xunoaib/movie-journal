@@ -1,0 +1,37 @@
+import pickle
+from collections import defaultdict
+from pathlib import Path
+
+from models import ImdbEntry, LogEntry
+from parsers.imdb import parse_imdb_movies
+from parsers.log import parse_movie_log
+
+
+def generate_matches(journal: list[LogEntry], movies: list[ImdbEntry]):
+    j_matches = {j: [] for j in journal}
+    for m in movies:
+        for j in journal:
+            if j.title == m.title and j.year == m.year:
+                j_matches[j].append(m)
+    return j_matches
+
+
+def main():
+    movies = parse_imdb_movies('data/movie_directors.csv')
+    journal = parse_movie_log('movie_journal.txt')
+
+    cache = Path('parse_imdb_matches.pkl')
+    if cache.exists():
+        print('Loading matches')
+        j_matches = pickle.load(open(cache, 'rb'))
+    else:
+        print('Generating and caching matches...')
+        j_matches = generate_matches(journal, movies)
+        pickle.dump(j_matches, open(cache, 'wb'))
+
+    for j, matches in j_matches.items():
+        print(f'{len(matches)} => {j.title} ({j.year})')
+
+
+if __name__ == '__main__':
+    main()
