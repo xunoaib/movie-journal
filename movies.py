@@ -181,7 +181,6 @@ def duplicate_check(duplicates: dict[str, list[LogEntry]]):
 
     if rows:
         df = pd.DataFrame(rows)
-        # st.dataframe(df, hide_index=True)
         st.dataframe(df)
     else:
         st.info("No duplicates found ✅")
