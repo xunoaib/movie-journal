@@ -263,7 +263,7 @@ def render_duplicates(duplicates: dict[str, list[LogEntry]]):
     for (title, year), v in duplicates.items():
         if len(v) > 1:
             d = {"Title": title, "Year": year}
-            d |= {f'Pos #{i+1}': e.position for i, e in enumerate(v)}
+            d |= {(f'Position #{i+1}'): e.position for i, e in enumerate(v)}
             rows.append(d)
     if rows:
         st.subheader('Duplicates')
