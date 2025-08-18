@@ -91,7 +91,7 @@ def main():
         render_tab_table(movies)
 
     with tab_dupes:
-        duplicate_check(duplicates)
+        render_duplicates(duplicates)
 
 
 def render_tab_list(movies: list[LogEntry]):
@@ -194,16 +194,17 @@ def render_tab_table(movies: list[LogEntry]):
     st.dataframe(df_display, hide_index=True)
 
 
-def duplicate_check(duplicates: dict[str, list[LogEntry]]):
-
+def render_duplicates(duplicates: dict[str, list[LogEntry]]):
     rows = []
     for (title, year), v in duplicates.items():
         if len(v) > 1:
             d = {"Title": title, "Year": year}
             d |= {f'Pos #{i+1}': e.position for i, e in enumerate(v)}
             rows.append(d)
-
     if rows:
+        st.write(
+            "These titles have multiple entries but are excluded from the final count"
+        )
         df = pd.DataFrame(rows)
         st.dataframe(df)
     else:
@@ -212,10 +213,8 @@ def duplicate_check(duplicates: dict[str, list[LogEntry]]):
 
 def find_duplicates(movies: list[LogEntry]):
     d = defaultdict(list)
-
     for m in movies:
         d[m.title, m.year].append(m)
-
     return {k: v for k, v in d.items() if len(v) > 1}
 
 
