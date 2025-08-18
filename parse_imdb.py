@@ -20,7 +20,7 @@ def generate_matches(journal: list[LogEntry], movies: list[ImdbEntry]):
 def main():
     journal = parse_movie_log('movie_journal.txt')
     imdbs = parse_imdb_movies('data/movie_directors.csv')
-    j_matches = find_matches(journal, imdbs)
+    j_matches = load_or_generate_matches(journal, imdbs)
 
     for j, matches in j_matches.items():
         if j.tid is not None:
@@ -29,7 +29,7 @@ def main():
             print(f'{len(matches)} => {j.title} ({j.year})')
 
 
-def find_matches(journal: list[LogEntry], imdbs: list[ImdbEntry]):
+def load_or_generate_matches(journal: list[LogEntry], imdbs: list[ImdbEntry]):
     cache = Path('parse_imdb_matches.pkl')
     if cache.exists():
         print('Loading matches')
