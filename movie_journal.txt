@@ -320,7 +320,7 @@ The Magnificent Ambersons ('1942)
 Unfaithfully Yours ('1948)
 Madame Bovary ('1949)
 The Desert Rats ('1953)
-Les Parapluies de Cherbourg (aka The Umbrellas of Cherbourg) *
+Les Parapluies de Cherbourg (aka The Umbrellas of Cherbourg) ('1964) *
 Becket ('1964)
 Brief Encounter ('1945) *
 Gravity ('2013) *
@@ -403,7 +403,7 @@ Infernal Affairs ('2002)
 Dodsworth ('1936) *
 The King's Speech ('2010) ✓
 The Tree of Life ('2011)
-Fail Safe (Apr 9, 2000) TV
+Fail Safe (TV, Apr 9, 2000) ('2000)
 Macbeth ('1948) ✓
 The Phantom of the Opera ('1925)
 Horror of Dracula ('1958) ✓
@@ -564,7 +564,7 @@ The Fighting 69th ('1940)
 Dr. Jekyll and Mr. Hyde ('1931)
 Rashomon ('1950)
 The Killing ('1956)
-Die Brücke (aka The Bridge)
+Die Brücke (aka The Bridge) ('1959)
 Balloon ('2018)
 Escape ('1940)
 Hombre ('1967)
