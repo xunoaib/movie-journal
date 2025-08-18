@@ -68,7 +68,8 @@ def main():
     st.markdown(
         f"You've seen **{len(movies)-num_duplicates} movies!**",
         help=(
-            'Some sequels and remakes share a list number, so numbering may differ -- but the total count is accurate.'
+            'Some films were logged twice or grouped (e.g., sequels and remakes).\n\n'
+            'List numbers may not line up exactly, but the total count is accurate.'
         )
     )
 
