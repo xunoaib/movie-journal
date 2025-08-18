@@ -266,7 +266,7 @@ def render_duplicates(duplicates: dict[str, list[LogEntry]]):
             rows.append(d)
     if rows:
         st.write(
-            "These titles have multiple entries but are excluded from the final count"
+            "These titles appear multiple times but are excluded from the final film count."
         )
         df = pd.DataFrame(rows)
         if "Pos #2" in df.columns:
