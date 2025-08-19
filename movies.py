@@ -8,11 +8,9 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-from linker import ImdbTidMapper
+from linker import ImdbTidMapper, get_default_mapper
 from models import ImdbEntry, LogEntry
 from parsers.log import parse_movie_log
-
-MOVIE_JOURNAL = 'movie_journal.txt'
 
 
 def matches_text(mv: LogEntry, q: str) -> bool:
@@ -45,7 +43,7 @@ def matches(mv: LogEntry, q):
 
 @st.cache_data
 def load_movies():
-    mapper = ImdbTidMapper()
+    mapper = get_default_mapper()
     journal = mapper.parse_journal()
     return mapper.assign_tids(journal)
 
@@ -92,7 +90,7 @@ def main():
     )
 
     if not movies:
-        st.info("movie_journal.txt not found or empty.")
+        st.info("Movie journal file not found or empty.")
         st.stop()
 
     tab_list, tab_hist, tab_table, tab_cleanup = st.tabs(

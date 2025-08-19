@@ -7,9 +7,9 @@ from models import ImdbEntry, LogEntry
 from parsers.imdb import parse_imdb_movies
 from parsers.log import parse_movie_log
 
-DEFAULT_IMDB_CSV = 'movie_directors.csv'
-DEFAULT_CACHE_FILE = 'cache/imdbs_grouped_by_title_year.pkl'
-DEFAULT_MOVIE_JOURNAL = 'movie_journal.txt'
+MOVIE_JOURNAL = 'movie_journal.txt'
+IMDB_CSV = 'movie_directors.csv'
+CACHE_FILE = 'cache/imdbs_grouped_by_title_year.pkl'
 
 
 class ImdbTidMapper:
@@ -22,9 +22,9 @@ class ImdbTidMapper:
 
     def __init__(
         self,
-        imdb_csv: str = DEFAULT_IMDB_CSV,
-        cache_file: str = DEFAULT_CACHE_FILE,
-        journal_file: str = DEFAULT_MOVIE_JOURNAL,
+        imdb_csv: str,
+        cache_file: str,
+        journal_file: str,
     ):
         self.imdb_csv = Path(imdb_csv)
         self.cache_file = Path(cache_file)
@@ -86,14 +86,23 @@ class ImdbTidMapper:
         '''Parse the journal file into log entries.'''
         return parse_movie_log(self.journal_file)
 
-    def debug_unmatched(self):
-        '''Print journal entries that don’t have a matching IMDb entry.'''
-        journal = self.parse_journal()
-        mappings = self._load_or_generate_mappings()
 
-        for j in journal:
-            if not mappings.get((j.title.lower(), j.year)):
-                print('No matches for', j.title)
+def get_default_mapper() -> ImdbTidMapper:
+    return ImdbTidMapper(
+        imdb_csv=IMDB_CSV,
+        cache_file=CACHE_FILE,
+        journal_file=MOVIE_JOURNAL,
+    )
+
+
+def debug_unmatched(mapper: ImdbTidMapper):
+    '''Print journal entries that don’t have a matching IMDb entry.'''
+    journal = mapper.parse_journal()
+    mappings = mapper._load_or_generate_mappings()
+
+    for j in journal:
+        if not mappings.get((j.title.lower(), j.year)):
+            print('No matches for', j.title)
 
 
 def main():
