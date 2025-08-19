@@ -44,8 +44,7 @@ def matches(mv: LogEntry, q):
 @st.cache_data
 def load_movies():
     mapper = get_default_mapper()
-    journal = mapper.parse_journal()
-    return mapper.assign_tids(journal)
+    return mapper.load_journal()
 
 
 def main():

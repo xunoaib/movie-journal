@@ -102,9 +102,16 @@ class ImdbTidMapper:
             output.append(j)
         return output
 
-    def parse_journal(self) -> list[LogEntry]:
-        '''Parse the journal file into log entries.'''
+    def parse_raw_journal(self) -> list[LogEntry]:
+        '''Parse the raw journal file as-is into log entries, without IMDb correlation.'''
         return parse_movie_log(self.journal_file)
+
+    def load_journal(self) -> list[LogEntry]:
+        '''Parse the journal file into log entries and perform IMDb correlation.'''
+        journal = self.parse_raw_journal()
+        updated = self.assign_tids(journal)
+        updated = self.assign_imdbs(journal)
+        return updated
 
 
 def get_default_mapper() -> ImdbTidMapper:
@@ -117,11 +124,8 @@ def get_default_mapper() -> ImdbTidMapper:
 
 def main():
     mapper = get_default_mapper()
-    journal = mapper.parse_journal()
-    updated = mapper.assign_tids(journal)
-    updated = mapper.assign_imdbs(journal)
+    journal = mapper.load_journal()
 
-    # for j in journal:
     for j in journal:
         # if not mappings.get((j.title.lower(), j.year)):
         #     print('No matches for', j.title)
