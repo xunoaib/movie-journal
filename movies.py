@@ -213,14 +213,23 @@ def render_tab_hist(movies: list[LogEntry]):
 
 
 def render_tab_table(movies: list[LogEntry]):
-    df = pd.DataFrame([e.__dict__ for e in movies])
-    df_subset: pd.DataFrame = df.loc[:, ['position', 'title', 'year', 'mark']]
+    df = pd.DataFrame(
+        [
+            e.__dict__ | {
+                'director': None if e.imdb is None else e.imdb.director
+            } for e in movies
+        ]
+    )
+    df_subset: pd.DataFrame = df.loc[:, [
+        'position', 'title', 'year', 'mark', 'director'
+    ]]
     df_display = df_subset.rename(
         columns={
             "position": "Watch #",
             "year": "Release Year",
             "title": "Title",
-            "mark": "Mark"
+            "mark": "Mark",
+            "director": "Director",
         }
     )
     st.dataframe(df_display, hide_index=True, height=10000)
