@@ -159,7 +159,7 @@ def render_tab_list(movies: list[LogEntry]):
             out = f'<a class="no-style" href="https://www.imdb.com/title/{mv.tid}">{out}<a>'
 
         if mv.backfill is not None:
-            out += ' ◦ '
+            out += ' <span title="This entry was backfilled (original number unknown)">↵</span> '
 
         if mv.year:
             if mv.backfill is None:
