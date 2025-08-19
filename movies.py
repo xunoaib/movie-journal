@@ -239,7 +239,7 @@ def render_tab_table(movies: list[JournalEntry]):
     st.dataframe(
         df_display,
         hide_index=True,
-        height=10000,
+        height=35 * 100,
         column_config={
             'Link': st.column_config.LinkColumn(display_text='IMDb')
         }
