@@ -14,10 +14,16 @@ class LogEntry:
     def __eq__(self, other):
         if not isinstance(other, LogEntry):
             return NotImplementedError
-        return self.position == other.position and self.subnum == self.subnum
+        return all(
+            [
+                self.position == other.position,
+                self.subnum == self.subnum,
+                self.title == other.title,
+            ]
+        )
 
     def __hash__(self):
-        return hash(f'{self.position}_{self.subnum}')
+        return hash((self.position, self.subnum, self.title))
 
 
 @dataclass(frozen=True)
