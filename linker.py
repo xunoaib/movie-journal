@@ -106,10 +106,10 @@ def debug_unmatched(mapper: ImdbTidMapper):
 
 
 def main():
-    mapper = ImdbTidMapper()
+    mapper = get_default_mapper()
     journal = mapper.parse_journal()
     updated = mapper.assign_tids(journal)
-    mapper.debug_unmatched()
+    debug_unmatched(mapper)
 
 
 if __name__ == '__main__':
