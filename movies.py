@@ -8,7 +8,7 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-from linker import link_imdbs
+from linker import assign_tids_to_journal
 from models import ImdbEntry, LogEntry
 from parsers.log import parse_movie_log
 
@@ -44,7 +44,7 @@ def matches(mv: LogEntry, q):
 def load_movies():
     movies = parse_movie_log('movie_journal.txt')
     # Assign IMDb IDs to missing log entries
-    movies = link_imdbs(movies)
+    movies = assign_tids_to_journal(movies)
     return movies
 
 

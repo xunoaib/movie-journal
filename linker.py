@@ -1,3 +1,10 @@
+'''
+This module:
+- Assigns TIDs to a list of journal entries (using IMDb data)
+- Groups a list of ImdbEntries by (year, title)
+- Caches the above groups to a pickled cache.
+'''
+
 import pickle
 from collections import defaultdict
 from dataclasses import asdict
@@ -9,11 +16,11 @@ from parsers.imdb import parse_imdb_movies
 from parsers.log import parse_movie_log
 
 IMDB_CSV_IN = 'movie_directors.csv'
-TITLEYEAR_CACHE_OUT = 'cache_imdb_titleyears.pkl'
+TITLEYEAR_CACHE_OUT = 'cache/imdbs_grouped_by_title_year.pkl'
 JOURNAL_IN = 'movie_journal.txt'
 
 
-def group_by_titleyear(imdbs: list[ImdbEntry]):
+def group_imdb_by_title_year(imdbs: list[ImdbEntry]):
     '''Group ImdbEntries by (title, year)'''
 
     d = defaultdict(list)
@@ -22,18 +29,17 @@ def group_by_titleyear(imdbs: list[ImdbEntry]):
     return d
 
 
-def load_or_generate_mappings(cache_file: str):
+def load_or_generate_groups(cache_file: str):
     '''Groups ImdbEntries by (title, year). Reads from cache if available.'''
 
     if Path(cache_file).exists():
         print('Loading from cache...')
         return pickle.load(open(cache_file, 'rb'))
 
-    print('Parsing CSV...')
     imdbs = parse_imdb_movies(IMDB_CSV_IN)
 
     print('Creating mapping...')
-    mappings = group_by_titleyear(imdbs)
+    mappings = group_imdb_by_title_year(imdbs)
 
     print('Pickling to file...')
     with open(cache_file, 'wb') as f:
@@ -42,14 +48,14 @@ def load_or_generate_mappings(cache_file: str):
     return mappings
 
 
-def link_imdbs(journal: list[LogEntry]) -> list[LogEntry]:
+def assign_tids_to_journal(journal: list[LogEntry]) -> list[LogEntry]:
     '''Supplement journal entries with tids from IMDb based on (title, year)'''
 
     # Every film has a TID. No need to continue.
     if all(j.tid is not None for j in journal):
         return journal
 
-    mappings = load_or_generate_mappings(TITLEYEAR_CACHE_OUT)
+    mappings = load_or_generate_groups(TITLEYEAR_CACHE_OUT)
 
     output = []
     for j in journal:
@@ -65,7 +71,7 @@ def link_imdbs(journal: list[LogEntry]) -> list[LogEntry]:
 
 def main_test():
     # Group IMDB movies by (title, year)
-    mappings = load_or_generate_mappings(TITLEYEAR_CACHE_OUT)
+    mappings = load_or_generate_groups(TITLEYEAR_CACHE_OUT)
 
     # Parse journal
     journal = parse_movie_log(JOURNAL_IN)
