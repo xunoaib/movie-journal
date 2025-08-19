@@ -31,8 +31,9 @@ class ImdbTidMapper:
         self.journal_file = Path(journal_file)
 
         # lazy load mappings
-        self._mappings: dict[tuple[str, str | None],
-                             list[ImdbEntry]] | None = None
+        self._title_year_mappings: dict[tuple[str, str | None],
+                                        list[ImdbEntry]] | None = None
+        self._tid_imdbs: dict[str, ImdbEntry] = {}
 
     def _group_by_title_year(self, imdbs: list[ImdbEntry]):
         '''Group ImdbEntries by (title.lower(), year).'''
@@ -41,35 +42,42 @@ class ImdbTidMapper:
             d[m.title.lower(), m.year].append(m)
         return d
 
-    def _load_or_generate_mappings(self):
+    def _load_or_generate_title_year_mappings(self):
         '''Load grouped IMDb data from cache, or regenerate if missing.'''
-        if self._mappings is not None:
-            return self._mappings
+        if self._title_year_mappings is not None:
+            return self._title_year_mappings
 
         if self.cache_file.exists():
             print('Loading IMDb mappings from cache...')
             with open(self.cache_file, 'rb') as f:
-                self._mappings = pickle.load(f)
+                data = pickle.load(f)
+                self._title_year_mappings = data['title_year_mappings']
+                self._tid_imdbs = data['tid_imdbs']
         else:
             print('Parsing IMDb CSV...')
             imdbs = parse_imdb_movies(self.imdb_csv)
 
-            print('Creating mapping...')
-            self._mappings = self._group_by_title_year(imdbs)
+            print('Creating mappings...')
+            self._title_year_mappings = self._group_by_title_year(imdbs)
+            self._tid_imdbs = {m.tid: m for m in imdbs}
 
             print(f'Pickling mappings to {self.cache_file}...')
             self.cache_file.parent.mkdir(parents=True, exist_ok=True)
             with open(self.cache_file, 'wb') as f:
-                pickle.dump(self._mappings, f)
+                data = {
+                    'title_year_mappings': self._title_year_mappings,
+                    'tid_imdbs': self._tid_imdbs,
+                }
+                pickle.dump(data, f)
 
-        return self._mappings
+        return self._title_year_mappings
 
     def assign_tids(self, journal: list[LogEntry]) -> list[LogEntry]:
         '''Supplement journal entries with TIDs from IMDb based on (title, year).'''
         if all(j.tid is not None for j in journal):
             return journal
 
-        mappings = self._load_or_generate_mappings()
+        mappings = self._load_or_generate_title_year_mappings()
         output = []
 
         for j in journal:
@@ -81,6 +89,17 @@ class ImdbTidMapper:
                     j = LogEntry(**asdict(j) | {'tid': matches[0].tid})
             output.append(j)
 
+        return output
+
+    def assign_imdbs(self, journal: list[LogEntry]) -> list[LogEntry]:
+        '''Assign IMDb entries to LogEntrys based on TID'''
+
+        output = []
+        for j in journal:
+            if j.imdb is None and j.tid and (m := self._tid_imdbs.get(j.tid)):
+                j = LogEntry(**asdict(j) | {'imdb': m})
+                print('yay', j.imdb)
+            output.append(j)
         return output
 
     def parse_journal(self) -> list[LogEntry]:
@@ -96,21 +115,18 @@ def get_default_mapper() -> ImdbTidMapper:
     )
 
 
-def debug_unmatched(mapper: ImdbTidMapper):
-    '''Print journal entries that don’t have a matching IMDb entry.'''
-    journal = mapper.parse_journal()
-    mappings = mapper._load_or_generate_mappings()
-
-    for j in journal:
-        if not mappings.get((j.title.lower(), j.year)):
-            print('No matches for', j.title)
-
-
 def main():
     mapper = get_default_mapper()
     journal = mapper.parse_journal()
     updated = mapper.assign_tids(journal)
-    debug_unmatched(mapper)
+    updated = mapper.assign_imdbs(journal)
+
+    # for j in journal:
+    for j in journal:
+        # if not mappings.get((j.title.lower(), j.year)):
+        #     print('No matches for', j.title)
+        if j.imdb:
+            print(j.title, j.imdb)
 
 
 if __name__ == '__main__':

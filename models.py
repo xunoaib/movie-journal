@@ -2,6 +2,22 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class ImdbEntry:
+    tid: str
+    title: str
+    year: str
+    director: str
+
+    def __eq__(self, other):
+        if not isinstance(other, ImdbEntry):
+            return NotImplementedError
+        return self.tid == other.tid
+
+    def __hash__(self):
+        return hash(self.tid)
+
+
+@dataclass(frozen=True)
 class LogEntry:
     position: int
     subnum: int  # subnumber, to disambiguate multiple films on the same line
@@ -10,6 +26,7 @@ class LogEntry:
     year: str | None
     tid: str | None  # IMDb TID
     backfill: str | None
+    imdb: ImdbEntry | None = None
 
     def __eq__(self, other):
         if not isinstance(other, LogEntry):
@@ -24,19 +41,3 @@ class LogEntry:
 
     def __hash__(self):
         return hash((self.position, self.subnum, self.title))
-
-
-@dataclass(frozen=True)
-class ImdbEntry:
-    tid: str
-    title: str
-    year: str
-    director: str
-
-    def __eq__(self, other):
-        if not isinstance(other, ImdbEntry):
-            return NotImplementedError
-        return self.tid == other.tid
-
-    def __hash__(self):
-        return hash(self.tid)
