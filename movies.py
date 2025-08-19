@@ -80,7 +80,7 @@ def journal_matches_cache(
 
 def journal_to_tids(log: LogEntry):
     cache = journal_matches_cache()
-    return cache[log]
+    return cache.get(log)
 
 
 def main():
