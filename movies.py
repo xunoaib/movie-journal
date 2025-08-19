@@ -224,7 +224,7 @@ def render_tab_table(movies: list[LogEntry]):
             "mark": "Mark"
         }
     )
-    st.dataframe(df_display, hide_index=True)
+    st.dataframe(df_display, hide_index=True, height=10000)
 
 
 def render_duplicates(duplicates: dict[str, list[LogEntry]]):
@@ -242,7 +242,7 @@ def render_duplicates(duplicates: dict[str, list[LogEntry]]):
         df = pd.DataFrame(rows)
         if "Pos #2" in df.columns:
             df = df.sort_values(by="Position #2", na_position="last")
-        st.dataframe(df)
+        st.dataframe(df, height=int(35.125 * (len(rows) + 1)))
     else:
         st.info("No duplicates found ✅")
 
