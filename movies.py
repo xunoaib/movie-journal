@@ -191,7 +191,7 @@ def render_tab_hist(movies: list[LogEntry]):
         st.info("No movies with year information.")
         return
 
-    df = pd.DataFrame(years, columns=["Year"])
+    df = pd.DataFrame(years, columns=pd.Index(["Year"]))
 
     all_years = pd.DataFrame({"Year": range(min(years), max(years) + 1)})
     df_counts = df.value_counts().reset_index(name="Count")
@@ -216,7 +216,8 @@ def render_tab_hist(movies: list[LogEntry]):
 
 def render_tab_table(movies: list[LogEntry]):
     df = pd.DataFrame([e.__dict__ for e in movies])
-    df_display = df[['position', 'title', 'year', 'mark']].rename(
+    df_subset: pd.DataFrame = df.loc[:, ['position', 'title', 'year', 'mark']]
+    df_display = df_subset.rename(
         columns={
             "position": "Watch #",
             "year": "Release Year",
