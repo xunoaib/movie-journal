@@ -147,7 +147,14 @@ def render_tab_list(movies: list[JournalEntry]):
     if flip_order:
         filtered = list(reversed(filtered))
 
-    for mv in filtered:
+    render_journal_list(filtered)
+    st.caption(f"Showing {len(filtered)} of {len(movies)}")
+
+
+def render_journal_list(journal: list[JournalEntry]):
+    '''Renders a list of journal entries in a list'''
+
+    for mv in journal:
         num = mv.position
         icon = mv.mark or ''
 
@@ -169,8 +176,6 @@ def render_tab_list(movies: list[JournalEntry]):
             f'{num}. ' + out + f' &nbsp;{icon}'.strip(),
             unsafe_allow_html=True,
         )
-
-    st.caption(f"Showing {len(filtered)} of {len(movies)}")
 
 
 def render_tab_hist(movies: list[JournalEntry]):
