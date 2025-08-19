@@ -9,11 +9,11 @@ import streamlit as st
 from st_keyup import st_keyup
 
 from linker import ImdbTidMapper, get_default_mapper
-from models import ImdbEntry, LogEntry
+from models import ImdbEntry, JournalEntry
 from parsers.log import parse_movie_log
 
 
-def matches_text(mv: LogEntry, q: str) -> bool:
+def matches_text(mv: JournalEntry, q: str) -> bool:
     if not q:
         return True
     return (q in mv.title.lower()
@@ -34,7 +34,7 @@ def matches_mark(mv, mark_filter) -> bool:
     return mv.mark is None
 
 
-def matches(mv: LogEntry, q):
+def matches(mv: JournalEntry, q):
     if not q:
         return True
     return (q in mv.title.lower()
@@ -110,7 +110,7 @@ def main():
         render_missing_tids(movies)
 
 
-def render_tab_list(movies: list[LogEntry]):
+def render_tab_list(movies: list[JournalEntry]):
     query = st_keyup(
         "Search",
         key="query",
@@ -173,7 +173,7 @@ def render_tab_list(movies: list[LogEntry]):
     st.caption(f"Showing {len(filtered)} of {len(movies)}")
 
 
-def render_tab_hist(movies: list[LogEntry]):
+def render_tab_hist(movies: list[JournalEntry]):
 
     year_entries = []
     noyear_entries = []
@@ -212,11 +212,11 @@ def render_tab_hist(movies: list[LogEntry]):
         st.markdown(f'The following films are missing a year:\n\n{out}')
 
 
-def render_tab_table(movies: list[LogEntry]):
+def render_tab_table(movies: list[JournalEntry]):
     df = pd.DataFrame(
         [
             e.__dict__ | {
-                'director': None if e.imdb is None else e.imdb.director
+                'director': None if e.imdb is None else e.imdb.director,
             } for e in movies
         ]
     )
@@ -235,7 +235,7 @@ def render_tab_table(movies: list[LogEntry]):
     st.dataframe(df_display, hide_index=True, height=10000)
 
 
-def render_duplicates(duplicates: dict[str, list[LogEntry]]):
+def render_duplicates(duplicates: dict[str, list[JournalEntry]]):
     rows = []
     for (title, year), v in duplicates.items():
         if len(v) > 1:
@@ -255,14 +255,14 @@ def render_duplicates(duplicates: dict[str, list[LogEntry]]):
         st.info("No duplicates found ✅")
 
 
-def find_duplicates(movies: list[LogEntry]):
+def find_duplicates(movies: list[JournalEntry]):
     d = defaultdict(list)
     for m in movies:
         d[m.title, m.year].append(m)
     return {k: v for k, v in d.items() if len(v) > 1}
 
 
-def render_missing_tids(movies: list[LogEntry]):
+def render_missing_tids(movies: list[JournalEntry]):
     missing = [
         {
             'Title': m.title,

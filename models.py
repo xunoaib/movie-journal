@@ -18,7 +18,7 @@ class ImdbEntry:
 
 
 @dataclass(frozen=True)
-class LogEntry:
+class JournalEntry:
     position: int
     subnum: int  # subnumber, to disambiguate multiple films on the same line
     title: str
@@ -29,7 +29,7 @@ class LogEntry:
     imdb: ImdbEntry | None = None
 
     def __eq__(self, other):
-        if not isinstance(other, LogEntry):
+        if not isinstance(other, JournalEntry):
             return NotImplementedError
         return all(
             [

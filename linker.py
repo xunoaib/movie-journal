@@ -3,7 +3,7 @@ from collections import defaultdict
 from dataclasses import asdict
 from pathlib import Path
 
-from models import ImdbEntry, LogEntry
+from models import ImdbEntry, JournalEntry
 from parsers.imdb import parse_imdb_movies
 from parsers.log import parse_movie_log
 
@@ -72,7 +72,7 @@ class ImdbTidMapper:
 
         return self._title_year_mappings
 
-    def assign_tids(self, journal: list[LogEntry]) -> list[LogEntry]:
+    def assign_tids(self, journal: list[JournalEntry]) -> list[JournalEntry]:
         '''Supplement journal entries with TIDs from IMDb based on (title, year).'''
         if all(j.tid is not None for j in journal):
             return journal
@@ -86,26 +86,26 @@ class ImdbTidMapper:
                     assert len(
                         matches
                     ) == 1, f'Multiple IMDb IDs found for {j.title}'
-                    j = LogEntry(**asdict(j) | {'tid': matches[0].tid})
+                    j = JournalEntry(**asdict(j) | {'tid': matches[0].tid})
             output.append(j)
 
         return output
 
-    def assign_imdbs(self, journal: list[LogEntry]) -> list[LogEntry]:
-        '''Assign IMDb entries to LogEntrys based on TID'''
+    def assign_imdbs(self, journal: list[JournalEntry]) -> list[JournalEntry]:
+        '''Assign IMDb entries to JournalEntrys based on TID'''
 
         output = []
         for j in journal:
             if j.imdb is None and j.tid and (m := self._tid_imdbs.get(j.tid)):
-                j = LogEntry(**(asdict(j) | {'imdb': m}))
+                j = JournalEntry(**(asdict(j) | {'imdb': m}))
             output.append(j)
         return output
 
-    def parse_raw_journal(self) -> list[LogEntry]:
+    def parse_raw_journal(self) -> list[JournalEntry]:
         '''Parse the raw journal file as-is into log entries, without IMDb correlation.'''
         return parse_movie_log(self.journal_file)
 
-    def load_journal(self) -> list[LogEntry]:
+    def load_journal(self) -> list[JournalEntry]:
         '''Parse the journal file into log entries and perform IMDb correlation.'''
         journal = self.parse_raw_journal()
         journal = self.assign_tids(journal)
@@ -130,6 +130,7 @@ def main():
         #     print('No matches for', j.title)
         if j.imdb:
             print(j.title, j.imdb)
+        pass
 
 
 if __name__ == '__main__':

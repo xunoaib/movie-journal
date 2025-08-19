@@ -1,6 +1,6 @@
 import re
 
-from models import LogEntry
+from models import JournalEntry
 
 
 def parse_and_remove_mark(line: str):
@@ -61,17 +61,17 @@ def parse_single_entry(line: str, num: int, subnum: int):
         title = line
         year = None
 
-    return LogEntry(num, subnum, title, icon, year, tid, backfill)
+    return JournalEntry(num, subnum, title, icon, year, tid, backfill)
 
 
-def parse_line_entries(line: str, num: int) -> list[LogEntry]:
+def parse_line_entries(line: str, num: int) -> list[JournalEntry]:
     return [
         parse_single_entry(segment, num, i)
         for i, segment in enumerate(line.split(' :: '))
     ]
 
 
-def parse_movie_log(path) -> list[LogEntry]:
+def parse_movie_log(path) -> list[JournalEntry]:
     with open(path) as f:
         lines = [ln.strip() for ln in f if ln.strip()]
 
