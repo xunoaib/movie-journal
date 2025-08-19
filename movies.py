@@ -217,11 +217,14 @@ def render_tab_table(movies: list[JournalEntry]):
         [
             e.__dict__ | {
                 'director': None if e.imdb is None else e.imdb.director,
+                'link':
+                f'https://www.imdb.com/title/{e.tid}' if e.tid else None,
+                'mark': e.mark or '',
             } for e in movies
         ]
     )
     df_subset: pd.DataFrame = df.loc[:, [
-        'position', 'title', 'year', 'director', 'mark'
+        'position', 'title', 'year', 'director', 'mark', 'link'
     ]]
     df_display = df_subset.rename(
         columns={
@@ -230,9 +233,17 @@ def render_tab_table(movies: list[JournalEntry]):
             "title": "Title",
             "mark": "Mark",
             "director": "Director",
+            "link": "Link",
         }
     )
-    st.dataframe(df_display, hide_index=True, height=10000)
+    st.dataframe(
+        df_display,
+        hide_index=True,
+        height=10000,
+        column_config={
+            'Link': st.column_config.LinkColumn(display_text='IMDb')
+        }
+    )
 
 
 def render_duplicates(duplicates: dict[str, list[JournalEntry]]):
