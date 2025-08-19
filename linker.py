@@ -31,7 +31,8 @@ class ImdbTidMapper:
         self.journal_file = Path(journal_file)
 
         # lazy load mappings
-        self._mappings: dict[tuple[str, str], list[ImdbEntry]] | None = None
+        self._mappings: dict[tuple[str, str | None],
+                             list[ImdbEntry]] | None = None
 
     def _group_by_title_year(self, imdbs: list[ImdbEntry]):
         '''Group ImdbEntries by (title.lower(), year).'''
