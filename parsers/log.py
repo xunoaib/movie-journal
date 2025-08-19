@@ -33,9 +33,21 @@ def parse_and_remove_tid(line: str):
     return None, line
 
 
+def parse_and_remove_backfill(line: str):
+    '''Find and remove backfill in the form: [bf:...]'''
+
+    pattern = r'\[bf:(.*?)\]'
+    if m := re.search(pattern, line):
+        backfill = m.group(1).strip()
+        line = re.sub(pattern, '', line)
+        return backfill, line
+    return None, line
+
+
 def parse_single_entry(line: str, num: int, subnum: int):
     icon, line = parse_and_remove_mark(line)
     tid, line = parse_and_remove_tid(line)
+    backfill, line = parse_and_remove_backfill(line)
 
     pat = re.compile(r"^(.*?)(?:\s*\(\s*([’']?\d{2,4})\s*\))?$")
     m = pat.match(line)
