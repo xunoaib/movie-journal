@@ -8,7 +8,6 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-import parse_imdb
 from linker import link_imdbs
 from models import ImdbEntry, LogEntry
 from parsers.log import parse_movie_log
