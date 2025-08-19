@@ -41,6 +41,7 @@ def matches(mv: LogEntry, q):
             ) or (mv.year is not None and q in mv.year.lower())
 
 
+@st.cache_data
 def load_movies():
     movies = parse_movie_log('movie_journal.txt')
     # Assign IMDb IDs to missing log entries
