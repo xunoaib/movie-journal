@@ -97,8 +97,7 @@ class ImdbTidMapper:
         output = []
         for j in journal:
             if j.imdb is None and j.tid and (m := self._tid_imdbs.get(j.tid)):
-                j = LogEntry(**asdict(j) | {'imdb': m})
-                print('yay', j.imdb)
+                j = LogEntry(**(asdict(j) | {'imdb': m}))
             output.append(j)
         return output
 
@@ -109,9 +108,9 @@ class ImdbTidMapper:
     def load_journal(self) -> list[LogEntry]:
         '''Parse the journal file into log entries and perform IMDb correlation.'''
         journal = self.parse_raw_journal()
-        updated = self.assign_tids(journal)
-        updated = self.assign_imdbs(journal)
-        return updated
+        journal = self.assign_tids(journal)
+        journal = self.assign_imdbs(journal)
+        return journal
 
 
 def get_default_mapper() -> ImdbTidMapper:
