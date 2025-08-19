@@ -40,6 +40,7 @@ def parse_and_remove_backfill(line: str):
     if m := re.search(pattern, line):
         backfill = m.group(1).strip()
         line = re.sub(pattern, '', line)
+        line = re.sub(r'\s+', ' ', line).strip()
         return backfill, line
     return None, line
 
@@ -60,7 +61,7 @@ def parse_single_entry(line: str, num: int, subnum: int):
         title = line
         year = None
 
-    return LogEntry(num, subnum, title, icon, year, tid)
+    return LogEntry(num, subnum, title, icon, year, tid, backfill)
 
 
 def parse_line_entries(line: str, num: int) -> list[LogEntry]:
