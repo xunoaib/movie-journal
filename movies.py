@@ -8,7 +8,7 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-from linker import assign_tids_to_journal
+from linker import ImdbTidMapper
 from models import ImdbEntry, LogEntry
 from parsers.log import parse_movie_log
 
@@ -45,10 +45,9 @@ def matches(mv: LogEntry, q):
 
 @st.cache_data
 def load_movies():
-    movies = parse_movie_log(MOVIE_JOURNAL)
-    # Assign IMDb IDs to missing log entries
-    movies = assign_tids_to_journal(movies)
-    return movies
+    mapper = ImdbTidMapper()
+    journal = mapper.parse_journal()
+    return mapper.assign_tids(journal)
 
 
 def main():

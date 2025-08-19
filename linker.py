@@ -1,87 +1,107 @@
-'''
-This module:
-- Assigns TIDs to a list of journal entries (using IMDb data)
-- Groups a list of ImdbEntries by (year, title)
-- Caches the above groups to a pickled cache.
-'''
-
 import pickle
 from collections import defaultdict
 from dataclasses import asdict
-from functools import cache
 from pathlib import Path
 
 from models import ImdbEntry, LogEntry
 from parsers.imdb import parse_imdb_movies
 from parsers.log import parse_movie_log
 
-IMDB_CSV_IN = 'movie_directors.csv'
-TITLEYEAR_CACHE_OUT = 'cache/imdbs_grouped_by_title_year.pkl'
-MOVIE_JOURNAL = 'movie_journal.txt'
+DEFAULT_IMDB_CSV = 'movie_directors.csv'
+DEFAULT_CACHE_FILE = 'cache/imdbs_grouped_by_title_year.pkl'
+DEFAULT_MOVIE_JOURNAL = 'movie_journal.txt'
 
 
-def group_imdb_by_title_year(imdbs: list[ImdbEntry]):
-    '''Group ImdbEntries by (title, year)'''
+class ImdbTidMapper:
+    '''
+    Handles:
+    - Parsing IMDb data and grouping by (title, year)
+    - Caching the grouped results to disk
+    - Assigning TIDs to a journal of log entries
+    '''
 
-    d = defaultdict(list)
-    for m in imdbs:
-        d[m.title.lower(), m.year].append(m)
-    return d
+    def __init__(
+        self,
+        imdb_csv: str = DEFAULT_IMDB_CSV,
+        cache_file: str = DEFAULT_CACHE_FILE,
+        journal_file: str = DEFAULT_MOVIE_JOURNAL,
+    ):
+        self.imdb_csv = Path(imdb_csv)
+        self.cache_file = Path(cache_file)
+        self.journal_file = Path(journal_file)
 
+        # lazy load mappings
+        self._mappings: dict[tuple[str, str], list[ImdbEntry]] | None = None
 
-def load_or_generate_groups(cache_file: str):
-    '''Groups ImdbEntries by (title, year). Reads from cache if available.'''
+    def _group_by_title_year(self, imdbs: list[ImdbEntry]):
+        '''Group ImdbEntries by (title.lower(), year).'''
+        d = defaultdict(list)
+        for m in imdbs:
+            d[m.title.lower(), m.year].append(m)
+        return d
 
-    if Path(cache_file).exists():
-        print('Loading from cache...')
-        return pickle.load(open(cache_file, 'rb'))
+    def _load_or_generate_mappings(self):
+        '''Load grouped IMDb data from cache, or regenerate if missing.'''
+        if self._mappings is not None:
+            return self._mappings
 
-    imdbs = parse_imdb_movies(IMDB_CSV_IN)
-
-    print('Creating mapping...')
-    mappings = group_imdb_by_title_year(imdbs)
-
-    print('Pickling to file...')
-    with open(cache_file, 'wb') as f:
-        pickle.dump(mappings, f)
-
-    return mappings
-
-
-def assign_tids_to_journal(journal: list[LogEntry]) -> list[LogEntry]:
-    '''Supplement journal entries with tids from IMDb based on (title, year)'''
-
-    # Every film has a TID. No need to continue.
-    if all(j.tid is not None for j in journal):
-        return journal
-
-    mappings = load_or_generate_groups(TITLEYEAR_CACHE_OUT)
-
-    output = []
-    for j in journal:
-        if j.tid is None:
-            if matches := mappings.get((j.title.lower(), j.year)):
-                assert len(
-                    matches
-                ) == 1, 'Multiple IMDb IDs found for journal entry'
-                j = LogEntry(**asdict(j) | {'tid': matches[0].tid})
-        output.append(j)
-    return output
-
-
-def main_test():
-    # Group IMDB movies by (title, year)
-    mappings = load_or_generate_groups(TITLEYEAR_CACHE_OUT)
-
-    # Parse journal
-    journal = parse_movie_log(MOVIE_JOURNAL)
-
-    for j in journal:
-        if matches := mappings.get((j.title.lower(), j.year)):
-            pass
+        if self.cache_file.exists():
+            print('Loading IMDb mappings from cache...')
+            with open(self.cache_file, 'rb') as f:
+                self._mappings = pickle.load(f)
         else:
-            print('No matches for', j.title)
+            print('Parsing IMDb CSV...')
+            imdbs = parse_imdb_movies(self.imdb_csv)
+
+            print('Creating mapping...')
+            self._mappings = self._group_by_title_year(imdbs)
+
+            print(f'Pickling mappings to {self.cache_file}...')
+            self.cache_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.cache_file, 'wb') as f:
+                pickle.dump(self._mappings, f)
+
+        return self._mappings
+
+    def assign_tids(self, journal: list[LogEntry]) -> list[LogEntry]:
+        '''Supplement journal entries with TIDs from IMDb based on (title, year).'''
+        if all(j.tid is not None for j in journal):
+            return journal
+
+        mappings = self._load_or_generate_mappings()
+        output = []
+
+        for j in journal:
+            if j.tid is None:
+                if matches := mappings.get((j.title.lower(), j.year)):
+                    assert len(
+                        matches
+                    ) == 1, f'Multiple IMDb IDs found for {j.title}'
+                    j = LogEntry(**asdict(j) | {'tid': matches[0].tid})
+            output.append(j)
+
+        return output
+
+    def parse_journal(self) -> list[LogEntry]:
+        '''Parse the journal file into log entries.'''
+        return parse_movie_log(self.journal_file)
+
+    def debug_unmatched(self):
+        '''Print journal entries that don’t have a matching IMDb entry.'''
+        journal = self.parse_journal()
+        mappings = self._load_or_generate_mappings()
+
+        for j in journal:
+            if not mappings.get((j.title.lower(), j.year)):
+                print('No matches for', j.title)
+
+
+def main():
+    mapper = ImdbTidMapper()
+    journal = mapper.parse_journal()
+    updated = mapper.assign_tids(journal)
+    mapper.debug_unmatched()
 
 
 if __name__ == '__main__':
-    main_test()
+    main()
