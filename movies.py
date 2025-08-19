@@ -42,12 +42,15 @@ def matches(mv: LogEntry, q):
             ) or (mv.year is not None and q in mv.year.lower())
 
 
-def main():
+def load_movies():
     movies = parse_movie_log('movie_journal.txt')
-
     # Assign IMDb IDs to missing log entries
     movies = link_imdbs(movies)
+    return movies
 
+
+def main():
+    movies = load_movies()
     duplicates = find_duplicates(movies)
     num_duplicates = sum(len(v) - 1 for v in duplicates.values())
 
