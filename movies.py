@@ -191,7 +191,8 @@ def render_tab_list(movies: list[LogEntry]):
         num = mv.position
         icon = mv.mark or ''
 
-        out = f"**{mv.title}**"
+        # Escape asterisks from markdown
+        out = f"**{mv.title.replace('*', '&#42;')}**"
 
         if mv.tid:
             out = f'<a class="no-style" href="https://www.imdb.com/title/{mv.tid}">{out}<a>'
