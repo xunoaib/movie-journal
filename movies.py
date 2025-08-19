@@ -124,7 +124,7 @@ def render_tab_list(movies: list[LogEntry]):
             "All",
             "⭐",
             "✅",
-            "⭐|✅",
+            "⭐ or ✅",
             "💣",
             "No mark",
         ],
