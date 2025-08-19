@@ -17,7 +17,7 @@ from parsers.log import parse_movie_log
 
 IMDB_CSV_IN = 'movie_directors.csv'
 TITLEYEAR_CACHE_OUT = 'cache/imdbs_grouped_by_title_year.pkl'
-JOURNAL_IN = 'movie_journal.txt'
+MOVIE_JOURNAL = 'movie_journal.txt'
 
 
 def group_imdb_by_title_year(imdbs: list[ImdbEntry]):
@@ -74,7 +74,7 @@ def main_test():
     mappings = load_or_generate_groups(TITLEYEAR_CACHE_OUT)
 
     # Parse journal
-    journal = parse_movie_log(JOURNAL_IN)
+    journal = parse_movie_log(MOVIE_JOURNAL)
 
     for j in journal:
         if matches := mappings.get((j.title.lower(), j.year)):
