@@ -12,6 +12,8 @@ from linker import assign_tids_to_journal
 from models import ImdbEntry, LogEntry
 from parsers.log import parse_movie_log
 
+MOVIE_JOURNAL = 'movie_journal.txt'
+
 
 def matches_text(mv: LogEntry, q: str) -> bool:
     if not q:
@@ -43,7 +45,7 @@ def matches(mv: LogEntry, q):
 
 @st.cache_data
 def load_movies():
-    movies = parse_movie_log('movie_journal.txt')
+    movies = parse_movie_log(MOVIE_JOURNAL)
     # Assign IMDb IDs to missing log entries
     movies = assign_tids_to_journal(movies)
     return movies
