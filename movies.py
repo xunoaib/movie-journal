@@ -197,11 +197,17 @@ def render_tab_list(movies: list[LogEntry]):
         if mv.tid:
             out = f'<a class="no-style" href="https://www.imdb.com/title/{mv.tid}">{out}<a>'
 
+        if mv.backfill is not None:
+            out += ' ◦ '
+
         if mv.year:
-            out += f" · *{mv.year}*"
+            if mv.backfill is None:
+                out += " · "
+            out += f"*{mv.year}*"
 
         st.markdown(
-            f'{num}. ' + out + f' &nbsp;{icon}', unsafe_allow_html=True
+            f'{num}. ' + out + f' &nbsp;{icon}'.strip(),
+            unsafe_allow_html=True,
         )
 
     st.caption(f"Showing {len(filtered)} of {len(movies)}")
