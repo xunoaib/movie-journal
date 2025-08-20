@@ -92,19 +92,28 @@ def main():
         st.info("Movie journal file not found or empty.")
         st.stop()
 
-    tab_list, tab_hist, tab_table, tab_cleanup = st.tabs(
-        ["List", "Histogram", "Table", "Clean-up"]
+    tab_list, tab_table, tab_hist, tab_directors, tab_cleanup = st.tabs(
+        [
+            "List",
+            "Table",
+            "Histogram",
+            "Directors",
+            "Clean-up",
+        ]
     )
 
     with tab_list:
         render_tab_list(movies)
 
-    with tab_hist:
-        render_tab_hist(movies)
-        render_director_pie_chart(movies)
-
     with tab_table:
         render_tab_table(movies)
+
+    with tab_hist:
+        render_tab_hist(movies)
+
+    with tab_directors:
+        render_director_pie_chart(movies)
+        render_director_count_list(movies)
 
     with tab_cleanup:
         render_duplicates(duplicates)
@@ -153,7 +162,7 @@ def render_tab_list(movies: list[JournalEntry]):
 
 
 def render_journal_list(journal: list[JournalEntry]):
-    '''Renders a list of journal entries in a list'''
+    '''Renders a list of journal entries'''
 
     for mv in journal:
         num = mv.position
@@ -292,19 +301,84 @@ def render_missing_tids(movies: list[JournalEntry]):
         st.dataframe(df)
 
 
-def render_director_pie_chart(journal: list[JournalEntry]):
+def count_directors(journal: list[JournalEntry]):
+    '''Counts the frequency of directors in a list of journal entries.'''
     df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
 
-    counts = df["director"].value_counts().reset_index()
+    # Split directors on commas and expand into multiple rows
+    directors = (df["director"].str.split(",").explode().str.strip())
+
+    counts = directors.value_counts().reset_index()
     counts.columns = ["Director", "Count"]
+    counts = counts.sort_values(
+        by=["Count", "Director"], ascending=[False, True]
+    )
+    return counts
+
+
+def render_director_pie_chart(journal: list[JournalEntry]):
+    counts = count_directors(journal).copy()
+
+    counts["DirectorLabel"] = counts.apply(
+        lambda r: f"{r['Director']} ({r['Count']})", axis=1
+    )
 
     chart = (
         alt.Chart(counts).mark_arc().encode(
-            theta="Count", color="Director", tooltip=["Director", "Count"]
+            theta="Count",
+            color=alt.Color(
+                "DirectorLabel",
+                sort=alt.SortField(field="Count", order="descending"),
+                title="Director"
+            ),
+            tooltip=["Director", "Count"],
+            order=alt.Order("Count", sort="descending"),
         )
     )
 
     st.altair_chart(chart, use_container_width=True)
+
+
+def render_director_count_list(journal: list[JournalEntry]):
+    counts = count_directors(journal)
+    st.subheader('Number of Films Seen Per Director')
+
+    # # Ordered list
+    # lines = '\n'.join(
+    #     f'1. **{row.Director}** ({row.Count})'
+    #     for row in counts.itertuples(index=False)
+    # )
+    # st.markdown(lines)
+
+    # Data frame
+    counts = counts[['Count', 'Director']]
+    counts.index = counts.index + 1
+    event = st.dataframe(
+        counts,
+        # height=35 * 200,
+        width=400,
+        selection_mode="multi-row",
+        on_select="rerun",
+    )
+
+    if event and 'selection' in event:
+        selected_directors = counts.iloc[event["selection"]["rows"]
+                                         ]["Director"].tolist()
+
+        matches = [
+            e for e in journal if e.imdb and any(
+                d.strip() in selected_directors
+                for d in e.imdb.director.split(",")
+            )
+        ]
+
+        matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
+
+        lines = "\n".join(
+            f"- **{m.imdb.title}** ({m.imdb.year}) {m.mark} – {m.imdb.director}"
+            for m in matches
+        )
+        st.markdown(lines if lines else "_No matching entries._")
 
 
 if __name__ == '__main__':
