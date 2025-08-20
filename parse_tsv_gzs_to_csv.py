@@ -2,6 +2,7 @@
 Parses IMDb datasets into a CSV containing: tid,title,year,directors
 '''
 import os
+from typing import Any
 
 IMDB_DATA_DIR = 'data-link'
 OUTPUT_CSV = 'movie_directors.csv'
@@ -33,13 +34,13 @@ def main():
 
     paths = ImdbPaths(IMDB_DATA_DIR)
 
-    CSV_OPTS = dict(
-        separator="\t",
-        null_values=["\\N"],
-        infer_schema_length=0,
-        quote_char=None,
-        has_header=True,
-    )
+    CSV_OPTS: dict[str, Any] = {
+        "separator": "\t",
+        "null_values": ["\\N"],
+        "infer_schema_length": 0,
+        "quote_char": None,
+        "has_header": True,
+    }
 
     print('Parsing movies from IMDb tsv.gzs...')
     basics = (
