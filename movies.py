@@ -317,18 +317,25 @@ def count_directors(journal: list[JournalEntry]):
 
 
 def render_director_pie_chart(journal: list[JournalEntry]):
-    counts = count_directors(journal)
+    counts = count_directors(journal).copy()
+
+    counts["DirectorLabel"] = counts.apply(
+        lambda r: f"{r['Director']} ({r['Count']})", axis=1
+    )
+
     chart = (
         alt.Chart(counts).mark_arc().encode(
             theta="Count",
             color=alt.Color(
-                "Director",
-                sort=alt.SortField(field="Count", order="descending")  # 🔑
+                "DirectorLabel",
+                sort=alt.SortField(field="Count", order="descending"),
+                title="Director"
             ),
             tooltip=["Director", "Count"],
             order=alt.Order("Count", sort="descending"),
         )
     )
+
     st.altair_chart(chart, use_container_width=True)
 
 
@@ -346,7 +353,7 @@ def render_director_count_list(journal: list[JournalEntry]):
     # Data frame
     counts = counts[['Count', 'Director']]
     counts.index = counts.index + 1
-    st.dataframe(counts, height=35 * 100, width=400)
+    st.dataframe(counts, height=35 * 200, width=400)
 
 
 if __name__ == '__main__':
