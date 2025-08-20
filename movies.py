@@ -101,6 +101,7 @@ def main():
 
     with tab_hist:
         render_tab_hist(movies)
+        render_director_pie_chart(movies)
 
     with tab_table:
         render_tab_table(movies)
@@ -289,6 +290,21 @@ def render_missing_tids(movies: list[JournalEntry]):
         st.subheader('Titles Missing an IMDb ID')
         df = pd.DataFrame(missing)
         st.dataframe(df)
+
+
+def render_director_pie_chart(journal: list[JournalEntry]):
+    df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
+
+    counts = df["director"].value_counts().reset_index()
+    counts.columns = ["Director", "Count"]
+
+    chart = (
+        alt.Chart(counts).mark_arc().encode(
+            theta="Count", color="Director", tooltip=["Director", "Count"]
+        )
+    )
+
+    st.altair_chart(chart, use_container_width=True)
 
 
 if __name__ == '__main__':
