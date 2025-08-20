@@ -92,19 +92,28 @@ def main():
         st.info("Movie journal file not found or empty.")
         st.stop()
 
-    tab_list, tab_hist, tab_table, tab_cleanup = st.tabs(
-        ["List", "Histogram", "Table", "Clean-up"]
+    tab_list, tab_table, tab_hist, tab_directors, tab_cleanup = st.tabs(
+        [
+            "List",
+            "Table",
+            "Histogram",
+            "Directors",
+            "Clean-up",
+        ]
     )
 
     with tab_list:
         render_tab_list(movies)
 
-    with tab_hist:
-        render_tab_hist(movies)
-        render_director_pie_chart(movies)
-
     with tab_table:
         render_tab_table(movies)
+
+    with tab_hist:
+        render_tab_hist(movies)
+
+    with tab_directors:
+        render_director_pie_chart(movies)
+        render_director_count_list(movies)
 
     with tab_cleanup:
         render_duplicates(duplicates)
@@ -153,7 +162,7 @@ def render_tab_list(movies: list[JournalEntry]):
 
 
 def render_journal_list(journal: list[JournalEntry]):
-    '''Renders a list of journal entries in a list'''
+    '''Renders a list of journal entries'''
 
     for mv in journal:
         num = mv.position
@@ -294,7 +303,6 @@ def render_missing_tids(movies: list[JournalEntry]):
 
 def render_director_pie_chart(journal: list[JournalEntry]):
     df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
-
     counts = df["director"].value_counts().reset_index()
     counts.columns = ["Director", "Count"]
 
@@ -308,6 +316,20 @@ def render_director_pie_chart(journal: list[JournalEntry]):
     )
 
     st.altair_chart(chart, use_container_width=True)
+
+
+def render_director_count_list(journal: list[JournalEntry]):
+    df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
+    counts = df["director"].value_counts().reset_index()
+    counts.columns = ["Director", "Count"]
+
+    st.subheader('Number of Films Seen Per Director')
+
+    lines = '\n'.join(
+        f'1. **{row.Director}** ({row.Count})'
+        for row in counts.itertuples(index=False)
+    )
+    st.markdown(lines)
 
 
 if __name__ == '__main__':
