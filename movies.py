@@ -63,6 +63,7 @@ def main():
         margin-top: 0.2rem;   /* reduce space above list */
         margin-bottom: 0.2rem;/* reduce space below list */
         padding-left: 1.2rem; /* keep indentation nice */
+    }
 
     /* Disable URL colors and underline */
     a.no-style {
