@@ -372,6 +372,8 @@ def render_director_count_list(journal: list[JournalEntry]):
             )
         ]
 
+        matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
+
         lines = "\n".join(
             f"- **{m.imdb.title}** ({m.imdb.year}) – {m.imdb.director}"
             for m in matches
