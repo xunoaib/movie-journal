@@ -4,13 +4,34 @@ Parses IMDb datasets into a CSV containing: tid,title,year,directors
 import os
 
 IMDB_DATA_DIR = 'data-link'
+OUTPUT_CSV = 'movie_directors.csv'
+
+
+class ImdbPaths:
+
+    def __init__(self, base_dir: str):
+        self.base_dir = os.path.abspath(base_dir)
+
+    def file(self, name: str) -> str:
+        return os.path.join(self.base_dir, name)
+
+    @property
+    def basics(self) -> str:
+        return self.file("title.basics.tsv.gz")
+
+    @property
+    def crew(self) -> str:
+        return self.file("title.crew.tsv.gz")
+
+    @property
+    def names(self) -> str:
+        return self.file("name.basics.tsv.gz")
 
 
 def main():
     import polars as pl
 
-    current_dir = os.getcwd()
-    os.chdir(IMDB_DATA_DIR)
+    paths = ImdbPaths(IMDB_DATA_DIR)
 
     CSV_OPTS = dict(
         separator="\t",
@@ -20,9 +41,13 @@ def main():
         has_header=True,
     )
 
+    print('Parsing movies from IMDb tsv.gzs...')
     basics = (
-        pl.scan_csv("title.basics.tsv.gz", **CSV_OPTS).filter(
-            (pl.col("titleType") == "movie")
+        pl.scan_csv(paths.basics, **CSV_OPTS).filter(
+            (
+                (pl.col("titleType") == "movie")
+                | (pl.col("titleType") == "tvMovie")
+            )
             & (pl.col("isAdult") == "0")
             & (pl.col("startYear").is_not_null())
         ).with_columns(
@@ -32,13 +57,11 @@ def main():
     )
 
     crew = (
-        pl.scan_csv("title.crew.tsv.gz",
-                    **CSV_OPTS).select(["tconst", "directors"])
+        pl.scan_csv(paths.crew, **CSV_OPTS).select(["tconst", "directors"])
     )
 
     names = (
-        pl.scan_csv("name.basics.tsv.gz",
-                    **CSV_OPTS).select(["nconst", "primaryName"])
+        pl.scan_csv(paths.names, **CSV_OPTS).select(["nconst", "primaryName"])
     )
 
     # explode directors safely (skip null/empty)
@@ -62,8 +85,9 @@ def main():
         )
     )
 
+    print('Writing to CSV:', OUTPUT_CSV)
     # movie_directors_exploded.sink_csv("movie_directors_exploded.csv")
-    movie_directors.sink_csv(current_dir + "/movie_directors.csv")
+    movie_directors.sink_csv(OUTPUT_CSV)
 
 
 if __name__ == '__main__':
