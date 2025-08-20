@@ -353,7 +353,30 @@ def render_director_count_list(journal: list[JournalEntry]):
     # Data frame
     counts = counts[['Count', 'Director']]
     counts.index = counts.index + 1
-    st.dataframe(counts, height=35 * 200, width=400)
+    event = st.dataframe(
+        counts,
+        # height=35 * 200,
+        width=400,
+        selection_mode="multi-row",
+        on_select="rerun",
+    )
+
+    if event and 'selection' in event:
+        selected_directors = counts.iloc[event["selection"]["rows"]
+                                         ]["Director"].tolist()
+
+        matches = [
+            e for e in journal if e.imdb and any(
+                d.strip() in selected_directors
+                for d in e.imdb.director.split(",")
+            )
+        ]
+
+        lines = "\n".join(
+            f"- **{m.imdb.title}** ({m.imdb.year}) – {m.imdb.director}"
+            for m in matches
+        )
+        st.markdown(lines if lines else "_No matching entries._")
 
 
 if __name__ == '__main__':
