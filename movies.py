@@ -310,6 +310,9 @@ def count_directors(journal: list[JournalEntry]):
 
     counts = directors.value_counts().reset_index()
     counts.columns = ["Director", "Count"]
+    counts = counts.sort_values(
+        by=["Count", "Director"], ascending=[False, True]
+    )
     return counts
 
 
@@ -318,12 +321,14 @@ def render_director_pie_chart(journal: list[JournalEntry]):
     chart = (
         alt.Chart(counts).mark_arc().encode(
             theta="Count",
-            color="Director",
+            color=alt.Color(
+                "Director",
+                sort=alt.SortField(field="Count", order="descending")  # 🔑
+            ),
             tooltip=["Director", "Count"],
             order=alt.Order("Count", sort="descending"),
         )
     )
-
     st.altair_chart(chart, use_container_width=True)
 
 
