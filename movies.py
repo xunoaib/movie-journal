@@ -301,11 +301,15 @@ def render_missing_tids(movies: list[JournalEntry]):
         st.dataframe(df)
 
 
-def render_director_pie_chart(journal: list[JournalEntry]):
+def director_counts(journal: list[JournalEntry]):
     df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
     counts = df["director"].value_counts().reset_index()
     counts.columns = ["Director", "Count"]
+    return counts
 
+
+def render_director_pie_chart(journal: list[JournalEntry]):
+    counts = director_counts(journal)
     chart = (
         alt.Chart(counts).mark_arc().encode(
             theta="Count",
@@ -319,10 +323,7 @@ def render_director_pie_chart(journal: list[JournalEntry]):
 
 
 def render_director_count_list(journal: list[JournalEntry]):
-    df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
-    counts = df["director"].value_counts().reset_index()
-    counts.columns = ["Director", "Count"]
-
+    counts = director_counts(journal)
     st.subheader('Number of Films Seen Per Director')
 
     lines = '\n'.join(
