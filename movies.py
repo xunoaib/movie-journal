@@ -300,7 +300,10 @@ def render_director_pie_chart(journal: list[JournalEntry]):
 
     chart = (
         alt.Chart(counts).mark_arc().encode(
-            theta="Count", color="Director", tooltip=["Director", "Count"]
+            theta="Count",
+            color="Director",
+            tooltip=["Director", "Count"],
+            order=alt.Order("Count", sort="descending"),
         )
     )
 
