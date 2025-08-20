@@ -2,10 +2,11 @@
 Parses IMDb datasets into a CSV containing: tid,title,year,directors
 '''
 import os
+from pathlib import Path
 from typing import Any
 
-IMDB_DATA_DIR = 'data-link'
-OUTPUT_CSV = 'movie_directors.csv'
+IMDB_DATA_DIR = 'imdb-data'
+OUTPUT_CSV = Path('cache/movie_directors.csv')
 
 
 class ImdbPaths:
@@ -86,6 +87,7 @@ def main():
         )
     )
 
+    OUTPUT_CSV.parent.mkdir(exist_ok=True)
     print('Writing to CSV:', OUTPUT_CSV)
     # movie_directors_exploded.sink_csv("movie_directors_exploded.csv")
     movie_directors.sink_csv(OUTPUT_CSV)
