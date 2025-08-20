@@ -301,7 +301,7 @@ def render_missing_tids(movies: list[JournalEntry]):
         st.dataframe(df)
 
 
-def director_counts(journal: list[JournalEntry]):
+def count_directors(journal: list[JournalEntry]):
     '''Counts the frequency of directors in a list of journal entries.'''
     df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
 
@@ -314,7 +314,7 @@ def director_counts(journal: list[JournalEntry]):
 
 
 def render_director_pie_chart(journal: list[JournalEntry]):
-    counts = director_counts(journal)
+    counts = count_directors(journal)
     chart = (
         alt.Chart(counts).mark_arc().encode(
             theta="Count",
@@ -328,14 +328,20 @@ def render_director_pie_chart(journal: list[JournalEntry]):
 
 
 def render_director_count_list(journal: list[JournalEntry]):
-    counts = director_counts(journal)
+    counts = count_directors(journal)
     st.subheader('Number of Films Seen Per Director')
 
-    lines = '\n'.join(
-        f'1. **{row.Director}** ({row.Count})'
-        for row in counts.itertuples(index=False)
-    )
-    st.markdown(lines)
+    # # Ordered list
+    # lines = '\n'.join(
+    #     f'1. **{row.Director}** ({row.Count})'
+    #     for row in counts.itertuples(index=False)
+    # )
+    # st.markdown(lines)
+
+    # Data frame
+    counts = counts[['Count', 'Director']]
+    counts.index = counts.index + 1
+    st.dataframe(counts, height=35 * 100, width=400)
 
 
 if __name__ == '__main__':
