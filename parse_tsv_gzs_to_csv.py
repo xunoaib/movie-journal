@@ -1,10 +1,16 @@
 '''
 Parses IMDb datasets into a CSV containing: tid,title,year,directors
 '''
+import os
+
+IMDB_DATA_DIR = 'data-link'
 
 
 def main():
     import polars as pl
+
+    current_dir = os.getcwd()
+    os.chdir(IMDB_DATA_DIR)
 
     CSV_OPTS = dict(
         separator="\t",
@@ -57,7 +63,7 @@ def main():
     )
 
     # movie_directors_exploded.sink_csv("movie_directors_exploded.csv")
-    movie_directors.sink_csv("movie_directors.csv")
+    movie_directors.sink_csv(current_dir + "/movie_directors.csv")
 
 
 if __name__ == '__main__':
