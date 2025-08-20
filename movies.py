@@ -375,11 +375,22 @@ def render_director_count_list(journal: list[JournalEntry]):
 
         matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
 
-        lines = "\n".join(
-            f"- **{m.imdb.title}** ({m.imdb.year}) {m.mark or ''} – {m.imdb.director}"
-            for m in matches
+        lines = []
+
+        for m in matches:
+            title = f"**{m.title.replace('*', '&#42;')}**"
+
+            if m.tid:
+                title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
+
+            lines.append(
+                f"- {title} · *{m.imdb.year}* {m.mark or ''} – {m.imdb.director}"
+            )
+
+        st.markdown(
+            '\n'.join(lines) if lines else "_No matching entries._",
+            unsafe_allow_html=True
         )
-        st.markdown(lines if lines else "_No matching entries._")
 
 
 if __name__ == '__main__':
