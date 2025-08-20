@@ -276,6 +276,7 @@ def render_duplicates(duplicates: dict[str, list[JournalEntry]]):
         )
         df = pd.DataFrame(rows)
         df = df.sort_values(by="Pos #2", na_position="last")
+        df.index = df.index + 1
         st.dataframe(df, height=int(35.125 * (len(rows) + 1)))
     else:
         st.info("No duplicates found ✅")
