@@ -302,8 +302,13 @@ def render_missing_tids(movies: list[JournalEntry]):
 
 
 def director_counts(journal: list[JournalEntry]):
+    '''Counts the frequency of directors in a list of journal entries.'''
     df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
-    counts = df["director"].value_counts().reset_index()
+
+    # Split directors on commas and expand into multiple rows
+    directors = (df["director"].str.split(",").explode().str.strip())
+
+    counts = directors.value_counts().reset_index()
     counts.columns = ["Director", "Count"]
     return counts
 
