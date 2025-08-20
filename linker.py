@@ -8,7 +8,7 @@ from parsers.imdb import parse_imdb_movies
 from parsers.log import parse_movie_log
 
 MOVIE_JOURNAL = 'movie_journal.txt'
-IMDB_CSV = 'movie_directors.csv'
+IMDB_CSV = 'cache/movie_directors.csv'
 CACHE_FILE = 'cache/imdbs_grouped_by_title_year.pkl'
 
 
