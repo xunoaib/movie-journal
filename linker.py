@@ -85,7 +85,7 @@ class ImdbTidMapper:
                 if matches := mappings.get((j.title.lower(), j.year)):
                     assert len(
                         matches
-                    ) == 1, f'Multiple IMDb IDs found for {j.title}'
+                    ) == 1, f'Multiple IMDb IDs found for {j.title}: {matches}'
                     j = JournalEntry(**asdict(j) | {'tid': matches[0].tid})
             output.append(j)
 
