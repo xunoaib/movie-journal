@@ -256,7 +256,7 @@ def render_duplicates(duplicates: dict[str, list[JournalEntry]]):
     for (title, year), v in duplicates.items():
         if len(v) > 1:
             d = {"Title": title, "Year": year}
-            d |= {(f'Position #{i+1}'): e.position for i, e in enumerate(v)}
+            d |= {(f'Pos #{i+1}'): e.position for i, e in enumerate(v)}
             rows.append(d)
     if rows:
         st.subheader('Duplicates')
@@ -264,8 +264,7 @@ def render_duplicates(duplicates: dict[str, list[JournalEntry]]):
             "These titles appear multiple times but are excluded from the final film count."
         )
         df = pd.DataFrame(rows)
-        if "Pos #2" in df.columns:
-            df = df.sort_values(by="Position #2", na_position="last")
+        df = df.sort_values(by="Pos #2", na_position="last")
         st.dataframe(df, height=int(35.125 * (len(rows) + 1)))
     else:
         st.info("No duplicates found ✅")
