@@ -176,7 +176,7 @@ def render_journal_list(journal: list[JournalEntry]):
             out = f'<a class="no-style" href="https://www.imdb.com/title/{mv.tid}">{out}<a>'
 
         if mv.backfill is not None:
-            out += ' <span title="This entry was backfilled (original number unknown)">↵</span> '
+            out += ' <span title="This entry was backfilled (original position unknown)">↵</span> '
 
         if mv.year:
             if mv.backfill is None:
@@ -343,7 +343,7 @@ def render_director_pie_chart(journal: list[JournalEntry]):
 
 def render_director_count_list(journal: list[JournalEntry]):
     counts = count_directors(journal)
-    st.subheader('Number of Films Seen Per Director')
+    st.subheader('Films Seen Per Director')
 
     # # Ordered list
     # lines = '\n'.join(
