@@ -620,7 +620,7 @@ Mad Love ('1935)
 Dark Victory ('1939)
 Gregory's Girl ('1980)
 David Copperfield ('1935)
-The Four Feathers ('1939)
+To Catch a Thief ('1955) [bf:]
 The Killers ('1964)
 Rope ('1948)
 Green for Danger ('1946)
@@ -632,7 +632,7 @@ Passage to Marseille ('1944)
 Five Easy Pieces ('1970)
 Destination Moon ('1950)
 Juarez ('1939)
-Anatomy of a Murder ('1959)
+Invasion of the Body Snatchers ('1956) [bf:]
 The Ladykillers ('1955)
 In Cold Blood ('1967)
 The Blue Gardenia ('1953)
@@ -685,7 +685,7 @@ The White Tower ('1950)
 Deadline - U.S.A. ('1952)
 Penn & Teller Get Killed ('1989)
 The Old Maid ('1939)
-Tight Spot ('1955)
+Vertigo ('1958) [bf:]
 Thunderball ('1965)
 Each Dawn I Die ('1939)
 Blithe Spirit ('1945)
@@ -693,16 +693,16 @@ The Artist ('2011) [tt1655442]
 They Drive by Night ('1940)
 Lady in the Lake ('1946)
 The Shop Around the Corner ('1940) *
-Lady on a Train ('1945)
+Spartacus ('1960) [bf:]
 The Blue Dahlia ('1946) *
 From the Mixed-Up Files of Mrs. Basil E. Frankweiler ('1973)
 The Getaway ('1972)
 Kill Bill: Vol. 1 ('2003)
 Kill Bill: Vol. 2 ('2004)
 Firefox ('1982)
-A Night at the Opera ('1935)
+The Birds ('1963) [bf:]
 The Onion Field ('1979)
-The Beast with Five Fingers ('1946)
+A Fistful of Dollars ('1964) [bf:]
 Atlantic City ('1980)
 Sounder ('1972) *
 The Prize ('1963)
@@ -731,7 +731,7 @@ Pitfall ('1948)
 Abe Lincoln in Illinois ('1940)
 The Odessa File ('1974)
 They Live by Night ('1948)
-All the King's Men ('1949)
+Fiddler on the Roof ('1971) [bf:]
 Invaders from Mars ('1953)
 The Asphalt Jungle ('1950) *
 Rush Hour ('1998)
@@ -767,12 +767,12 @@ The Secret Garden ('1949)
 Mysterious Island ('1961)
 BUtterfield 8 ('1960) *
 The Entertainer ('1960)
-Madame Bovary ('1949)
+Jaws ('1975) [bf:]
 Coogan's Bluff ('1968)
 Phantom Lady ('1944) ✓
 The Naked Spur ('1953)
 Airport ('1970) ✓
-You Can't Cheat an Honest Man ('1939)
+Highlander ('1986) [bf:]
 Marked Woman ('1937)
 Dead of Night ('1945)
 5 Fingers ('1952)
@@ -819,7 +819,7 @@ Violent Road ('1958)
 Tom Jones ('1963)
 Thunder Road ('1958)
 The Two Mrs. Carrolls ('1947)
-The Thin Man ('1934)
+House of Games ('1987) * [bf:]
 Dangerous ('1935)
 Highway 301 ('1950)
 Hangover Square ('1945)
@@ -837,7 +837,7 @@ To Have and Have Not ('1944)
 My Man Godfrey ('1936)
 Fahrenheit 451 ('2018)
 Murder on the Orient Express ('1974)
-Bride of Frankenstein ('1935)
+Spaceballs ('1987) [bf:]
 When Dinosaurs Ruled the Earth ('1970)
 There Will Be Blood ('2007)
 Land of the Pharaohs ('1955)
@@ -884,7 +884,7 @@ The Man I Love ('1946)
 The Man Who Laughs ('1928)
 First Knight ('1995)
 I Died a Thousand Times ('1955)
-The Racket ('1951)
+Glory ('1989) [bf:]
 Detour ('1945)
 Woman in Hiding ('1950) ✓
 U.S. Marshals ('1998)
@@ -979,3 +979,9 @@ The Naked Gun ('2025)
 America America ('1963) *
 Dodgeball: A True Underdog Story ('2004)
 Highest 2 Lowest ('2025)
+The Hustler ('1961) * [bf:]
+The Color of Money ('1986) [bf:]
+Tron ('1982) [bf:]
+Tron: Legacy ('2010) [bf:]
+The Big Lebowski ('1998) [bf:]
+Hotel Rwanda ('2004) * [bf:]
