@@ -29,9 +29,7 @@ def collect_ratings(
         ratings, left_on="tid", right_on="tconst", how="left"
     )
 
-    merged = merged.select(
-        ["tid", "title", "year", "director", "averageRating", "numVotes"]
-    )
+    merged = merged.select(["title", "year", "averageRating", "numVotes"])
 
     return merged.to_pandas()
 
@@ -44,4 +42,7 @@ if __name__ == "__main__":
     my_movies = [j.imdb for j in journal if j.imdb]
 
     df = collect_ratings(my_movies)
+
+    pd.set_option("display.max_rows", None)
+
     print(df)
