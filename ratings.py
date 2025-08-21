@@ -29,7 +29,12 @@ def collect_ratings(
         ratings, left_on="tid", right_on="tconst", how="left"
     )
 
-    merged = merged.select(["title", "year", "averageRating", "numVotes"])
+    merged = merged.select(
+        [
+            "title", "year", "averageRating",
+            pl.col("numVotes").cast(pl.Int64, strict=False).alias('numVotes')
+        ]
+    )
 
     return merged.to_pandas()
 
@@ -43,6 +48,10 @@ if __name__ == "__main__":
 
     df = collect_ratings(my_movies)
 
+    df = df.sort_values(by='averageRating', ascending=False)
+
     pd.set_option("display.max_rows", None)
+    pd.set_option("display.width", None)
+    pd.set_option("display.max_columns", None)
 
     print(df)
