@@ -371,7 +371,7 @@ The Pawnbroker ('1964)
 The Sting ('1973) *
 Hannah and Her Sisters ('1986)
 A Few Good Men ('1992)
-King Kong ('1933)
+King Kong ('1933) [bf:]
 The Court-Martial of Billy Mitchell ('1955)
 The Final Countdown ('1980)
 Synecdoche, New York ('2008)
@@ -440,7 +440,7 @@ American Graffiti ('1973)
 Cyrano de Bergerac ('1950)
 Boomerang! ('1947)
 An Honest Liar ('2014) *
-Sabotage ('1936)
+Sabotage ('1936) [bf:]
 Apollo 13 ('1995)
 Gentleman's Agreement ('1947) ✓
 Nosferatu: A Symphony of Horror ('1922)
@@ -475,7 +475,7 @@ Village of the Damned ('1960)
 Shooter ('2007)
 13 Rue Madeleine ('1947) ✓
 The Vikings ('1958)
-The Caine Mutiny ('1954)
+The Caine Mutiny ('1954) [bf:]
 The Man from U.N.C.L.E. ('2015)
 The Cocoanuts ('1929)
 My Cousin Rachel ('1952)
