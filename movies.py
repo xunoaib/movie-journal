@@ -113,7 +113,7 @@ def main():
         render_tab_hist(movies)
 
     with tab_directors:
-        render_director_pie_chart(movies)
+        # render_director_pie_chart(movies)
         render_director_count_list(movies)
 
     with tab_cleanup:
