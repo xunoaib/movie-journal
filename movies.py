@@ -368,6 +368,9 @@ def render_composer_counts(journal: list[JournalEntry]):
     counts = count_composers(journal)
     counts = counts[['Count', 'Composer', 'Stars', 'Checks']]
 
+    counts = counts.rename(columns={"Stars": "⭐ Stars"})
+    counts = counts.rename(columns={"Checks": "✅ Checks"})
+
     st.subheader('Films Seen Per Composer')
 
     event = st.dataframe(
@@ -432,6 +435,9 @@ def render_director_pie_chart(journal: list[JournalEntry]):
 def render_director_count_list(journal: list[JournalEntry]):
     counts = count_directors(journal)
     counts = counts[['Count', 'Director', 'Stars', 'Checks']]
+
+    counts = counts.rename(columns={"Stars": "⭐ Stars"})
+    counts = counts.rename(columns={"Checks": "✅ Checks"})
 
     st.subheader('Films Seen Per Director')
     event = st.dataframe(
