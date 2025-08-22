@@ -93,12 +93,13 @@ def main():
         st.info("Movie journal file not found or empty.")
         st.stop()
 
-    tab_list, tab_table, tab_hist, tab_directors, tab_cleanup = st.tabs(
+    tab_list, tab_table, tab_hist, tab_directors, tab_composers, tab_cleanup = st.tabs(
         [
             "List",
             "Table",
             "Histogram",
             "Directors",
+            "Composers",
             "Clean-up",
         ]
     )
@@ -115,6 +116,9 @@ def main():
     with tab_directors:
         # render_director_pie_chart(movies)
         render_director_count_list(movies)
+
+    with tab_composers:
+        render_composer_counts(movies)
 
     with tab_cleanup:
         render_duplicates(duplicates)
@@ -318,6 +322,30 @@ def count_directors(journal: list[JournalEntry]):
         by=["Count", "Director"], ascending=[False, True]
     )
     return counts
+
+
+def count_composers(journal: list[JournalEntry]) -> pd.DataFrame:
+    composers = []
+    for entry in journal:
+        if entry.imdb and entry.imdb.composer:
+            for comp in entry.imdb.composer.split(","):
+                composers.append(comp.strip())
+
+    df = pd.DataFrame(composers, columns=["Composer"])
+    counts = df.value_counts().reset_index(name="Count")
+    counts["Count"] = counts["Count"].astype(int)
+
+    counts = counts.sort_values(
+        ["Count", "Composer"], ascending=[False, True]
+    ).reset_index(drop=True)
+    counts.index = counts.index + 1
+    return counts
+
+
+def render_composer_counts(journal: list[JournalEntry]):
+    counts = count_composers(journal)
+
+    st.dataframe(counts)
 
 
 def render_director_pie_chart(journal: list[JournalEntry]):
