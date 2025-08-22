@@ -1,12 +1,10 @@
-'''
-Parses IMDb datasets into a CSV containing: tid,title,year,directors,composers
-'''
 import os
 from pathlib import Path
 from typing import Any
 
 IMDB_DATA_DIR = 'imdb-data'
 OUTPUT_CSV = Path('cache/movie_directors.csv')
+ACTORS_CSV = Path('cache/actors.csv')
 
 
 class ImdbPaths:
@@ -112,6 +110,27 @@ def main():
     OUTPUT_CSV.parent.mkdir(exist_ok=True)
     print('Writing to CSV:', OUTPUT_CSV)
     movies.sink_csv(OUTPUT_CSV)
+
+    # --- NEW: Generate actor appearances file ---
+    print('Parsing actors...')
+    actors = (
+        pl.scan_csv(paths.principals, **CSV_OPTS).filter(
+            (pl.col("category") == "actor")
+            | (pl.col("category") == "actress")
+        ).select(["tconst", "nconst"]).join(basics, on="tconst",
+                                            how="inner")  # only keep movies
+        .join(names, on="nconst",
+              how="inner").rename({"primaryName": "actor"})
+    )
+
+    actor_counts = (
+        actors.group_by(["nconst",
+                         "actor"]).agg(pl.count().alias("appearances")
+                                       ).sort("appearances", descending=True)
+    )
+
+    print('Writing to CSV:', ACTORS_CSV)
+    actor_counts.sink_csv(ACTORS_CSV)
 
 
 if __name__ == '__main__':
