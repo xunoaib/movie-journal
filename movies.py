@@ -168,12 +168,12 @@ def render_tab_list(movies: list[JournalEntry]):
     ) or ""
     query = query.strip().lower()
 
-    flip_order = st.toggle("Newest first", value=True)
-
     filtered = [
         m for m in movies
         if matches_text(m, query) and matches_mark(m, mark_filter)
     ]
+
+    flip_order = st.toggle("Newest first", value=True)
 
     if flip_order:
         filtered = list(reversed(filtered))
