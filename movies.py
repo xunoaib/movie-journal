@@ -422,7 +422,10 @@ def render_tab_composers(journal: list[JournalEntry]):
     counts = counts.rename(columns={"Stars": "⭐ Stars"})
     counts = counts.rename(columns={"Checks": "✅ Checks"})
 
-    st.subheader('Films Seen Per Composer')
+    st.subheader(
+        'Films Seen Per Composer',
+        help='Click a checkbox to filter by composer!'
+    )
 
     event = st.dataframe(
         counts,
@@ -467,7 +470,11 @@ def render_tab_directors(journal: list[JournalEntry]):
     counts = counts.rename(columns={"Stars": "⭐ Stars"})
     counts = counts.rename(columns={"Checks": "✅ Checks"})
 
-    st.subheader('Films Seen Per Director')
+    st.subheader(
+        'Films Seen Per Director',
+        help='Click a checkbox to filter by director!'
+    )
+
     event = st.dataframe(
         counts,
         width=600,
