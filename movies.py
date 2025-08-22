@@ -417,14 +417,6 @@ def render_director_count_list(journal: list[JournalEntry]):
     counts = count_directors(journal)
     st.subheader('Films Seen Per Director')
 
-    # # Ordered list
-    # lines = '\n'.join(
-    #     f'1. **{row.Director}** ({row.Count})'
-    #     for row in counts.itertuples(index=False)
-    # )
-    # st.markdown(lines)
-
-    # Data frame
     counts = counts[['Count', 'Director']]
     counts.index = counts.index + 1
     event = st.dataframe(
