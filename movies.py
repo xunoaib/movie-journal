@@ -147,14 +147,15 @@ def create_mark_filter(key: str | None = None):
 
 
 def render_tab_list(movies: list[JournalEntry]):
+
+    mark_filter = create_mark_filter('filterList')
+
     query = st_keyup(
         "Search",
         key="query",
         placeholder="Type to filter...",
     ) or ""
     query = query.strip().lower()
-
-    mark_filter = create_mark_filter('filterList')
 
     flip_order = st.toggle("Newest first", value=True)
 
