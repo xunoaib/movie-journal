@@ -259,15 +259,25 @@ def render_tab_histogram(movies: list[JournalEntry]):
     )
     counts["Count"] = counts["Count"].astype(int)
 
+    color_scale = alt.Scale(
+        domain=["⭐", "✅", "💣"],
+        range=["#ffcc00", "lightgreen", "red"],
+    )
+
     chart_marked = (
         alt.Chart(counts).mark_bar().encode(
             x=alt.X("Year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)),
             y="Count",
-            color=alt.Color("Mark", legend=alt.Legend(title="Mark"))
+            color=alt.Color(
+                "Mark",
+                legend=alt.Legend(title="Mark"),
+                scale=color_scale,
+            )
         )
     )
 
     st.subheader("Number of Marked Films by Release Date")
+
     st.altair_chart(chart_marked, use_container_width=True)
 
     if noyear_entries:
