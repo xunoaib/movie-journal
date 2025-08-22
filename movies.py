@@ -110,14 +110,14 @@ def main():
         render_tab_table(movies)
 
     with tab_hist:
-        render_tab_hist(movies)
+        render_tab_histogram(movies)
 
     with tab_directors:
         # render_director_pie_chart(movies)
-        render_director_count_list(movies)
+        render_tab_directors(movies)
 
     with tab_composers:
-        render_composer_counts(movies)
+        render_tab_composers(movies)
 
     with tab_cleanup:
         render_duplicates(duplicates)
@@ -210,7 +210,7 @@ def render_journal_list(journal: list[JournalEntry]):
         )
 
 
-def render_tab_hist(movies: list[JournalEntry]):
+def render_tab_histogram(movies: list[JournalEntry]):
 
     year_entries = []
     noyear_entries = []
@@ -389,7 +389,7 @@ def count_composers(journal: list[JournalEntry]):
     return counts
 
 
-def render_composer_counts(journal: list[JournalEntry]):
+def render_tab_composers(journal: list[JournalEntry]):
     counts = count_composers(journal)
     counts = counts[['Count', 'Composer', 'Stars', 'Checks']]
 
@@ -457,7 +457,7 @@ def render_director_pie_chart(journal: list[JournalEntry]):
     st.altair_chart(chart, use_container_width=True)
 
 
-def render_director_count_list(journal: list[JournalEntry]):
+def render_tab_directors(journal: list[JournalEntry]):
     counts = count_directors(journal)
     counts = counts[['Count', 'Director', 'Stars', 'Checks']]
 
