@@ -236,11 +236,12 @@ def render_tab_table(movies: list[JournalEntry]):
                 'link':
                 f'https://www.imdb.com/title/{e.tid}' if e.tid else None,
                 'mark': e.mark or '',
+                'composer': e.imdb.composer if e.imdb else '',
             } for e in movies
         ]
     )
     df_subset: pd.DataFrame = df.loc[:, [
-        'position', 'title', 'year', 'director', 'mark', 'link'
+        'position', 'mark', 'title', 'year', 'director', 'composer', 'link'
     ]]
     df_display = df_subset.rename(
         columns={
@@ -250,6 +251,7 @@ def render_tab_table(movies: list[JournalEntry]):
             "mark": "Mark",
             "director": "Director",
             "link": "Link",
+            "composer": "Composer",
         }
     )
     st.dataframe(
