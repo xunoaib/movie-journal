@@ -353,7 +353,7 @@ def render_composer_counts(journal: list[JournalEntry]):
         counts,
         # height=35 * 200,
         width=400,
-        selection_mode="multi-row",
+        selection_mode="single-row",
         on_select="rerun",
     )
 
@@ -429,7 +429,7 @@ def render_director_count_list(journal: list[JournalEntry]):
         counts,
         # height=35 * 200,
         width=400,
-        selection_mode="multi-row",
+        selection_mode="single-row",
         on_select="rerun",
     )
 
