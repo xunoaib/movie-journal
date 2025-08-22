@@ -13,25 +13,24 @@ from models import ImdbEntry, JournalEntry
 from parsers.log import parse_movie_log
 
 
-def matches_text(mv: JournalEntry, q: str) -> bool:
+def matches_text(m: JournalEntry, q: str) -> bool:
     if not q:
         return True
-    return (q in mv.title.lower()
-            ) or (mv.year is not None and q in mv.year.lower())
+    return q in m.title.lower() or (m.year is not None and q in m.year.lower())
 
 
-def matches_mark(mv, mark_filter) -> bool:
+def matches_mark(m: JournalEntry, mark_filter) -> bool:
     if mark_filter == "All":
         return True
     if '✅' in mark_filter and '⭐' in mark_filter:
-        return mv.mark in ("✅", "⭐")
+        return m.mark in ("✅", "⭐")
     if mark_filter.startswith("⭐"):
-        return mv.mark == "⭐"
+        return m.mark == "⭐"
     if mark_filter.startswith("💣"):
-        return mv.mark == "💣"
+        return m.mark == "💣"
     if mark_filter.startswith("✅"):
-        return mv.mark == "✅"
-    return mv.mark is None
+        return m.mark == "✅"
+    return m.mark is None
 
 
 def matches(mv: JournalEntry, q):
