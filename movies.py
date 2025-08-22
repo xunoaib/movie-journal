@@ -324,7 +324,7 @@ def count_directors(journal: list[JournalEntry]):
     return counts
 
 
-def count_composers(journal: list[JournalEntry]) -> pd.DataFrame:
+def count_composers(journal: list[JournalEntry]):
     composers = []
     for entry in journal:
         if entry.imdb and entry.imdb.composer:
@@ -345,9 +345,47 @@ def count_composers(journal: list[JournalEntry]) -> pd.DataFrame:
 
 def render_composer_counts(journal: list[JournalEntry]):
     counts = count_composers(journal)
+    counts = counts[['Count', 'Composer']]
 
     st.subheader('Films Seen Per Composer')
-    st.dataframe(counts, width=400, height=35 * 40)
+
+    event = st.dataframe(
+        counts,
+        # height=35 * 200,
+        width=400,
+        selection_mode="multi-row",
+        on_select="rerun",
+    )
+
+    if event and 'selection' in event:
+        selected_directors = counts.iloc[event["selection"]["rows"]
+                                         ]["Composer"].tolist()
+
+        matches = [
+            e for e in journal if e.imdb and any(
+                d.strip() in selected_directors
+                for d in e.imdb.composer.split(",")
+            )
+        ]
+
+        matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
+
+        lines = []
+
+        for m in matches:
+            title = f"**{m.title.replace('*', '&#42;')}**"
+
+            if m.tid:
+                title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
+
+            lines.append(
+                f"- {title} · *{m.imdb.year}* {m.mark or ''} – {m.imdb.composer}"
+            )
+
+        st.markdown(
+            '\n'.join(lines) if lines else "_No matching entries._",
+            unsafe_allow_html=True
+        )
 
 
 def render_director_pie_chart(journal: list[JournalEntry]):
