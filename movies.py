@@ -311,16 +311,29 @@ def render_missing_tids(movies: list[JournalEntry]):
 
 def count_directors(journal: list[JournalEntry]):
     '''Counts the frequency of directors in a list of journal entries.'''
-    df = pd.DataFrame([e.imdb.__dict__ for e in journal if e.imdb])
+    rows = []
+    for entry in journal:
+        if entry.imdb and entry.imdb.director:
+            for names in entry.imdb.director.split(","):
+                names = names.strip()
+                rows.append({"Director": names, "Mark": entry.mark or ""})
 
-    # Split directors on commas and expand into multiple rows
-    directors = (df["director"].str.split(",").explode().str.strip())
+    df = pd.DataFrame(rows)
 
-    counts = directors.value_counts().reset_index()
-    counts.columns = ["Director", "Count"]
-    counts = counts.sort_values(
-        by=["Count", "Director"], ascending=[False, True]
+    counts = (
+        df.groupby("Director").agg(
+            Count=("Director", "size"),
+            Stars=("Mark", lambda m: (m == "⭐").sum()),
+            Checks=("Mark", lambda m: (m == "✅").sum())
+        ).reset_index()
     )
+
+    counts = counts.sort_values(
+        ["Count", "Director"], ascending=[False, True]
+    ).reset_index(drop=True)
+
+    counts.index = counts.index + 1
+
     return counts
 
 
@@ -418,13 +431,12 @@ def render_director_pie_chart(journal: list[JournalEntry]):
 
 def render_director_count_list(journal: list[JournalEntry]):
     counts = count_directors(journal)
-    st.subheader('Films Seen Per Director')
+    counts = counts[['Count', 'Director', 'Stars', 'Checks']]
 
-    counts = counts[['Count', 'Director']]
-    counts.index = counts.index + 1
+    st.subheader('Films Seen Per Director')
     event = st.dataframe(
         counts,
-        width=35 * 12,
+        width=600,
         selection_mode="single-row",
         on_select="rerun",
     )
