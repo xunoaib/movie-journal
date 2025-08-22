@@ -339,13 +339,15 @@ def count_composers(journal: list[JournalEntry]) -> pd.DataFrame:
         ["Count", "Composer"], ascending=[False, True]
     ).reset_index(drop=True)
     counts.index = counts.index + 1
+    counts = counts[["Count", "Composer"]]
     return counts
 
 
 def render_composer_counts(journal: list[JournalEntry]):
     counts = count_composers(journal)
 
-    st.dataframe(counts)
+    st.subheader('Films Seen Per Composer')
+    st.dataframe(counts, width=400)
 
 
 def render_director_pie_chart(journal: list[JournalEntry]):
