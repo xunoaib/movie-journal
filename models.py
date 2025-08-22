@@ -7,6 +7,7 @@ class ImdbEntry:
     title: str
     year: str
     director: str
+    composer: str
 
     def __eq__(self, other):
         if not isinstance(other, ImdbEntry):

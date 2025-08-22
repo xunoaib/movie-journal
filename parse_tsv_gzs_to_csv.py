@@ -1,5 +1,5 @@
 '''
-Parses IMDb datasets into a CSV containing: tid,title,year,directors
+Parses IMDb datasets into a CSV containing: tid,title,year,directors,composers
 '''
 import os
 from pathlib import Path
@@ -28,6 +28,10 @@ class ImdbPaths:
     @property
     def names(self) -> str:
         return self.file("name.basics.tsv.gz")
+
+    @property
+    def principals(self) -> str:
+        return self.file("title.principals.tsv.gz")
 
 
 def main():
@@ -58,19 +62,14 @@ def main():
         ).select(["tconst", "title", "year"])
     )
 
-    crew = (
-        pl.scan_csv(paths.crew, **CSV_OPTS).select(["tconst", "directors"])
-    )
+    crew = pl.scan_csv(paths.crew, **CSV_OPTS).select(["tconst", "directors"])
+    names = pl.scan_csv(paths.names,
+                        **CSV_OPTS).select(["nconst", "primaryName"])
 
-    names = (
-        pl.scan_csv(paths.names, **CSV_OPTS).select(["nconst", "primaryName"])
-    )
-
-    # explode directors safely (skip null/empty)
-    exploded = (
+    # Directors
+    exploded_directors = (
         crew.filter(
-            pl.col("directors").is_not_null()
-            & (pl.col("directors") != "")
+            pl.col("directors").is_not_null() & (pl.col("directors") != "")
         ).with_columns(
             pl.col("directors").str.split(",")
         ).explode("directors").rename({
@@ -78,19 +77,41 @@ def main():
         }).join(names, on="nconst",
                 how="inner").rename({"primaryName": "director"})
     )
-
-    movie_directors_exploded = basics.join(exploded, on="tconst", how="inner")
-
+    movie_directors = basics.join(exploded_directors, on="tconst", how="inner")
     movie_directors = (
-        movie_directors_exploded.group_by(["tconst", "title", "year"]).agg(
+        movie_directors.group_by(["tconst", "title", "year"]).agg(
             pl.col("director").sort().str.join(", ").alias("directors")
+        )
+    )
+
+    # Composers from principals
+    principals = (
+        pl.scan_csv(paths.principals, **CSV_OPTS).filter(
+            pl.col("category") == "composer"
+        ).select(["tconst", "nconst"]
+                 ).join(names, on="nconst",
+                        how="inner").rename({"primaryName": "composer"})
+    )
+    movie_composers = basics.join(principals, on="tconst", how="inner")
+    movie_composers = (
+        movie_composers.group_by(["tconst", "title", "year"]).agg(
+            pl.col("composer").sort().str.join(", ").alias("composers")
+        )
+    )
+
+    # Merge, making sure not to duplicate keys
+    movies = (
+        movie_directors.join(
+            movie_composers.select(["tconst",
+                                    "composers"]),  # only bring in composers
+            on="tconst",
+            how="full",
         )
     )
 
     OUTPUT_CSV.parent.mkdir(exist_ok=True)
     print('Writing to CSV:', OUTPUT_CSV)
-    # movie_directors_exploded.sink_csv("movie_directors_exploded.csv")
-    movie_directors.sink_csv(OUTPUT_CSV)
+    movies.sink_csv(OUTPUT_CSV)
 
 
 if __name__ == '__main__':

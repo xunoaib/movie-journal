@@ -12,6 +12,7 @@ def parse_imdb_movies(csv_fname):
                 title=row['title'],
                 year=row['year'],
                 director=row['directors'],
+                composer=row['composers'],
             ) for row in reader
         ]
     return sorted(movies, key=lambda m: m.year)
