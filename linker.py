@@ -86,7 +86,7 @@ class ImdbTidMapper:
                     assert len(
                         matches
                     ) == 1, f'Multiple IMDb IDs found for {j.title}: {matches}'
-                    j = JournalEntry(**asdict(j) | {'tid': matches[0].tid})
+                    j = JournalEntry(**asdict(j) | {'_tid': matches[0].tid})
             output.append(j)
 
         return output

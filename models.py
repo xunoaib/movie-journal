@@ -25,9 +25,13 @@ class JournalEntry:
     title: str
     mark: str | None
     year: str | None
-    tid: str | None  # IMDb TID
+    _tid: str | None  # IMDb TID
     backfill: str | None
     imdb: ImdbEntry | None = None
+
+    @property
+    def tid(self):
+        return self.imdb.tid if (self.imdb and self.imdb.tid) else self._tid
 
     def __eq__(self, other):
         if not isinstance(other, JournalEntry):
