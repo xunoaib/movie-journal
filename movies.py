@@ -240,6 +240,7 @@ def render_tab_histogram(movies: list[JournalEntry]):
         )
     )
 
+    st.subheader('Number of Films Seen by Release Date')
     st.altair_chart(chart, use_container_width=True)
 
     if noyear_entries:
