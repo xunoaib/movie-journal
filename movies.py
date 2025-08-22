@@ -245,7 +245,7 @@ def render_tab_table(movies: list[JournalEntry]):
         ]
     )
     df_subset: pd.DataFrame = df.loc[:, [
-        'position', 'mark', 'title', 'year', 'director', 'composer', 'link'
+        'position', 'title', 'year', 'director', 'composer', 'mark', 'link'
     ]]
     df_display = df_subset.rename(
         columns={
