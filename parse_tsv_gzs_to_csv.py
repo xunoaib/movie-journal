@@ -83,27 +83,48 @@ def main():
     )
 
     # Composers from principals
-    principals = (
+    principals_composer = (
         pl.scan_csv(paths.principals, **CSV_OPTS).filter(
             pl.col("category") == "composer"
         ).select(["tconst", "nconst"]
                  ).join(names, on="nconst",
                         how="inner").rename({"primaryName": "composer"})
     )
-    movie_composers = basics.join(principals, on="tconst", how="inner")
+    movie_composers = basics.join(
+        principals_composer, on="tconst", how="inner"
+    )
     movie_composers = (
         movie_composers.group_by(["tconst", "title", "year"]).agg(
             pl.col("composer").sort().str.join(", ").alias("composers")
         )
     )
 
-    # Merge, making sure not to duplicate keys
+    # --- Actors from principals ---
+    principals_actor = (
+        pl.scan_csv(paths.principals, **CSV_OPTS).filter(
+            (pl.col("category") == "actor")
+            | (pl.col("category") == "actress")
+        ).select(["tconst", "nconst"]
+                 ).join(names, on="nconst",
+                        how="inner").rename({"primaryName": "actor"})
+    )
+
+    # Per-movie aggregation (actors column)
+    movie_actors = basics.join(principals_actor, on="tconst", how="inner")
+    movie_actors = (
+        movie_actors.group_by(["tconst", "title", "year"]).agg(
+            pl.col("actor").sort().str.join(", ").alias("actors")
+        )
+    )
+
+    # Merge movies + directors + composers + actors
     movies = (
         movie_directors.join(
-            movie_composers.select(["tconst",
-                                    "composers"]),  # only bring in composers
+            movie_composers.select(["tconst", "composers"]),
             on="tconst",
-            how="full",
+            how="left"
+        ).join(
+            movie_actors.select(["tconst", "actors"]), on="tconst", how="left"
         )
     )
 
@@ -111,26 +132,15 @@ def main():
     print('Writing to CSV:', OUTPUT_CSV)
     movies.sink_csv(OUTPUT_CSV)
 
-    # --- NEW: Generate actor appearances file ---
-    print('Parsing actors...')
-    actors = (
-        pl.scan_csv(paths.principals, **CSV_OPTS).filter(
-            (pl.col("category") == "actor")
-            | (pl.col("category") == "actress")
-        ).select(["tconst", "nconst"]).join(basics, on="tconst",
-                                            how="inner")  # only keep movies
-        .join(names, on="nconst",
-              how="inner").rename({"primaryName": "actor"})
-    )
-
-    actor_counts = (
-        actors.group_by(["nconst",
-                         "actor"]).agg(pl.count().alias("appearances")
-                                       ).sort("appearances", descending=True)
+    # --- Actor appearances file ---
+    actor_appearances = (
+        principals_actor.join(basics, on="tconst", how="inner").select(
+            ["nconst", "actor", "tconst", "title", "year"]
+        ).sort(["actor", "year"])
     )
 
     print('Writing to CSV:', ACTORS_CSV)
-    actor_counts.sink_csv(ACTORS_CSV)
+    actor_appearances.sink_csv(ACTORS_CSV)
 
 
 if __name__ == '__main__':
