@@ -113,7 +113,6 @@ def main():
         render_tab_histogram(movies)
 
     with tab_directors:
-        # render_director_pie_chart(movies)
         render_tab_directors(movies)
 
     with tab_composers:
@@ -432,29 +431,6 @@ def render_tab_composers(journal: list[JournalEntry]):
             '\n'.join(lines) if lines else "_No matching entries._",
             unsafe_allow_html=True
         )
-
-
-def render_director_pie_chart(journal: list[JournalEntry]):
-    counts = count_directors(journal).copy()
-
-    counts["DirectorLabel"] = counts.apply(
-        lambda r: f"{r['Director']} ({r['Count']})", axis=1
-    )
-
-    chart = (
-        alt.Chart(counts).mark_arc().encode(
-            theta="Count",
-            color=alt.Color(
-                "DirectorLabel",
-                sort=alt.SortField(field="Count", order="descending"),
-                title="Director"
-            ),
-            tooltip=["Director", "Count"],
-            order=alt.Order("Count", sort="descending"),
-        )
-    )
-
-    st.altair_chart(chart, use_container_width=True)
 
 
 def render_tab_directors(journal: list[JournalEntry]):
