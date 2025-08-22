@@ -124,15 +124,8 @@ def main():
         render_missing_tids(movies)
 
 
-def render_tab_list(movies: list[JournalEntry]):
-    query = st_keyup(
-        "Search",
-        key="query",
-        placeholder="Type to filter...",
-    ) or ""
-    query = query.strip().lower()
-
-    mark_filter = st.radio(
+def create_mark_filter(key: str | None = None):
+    return st.radio(
         "Filter by mark", [
             "All",
             "⭐",
@@ -148,8 +141,20 @@ def render_tab_list(movies: list[JournalEntry]):
                 '✅ Checks denote exceptional films.',
                 '💣 Bombs are dangerous. Run!!',
             ]
-        )
+        ),
+        key=key
     )
+
+
+def render_tab_list(movies: list[JournalEntry]):
+    query = st_keyup(
+        "Search",
+        key="query",
+        placeholder="Type to filter...",
+    ) or ""
+    query = query.strip().lower()
+
+    mark_filter = create_mark_filter('filterList')
 
     flip_order = st.toggle("Newest first", value=True)
 
@@ -232,6 +237,11 @@ def render_tab_hist(movies: list[JournalEntry]):
 
 
 def render_tab_table(movies: list[JournalEntry]):
+
+    mark_filter = create_mark_filter('filterTable')
+
+    movies = [m for m in movies if matches_mark(m, mark_filter)]
+
     df = pd.DataFrame(
         [
             e.__dict__ | {
@@ -260,7 +270,7 @@ def render_tab_table(movies: list[JournalEntry]):
     st.dataframe(
         df_display,
         hide_index=True,
-        height=35 * 100,
+        height=min(35 * 100, 35 * (len(df_display) + 1)),
         column_config={
             'Link': st.column_config.LinkColumn(display_text='IMDb')
         }
