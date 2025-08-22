@@ -124,7 +124,7 @@ def main():
         render_missing_tids(movies)
 
 
-def create_mark_filter(key: str | None = None):
+def create_mark_filter(key: str | None = None, on_change=None):
     return st.radio(
         "Filter by mark", [
             "All",
@@ -142,13 +142,25 @@ def create_mark_filter(key: str | None = None):
                 '💣 Bombs are dangerous. Run!!',
             ]
         ),
+        on_change=on_change,
         key=key
     )
 
 
+def sync_filter_from_table():
+    st.session_state["markFilterList"] = st.session_state["markFilterTable"]
+
+
+def sync_filter_from_list():
+    st.session_state["markFilterTable"] = st.session_state["markFilterList"]
+
+
 def render_tab_list(movies: list[JournalEntry]):
 
-    mark_filter = create_mark_filter('filterList')
+    mark_filter = create_mark_filter(
+        'markFilterList', on_change=sync_filter_from_list
+    )
+    st.session_state.markFilter = st.session_state["markFilterList"]
 
     query = st_keyup(
         "Search",
@@ -239,7 +251,10 @@ def render_tab_hist(movies: list[JournalEntry]):
 
 def render_tab_table(movies: list[JournalEntry]):
 
-    mark_filter = create_mark_filter('filterTable')
+    mark_filter = create_mark_filter(
+        'markFilterTable', on_change=sync_filter_from_table
+    )
+    st.session_state.markFilter = st.session_state["markFilterTable"]
 
     movies = [m for m in movies if matches_mark(m, mark_filter)]
 
