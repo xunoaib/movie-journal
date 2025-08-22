@@ -325,60 +325,64 @@ def count_directors(journal: list[JournalEntry]):
 
 
 def count_composers(journal: list[JournalEntry]):
-    composers = []
+    rows = []
     for entry in journal:
         if entry.imdb and entry.imdb.composer:
             for comp in entry.imdb.composer.split(","):
-                composers.append(comp.strip())
+                comp = comp.strip()
+                rows.append({"Composer": comp, "Mark": entry.mark or ""})
 
-    df = pd.DataFrame(composers, columns=["Composer"])
-    counts = df.value_counts().reset_index(name="Count")
-    counts["Count"] = counts["Count"].astype(int)
+    df = pd.DataFrame(rows)
+
+    counts = (
+        df.groupby("Composer").agg(
+            Count=("Composer", "size"),
+            Stars=("Mark", lambda m: (m == "⭐").sum()),
+            Checks=("Mark", lambda m: (m == "✅").sum())
+        ).reset_index()
+    )
 
     counts = counts.sort_values(
         ["Count", "Composer"], ascending=[False, True]
     ).reset_index(drop=True)
+
     counts.index = counts.index + 1
-    counts = counts[["Count", "Composer"]]
+
     return counts
 
 
 def render_composer_counts(journal: list[JournalEntry]):
     counts = count_composers(journal)
-    counts = counts[['Count', 'Composer']]
+    counts = counts[['Count', 'Composer', 'Stars', 'Checks']]
 
     st.subheader('Films Seen Per Composer')
 
     event = st.dataframe(
         counts,
-        width=35 * 12,
+        width=600,
         selection_mode="single-row",
         on_select="rerun",
     )
 
     if event and 'selection' in event:
-        selected_directors = counts.iloc[event["selection"]["rows"]
+        selected_composers = counts.iloc[event["selection"]["rows"]
                                          ]["Composer"].tolist()
 
         matches = [
             e for e in journal if e.imdb and any(
-                d.strip() in selected_directors
-                for d in e.imdb.composer.split(",")
+                c.strip() in selected_composers
+                for c in e.imdb.composer.split(",")
             )
         ]
 
         matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
 
         lines = []
-
         for m in matches:
             title = f"**{m.title.replace('*', '&#42;')}**"
-
             if m.tid:
                 title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
-
             composer = f' – {m.imdb.composer}' if ',' in m.imdb.composer else ''
-
             lines.append(
                 f"- {title} · *{m.imdb.year}* {m.mark or ''}{composer}"
             )
