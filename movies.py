@@ -347,7 +347,7 @@ def render_composer_counts(journal: list[JournalEntry]):
     counts = count_composers(journal)
 
     st.subheader('Films Seen Per Composer')
-    st.dataframe(counts, width=400)
+    st.dataframe(counts, width=400, height=35 * 40)
 
 
 def render_director_pie_chart(journal: list[JournalEntry]):
