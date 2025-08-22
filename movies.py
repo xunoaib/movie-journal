@@ -378,8 +378,10 @@ def render_composer_counts(journal: list[JournalEntry]):
             if m.tid:
                 title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
 
+            composer = f' – {m.imdb.composer}' if ',' in m.imdb.composer else ''
+
             lines.append(
-                f"- {title} · *{m.imdb.year}* {m.mark or ''} – {m.imdb.composer}"
+                f"- {title} · *{m.imdb.year}* {m.mark or ''}{composer}"
             )
 
         st.markdown(
@@ -454,8 +456,10 @@ def render_director_count_list(journal: list[JournalEntry]):
             if m.tid:
                 title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
 
+            director = f' – {m.imdb.director}' if ',' in m.imdb.director else ''
+
             lines.append(
-                f"- {title} · *{m.imdb.year}* {m.mark or ''} – {m.imdb.director}"
+                f"- {title} · *{m.imdb.year}* {m.mark or ''}{director}"
             )
 
         st.markdown(
