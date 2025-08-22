@@ -351,8 +351,7 @@ def render_composer_counts(journal: list[JournalEntry]):
 
     event = st.dataframe(
         counts,
-        # height=35 * 200,
-        width=400,
+        width=35 * 12,
         selection_mode="single-row",
         on_select="rerun",
     )
@@ -421,8 +420,7 @@ def render_director_count_list(journal: list[JournalEntry]):
     counts.index = counts.index + 1
     event = st.dataframe(
         counts,
-        # height=35 * 200,
-        width=400,
+        width=35 * 12,
         selection_mode="single-row",
         on_select="rerun",
     )
