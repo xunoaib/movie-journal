@@ -209,7 +209,6 @@ def render_journal_list(journal: list[JournalEntry]):
 
 
 def render_tab_histogram(movies: list[JournalEntry]):
-
     year_entries = []
     noyear_entries = []
     for m in movies:
@@ -218,34 +217,62 @@ def render_tab_histogram(movies: list[JournalEntry]):
         else:
             noyear_entries.append(m)
 
-    years = [int(m.year) for m in year_entries]
-
-    if not years:
+    if not year_entries:
         st.info("No movies with year information.")
         return
 
-    df = pd.DataFrame(years, columns=pd.Index(["Year"]))
-
+    years = [int(m.year) for m in year_entries]
+    df_years = pd.DataFrame(years, columns=["Year"])
     all_years = pd.DataFrame({"Year": range(min(years), max(years) + 1)})
-    df_counts = df.value_counts().reset_index(name="Count")
+
+    df_counts = df_years.value_counts().reset_index(name="Count")
     df_counts = (
         all_years.merge(df_counts, on="Year",
                         how="left").fillna(0).astype({"Count": int})
     )
 
-    chart = (
+    chart_total = (
         alt.Chart(df_counts).mark_bar().encode(
             x=alt.X("Year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)),
             y="Count"
         )
     )
 
-    st.subheader('Number of Films Seen by Release Date')
-    st.altair_chart(chart, use_container_width=True)
+    st.subheader("Number of Films by Release Date")
+    st.altair_chart(chart_total, use_container_width=True)
+
+    df_marks = pd.DataFrame(
+        [(int(m.year), m.mark) for m in year_entries],
+        columns=["Year", "Mark"]
+    )
+
+    counts = (
+        df_marks.value_counts(["Year", "Mark"]).reset_index(name="Count")
+    )
+
+    counts = (
+        all_years.merge(counts, on="Year",
+                        how="left").fillna({
+                            "Mark": "None",
+                            "Count": 0
+                        })
+    )
+    counts["Count"] = counts["Count"].astype(int)
+
+    chart_marked = (
+        alt.Chart(counts).mark_bar().encode(
+            x=alt.X("Year:O", sort="ascending", axis=alt.Axis(labelAngle=-45)),
+            y="Count",
+            color=alt.Color("Mark", legend=alt.Legend(title="Mark"))
+        )
+    )
+
+    st.subheader("Number of Marked Films by Release Date")
+    st.altair_chart(chart_marked, use_container_width=True)
 
     if noyear_entries:
-        out = '\n\n'.join(f'- {m.title}' for m in noyear_entries)
-        st.markdown(f'The following films are missing a year:\n\n{out}')
+        out = "\n\n".join(f"- {m.title}" for m in noyear_entries)
+        st.markdown(f"The following films are missing a year:\n\n{out}")
 
 
 def render_tab_table(movies: list[JournalEntry]):
