@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import polars as pl
 
@@ -8,34 +8,55 @@ from models import JournalEntry
 ACTORS_CSV = "cache/actors.csv"
 
 
-def build_actor_lookup(journal: List[JournalEntry]) -> Dict[str, list[str]]:
-    """Return dict mapping tid → list of actor names"""
+def build_lookups(
+    journal: List[JournalEntry]
+) -> Tuple[Dict[str, list[str]], Dict[str, list[str]]]:
+    """Return (actor_to_films, film_to_actors) lookups using IDs (not names)."""
     # Load actor appearances
     actors = pl.read_csv(ACTORS_CSV)
 
+    # Restrict to only tids in journal
     tids = [j.imdb.tid if j.imdb else j.tid for j in journal]
     actors = actors.filter(pl.col("tconst").is_in(tids))
 
-    # Group by tid -> collect actors
-    lookup = (
-        actors.group_by("tconst").agg(pl.col("actor").sort().alias("actors")
+    # --- film → actors ---
+    film_lookup = (
+        actors.group_by("tconst").agg(pl.col("nconst").sort().alias("actors")
                                       ).to_dict(as_series=False)
     )
-
-    # Convert into {tid: [actor1, actor2, ...]}
-    tid_to_actors = {
-        tid: lookup["actors"][i]
-        for i, tid in enumerate(lookup["tconst"])
+    film_to_actors = {
+        tid: film_lookup["actors"][i]
+        for i, tid in enumerate(film_lookup["tconst"])
     }
-    return tid_to_actors
+
+    # --- actor → films ---
+    actor_lookup = (
+        actors.group_by("nconst").agg(pl.col("tconst").sort().alias("films")
+                                      ).to_dict(as_series=False)
+    )
+    actor_to_films = {
+        aid: actor_lookup["films"][i]
+        for i, aid in enumerate(actor_lookup["nconst"])
+    }
+
+    return actor_to_films, film_to_actors
 
 
 if __name__ == "__main__":
     mapper = get_default_mapper()
     journal = mapper.load_journal()
 
-    actor_lookup = build_actor_lookup(journal)
-    for tid, actors in actor_lookup.items():
-        print(tid, ":", actors)
+    actor_to_films, film_to_actors = build_lookups(journal)
 
-    print(len(actor_lookup))
+    print("Film → Actors")
+    for tid, actor_ids in film_to_actors.items():
+        print(tid, ":", actor_ids)
+
+    print()
+    print("Actor → Films")
+    for nconst, film_ids in actor_to_films.items():
+        print(nconst, ":", film_ids)
+
+    print()
+    print("Total films:", len(film_to_actors))
+    print("Total actors:", len(actor_to_films))
