@@ -60,8 +60,8 @@ if __name__ == "__main__":
     actor_films = defaultdict(set)
 
     for j in journal:
-        if j.tid not in film_to_actors:
-            print('No actors for', j.tid)
+        # if j.tid not in film_to_actors:
+        #     print('No actors for', j.tid)
         for actor_id in film_to_actors.get(j.tid, []):
             actor_films[actor_id].add(j.tid)
 
