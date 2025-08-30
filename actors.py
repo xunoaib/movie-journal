@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Dict, List, Tuple
 
 import polars as pl
@@ -8,18 +9,16 @@ from models import JournalEntry
 ACTORS_CSV = "cache/actors.csv"
 
 
-def build_lookups(
-    journal: List[JournalEntry]
-) -> Tuple[Dict[str, list[str]], Dict[str, list[str]]]:
+def build_lookups(journal: List[JournalEntry]):
     """Return (actor_to_films, film_to_actors) lookups using IDs (not names)."""
-    # Load actor appearances
+    # load actor appearances
     actors = pl.read_csv(ACTORS_CSV)
 
-    # Restrict to only tids in journal
+    # restrict to only tids in journal
     tids = [j.imdb.tid if j.imdb else j.tid for j in journal]
     actors = actors.filter(pl.col("tconst").is_in(tids))
 
-    # --- film → actors ---
+    # film to actors
     film_lookup = (
         actors.group_by("tconst").agg(pl.col("nconst").sort().alias("actors")
                                       ).to_dict(as_series=False)
@@ -29,7 +28,7 @@ def build_lookups(
         for i, tid in enumerate(film_lookup["tconst"])
     }
 
-    # --- actor → films ---
+    # actor to films
     actor_lookup = (
         actors.group_by("nconst").agg(pl.col("tconst").sort().alias("films")
                                       ).to_dict(as_series=False)
@@ -39,24 +38,56 @@ def build_lookups(
         for i, aid in enumerate(actor_lookup["nconst"])
     }
 
-    return actor_to_films, film_to_actors
+    # actor ID to name, and deduplicate in case of repeats across films
+    actor_id_to_name = (
+        actors.select(["nconst", "actor"]).unique().to_dict(as_series=False)
+    )
+    actor_id_to_name = {
+        actor_id_to_name["nconst"][i]: actor_id_to_name["actor"][i]
+        for i in range(len(actor_id_to_name["nconst"]))
+    }
+
+    return actor_to_films, film_to_actors, actor_id_to_name
 
 
 if __name__ == "__main__":
     mapper = get_default_mapper()
     journal = mapper.load_journal()
 
-    actor_to_films, film_to_actors = build_lookups(journal)
+    actor_to_films, film_to_actors, actor_id_to_name = build_lookups(journal)
+    film_tid_to_obj = {j.tid: j for j in journal}
+    film_ids = [j.tid for j in journal]
+    actor_films = defaultdict(set)
 
-    print("Film → Actors")
-    for tid, actor_ids in film_to_actors.items():
-        print(tid, ":", actor_ids)
+    for j in journal:
+        if j.tid not in film_to_actors:
+            print('No actors for', j.tid)
+        for actor_id in film_to_actors.get(j.tid, []):
+            actor_films[actor_id].add(j.tid)
 
-    print()
-    print("Actor → Films")
-    for nconst, film_ids in actor_to_films.items():
-        print(nconst, ":", film_ids)
+    actor_tids = sorted(
+        actor_films.items(), key=lambda kv: (len(kv[1]), kv[0])
+    )
 
-    print()
-    print("Total films:", len(film_to_actors))
-    print("Total actors:", len(actor_to_films))
+    # for k, v in actor_tids:
+    #     print(
+    #         actor_id_to_name[k],
+    #         len([film_tid_to_obj[t].imdb.title for t in v])
+    #     )
+
+    rows = []
+    for actor_id, tids in actor_tids:
+        films = [
+            film_tid_to_obj[t].imdb.title for t in tids if t in film_tid_to_obj
+        ]
+        rows.append(
+            {
+                "actor_id": actor_id,
+                "actor_name": actor_id_to_name.get(actor_id, None),
+                "film_count": len(films),
+                "films": films
+            }
+        )
+
+    df = pl.DataFrame(rows)
+    print(df)
