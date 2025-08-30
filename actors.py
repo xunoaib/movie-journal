@@ -89,5 +89,7 @@ if __name__ == "__main__":
             }
         )
 
+    pl.Config.set_tbl_rows(-1)
     df = pl.DataFrame(rows)
+    df = df.select(['actor_name', 'film_count'])
     print(df)
