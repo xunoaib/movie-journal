@@ -533,7 +533,8 @@ def render_tab_composers(journal: list[JournalEntry]):
             )
 
         st.markdown(
-            '\n'.join(lines) if lines else "_No matching entries._",
+            '\n'.join(lines)
+            if lines else "_Click a checkbox to show matching films._",
             unsafe_allow_html=True
         )
 
@@ -544,7 +545,8 @@ def render_tab_actors(
     proto_actors: list[ProtoActor],
 ):
     st.subheader(
-        'Films Seen Per Actor', help='Click a checkbox to filter by actor!'
+        'Films Seen Per Actor',
+        help='Click a checkbox to filter by actor!',
     )
 
     df = count_actors(journal, actors_by_journal, proto_actors)
@@ -591,7 +593,8 @@ def event_filter_actors(
         lines.append(f"- {title} · *{m.imdb.year}* {m.mark or ''}")
 
     st.markdown(
-        '\n'.join(lines) if lines else "_No matching entries._",
+        '\n'.join(lines)
+        if lines else "_Click a checkbox to show matching films._",
         unsafe_allow_html=True
     )
 
@@ -643,7 +646,8 @@ def render_tab_directors(journal: list[JournalEntry]):
             )
 
         st.markdown(
-            '\n'.join(lines) if lines else "_No matching entries._",
+            '\n'.join(lines)
+            if lines else "_Click a checkbox to show matching films._",
             unsafe_allow_html=True
         )
 
