@@ -10,7 +10,8 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-from actors import group_actors_by_journal_cached, parse_proto_actors
+from actors import (group_actors_by_journal, group_actors_by_journal_cached,
+                    parse_proto_actors)
 from linker import ImdbTidMapper, get_default_mapper
 from models import ImdbEntry, JournalEntry, ProtoActor
 from parsers.log import parse_movie_log
@@ -60,10 +61,13 @@ def load_cache():
     actors_by_journal = {}
 
     # FIXME: live filtering takes a long time, even with caching
-    # print('Loading proto actors...', flush=True)
-    # proto_actors = parse_proto_actors()
-    # print('Grouping actors by journal...', flush=True)
-    # actors_by_journal = group_actors_by_journal_cached(proto_actors, journal)
+    print('Loading proto actors...', flush=True)
+    tids = {j.tid or (j.imdb.tid if j.imdb else None)
+            for j in journal} - {None}
+    proto_actors = parse_proto_actors(tids)
+
+    print('Grouping actors by journal...', flush=True)
+    actors_by_journal = group_actors_by_journal(proto_actors, journal)
 
     print('Loaded!', flush=True)
     return Cache(journal, proto_actors, actors_by_journal)
