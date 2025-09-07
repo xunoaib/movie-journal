@@ -56,11 +56,6 @@ def load_cache():
     print('Loading journal...', flush=True)
     journal = get_default_mapper().load_journal()
 
-    # FIXME: skip loading data for speed
-    proto_actors = []
-    actors_by_journal = {}
-
-    # FIXME: live filtering takes a long time, even with caching
     print('Loading proto actors...', flush=True)
     tids = {j.tid or (j.imdb.tid if j.imdb else None)
             for j in journal} - {None}
@@ -405,6 +400,41 @@ def render_missing_tids(movies: list[JournalEntry]):
         st.dataframe(df)
 
 
+def count_actors(
+    journal: list[JournalEntry],
+    actors_by_journal: dict[str, list[ProtoActor]],
+    proto_actors: list[ProtoActor],
+):
+    actor_films = defaultdict(set)
+    for tid, actors in actors_by_journal.items():
+        for actor in actors:
+            actor_films[actor.nconst].add(tid)
+
+    tid_to_journal = {j.tid: j for j in journal}
+    nconst_to_name = {a.nconst: a.name for a in proto_actors}
+
+    star_tids = {j.tid for j in journal if j.starred}
+    check_tids = {j.tid for j in journal if j.checked}
+
+    df = pd.DataFrame(
+        [
+            {
+                "Film Count": len(tids),
+                "Actor": nconst_to_name[nconst],
+                "⭐ Stars": len(star_tids & tids),
+                "✅ Checks": len(check_tids & tids),
+                "⭐✅ Total": len((star_tids | check_tids) & tids),
+            } for nconst, tids in actor_films.items()
+        ]
+    ).sort_values("Film Count", ascending=False)
+
+    df = df.sort_values(["Film Count", "Actor"],
+                        ascending=[False, True]).reset_index(drop=True)
+
+    df.index = df.index + 1
+    return df
+
+
 def count_directors(journal: list[JournalEntry]):
     '''Counts the frequency of directors in a list of journal entries.'''
     rows = []
@@ -517,33 +547,7 @@ def render_tab_actors(
         'Films Seen Per Actor', help='Click a checkbox to filter by actor!'
     )
 
-    actor_films = defaultdict(set)
-    for tid, actors in actors_by_journal.items():
-        for actor in actors:
-            actor_films[actor.nconst].add(tid)
-
-    tid_to_journal = {j.tid: j for j in journal}
-    nconst_to_name = {a.nconst: a.name for a in proto_actors}
-
-    star_tids = {j.tid for j in journal if j.mark == '⭐'}
-    check_tids = {j.tid for j in journal if j.mark == '✅'}
-
-    df = pd.DataFrame(
-        [
-            {
-                "Film Count": len(tids),
-                "Actor": nconst_to_name[nconst],
-                "⭐ Stars": len(star_tids & tids),
-                "✅ Checks": len(check_tids & tids),
-                "⭐✅ Total": len((star_tids | check_tids) & tids),
-            } for nconst, tids in actor_films.items()
-        ]
-    ).sort_values("Film Count", ascending=False)
-
-    df = df.sort_values(["Film Count", "Actor"],
-                        ascending=[False, True]).reset_index(drop=True)
-
-    df.index = df.index + 1
+    df = count_actors(journal, actors_by_journal, proto_actors)
 
     event = st.dataframe(
         df,
