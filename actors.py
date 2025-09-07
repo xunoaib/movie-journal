@@ -8,7 +8,6 @@ from linker import get_default_mapper
 from models import JournalEntry, ProtoActor
 
 ACTORS_CSV = "cache/actors.csv"
-ACTORS_CACHE = "cache/actor_mappings.pkl"
 
 
 def parse_proto_actors():
@@ -20,7 +19,7 @@ def parse_proto_actors():
 
     return [
         ProtoActor(row['nconst'], row['actor'], row['films'])
-        for row in grouped.iter_rows(named=True)
+        for row in grouped.to_dicts()
     ]
 
 
