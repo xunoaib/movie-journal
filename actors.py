@@ -14,34 +14,34 @@ def build_lookups(journal: List[JournalEntry]):
     # load actor appearances
     actors = pl.read_csv(ACTORS_CSV)
 
-    # restrict to only tids in journal
+    # filter actors to those with tids in the journal
     tids = [j.imdb.tid if j.imdb else j.tid for j in journal]
     actors = actors.filter(pl.col("tconst").is_in(tids))
 
     # film to actors
-    film_lookup = (
-        actors.group_by("tconst").agg(pl.col("nconst").sort().alias("actors")
-                                      ).to_dict(as_series=False)
-    )
+    film_lookup = actors.group_by("tconst").agg(
+        pl.col("nconst").sort().alias("actors")
+    ).to_dict(as_series=False)
+
     film_to_actors = {
         tid: film_lookup["actors"][i]
         for i, tid in enumerate(film_lookup["tconst"])
     }
 
     # actor to films
-    actor_lookup = (
-        actors.group_by("nconst").agg(pl.col("tconst").sort().alias("films")
-                                      ).to_dict(as_series=False)
-    )
+    actor_lookup = actors.group_by("nconst").agg(
+        pl.col("tconst").sort().alias("films")
+    ).to_dict(as_series=False)
+
     actor_to_films = {
         aid: actor_lookup["films"][i]
         for i, aid in enumerate(actor_lookup["nconst"])
     }
 
     # actor ID to name, and deduplicate in case of repeats across films
-    actor_id_to_name = (
-        actors.select(["nconst", "actor"]).unique().to_dict(as_series=False)
-    )
+    actor_id_to_name = actors.select(["nconst", "actor"]
+                                     ).unique().to_dict(as_series=False)
+
     actor_id_to_name = {
         actor_id_to_name["nconst"][i]: actor_id_to_name["actor"][i]
         for i in range(len(actor_id_to_name["nconst"]))
