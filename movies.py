@@ -1,6 +1,8 @@
 import datetime
+import pickle
 import re
 from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 import altair as alt
@@ -8,8 +10,9 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
+from actors import group_actors_by_journal_cached, parse_proto_actors
 from linker import ImdbTidMapper, get_default_mapper
-from models import ImdbEntry, JournalEntry
+from models import ImdbEntry, JournalEntry, ProtoActor
 from parsers.log import parse_movie_log
 
 
@@ -40,14 +43,36 @@ def matches(mv: JournalEntry, q):
             ) or (mv.year is not None and q in mv.year.lower())
 
 
-@st.cache_data
-def load_movies():
-    mapper = get_default_mapper()
-    return mapper.load_journal()
+@dataclass
+class Cache:
+    journal: list[JournalEntry]
+    proto_actors: list[ProtoActor]
+    actors_by_journal: dict[str, list[ProtoActor]]
+
+
+@st.cache_resource
+def load_cache():
+    print('Loading journal...', flush=True)
+    journal = get_default_mapper().load_journal()
+
+    # FIXME: skip loading data for speed
+    proto_actors = []
+    actors_by_journal = {}
+
+    # FIXME: live filtering takes a long time, even with caching
+    # print('Loading proto actors...', flush=True)
+    # proto_actors = parse_proto_actors()
+    # print('Grouping actors by journal...', flush=True)
+    # actors_by_journal = group_actors_by_journal_cached(proto_actors, journal)
+
+    print('Loaded!', flush=True)
+    return Cache(journal, proto_actors, actors_by_journal)
 
 
 def main():
-    movies = load_movies()
+    cache = load_cache()
+    movies = cache.journal
+
     duplicates = find_duplicates(movies)
     num_duplicates = sum(len(v) - 1 for v in duplicates.values())
 
