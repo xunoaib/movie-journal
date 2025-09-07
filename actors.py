@@ -28,8 +28,11 @@ def group_actors_by_journal(
     actors: list[ProtoActor],
     journal: List[JournalEntry],
 ):
-    wanted = {j.tid or (j.imdb.tid if j.imdb else None)
-              for j in journal} - {None}
+    wanted = set()
+    for j in journal:
+        if tid := (j.tid or (j.imdb.tid if j.imdb else None)):
+            wanted.add(tid)
+
     film_actors = {}
 
     for a in actors:
@@ -45,4 +48,6 @@ if __name__ == "__main__":
     mapper = get_default_mapper()
     journal = mapper.load_journal()
     film_actors = group_actors_by_journal(proto_actors, journal)
-    print(film_actors['tt2125490'])
+
+    for actor in film_actors['tt0043465']:
+        print(actor.name)
