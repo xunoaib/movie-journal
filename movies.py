@@ -558,6 +558,43 @@ def render_tab_actors(
         on_select="rerun",
     )
 
+    if event and 'selection' in event:
+        event_filter_actors(
+            journal, actors_by_journal, proto_actors, df, event
+        )
+
+
+def event_filter_actors(
+    journal: list[JournalEntry],
+    actors_by_journal: dict[str, list[ProtoActor]],
+    proto_actors: list[ProtoActor],
+    df: pd.DataFrame,
+    event,
+):
+    actor_names = df.iloc[event["selection"]["rows"]]["Actor"].to_list()
+    actor_name = actor_names[0] if actor_names else object()
+    match_protos = [a for a in proto_actors if a.name == actor_name]
+    assert len(match_protos) <= 1, f'Multiple actor names: {match_protos}'
+
+    match_proto_tids = match_protos[0].tids if match_protos else []
+    matches = [j for j in journal if j.imdb and j.tid in match_proto_tids]
+    matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
+
+    lines = []
+
+    for m in matches:
+        title = f"**{m.title.replace('*', '&#42;')}**"
+
+        if m.tid:
+            title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
+
+        lines.append(f"- {title} · *{m.imdb.year}* {m.mark or ''}")
+
+    st.markdown(
+        '\n'.join(lines) if lines else "_No matching entries._",
+        unsafe_allow_html=True
+    )
+
 
 def render_tab_directors(journal: list[JournalEntry]):
     counts = count_directors(journal)
