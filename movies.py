@@ -450,7 +450,8 @@ def count_directors(journal: list[JournalEntry]):
         df.groupby("Director").agg(
             Count=("Director", "size"),
             Stars=("Mark", lambda m: (m == "⭐").sum()),
-            Checks=("Mark", lambda m: (m == "✅").sum())
+            Checks=("Mark", lambda m: (m == "✅").sum()),
+            StarsAndChecks=("Mark", lambda m: ((m == "✅") | (m == "⭐")).sum()),
         ).reset_index()
     )
 
@@ -477,7 +478,8 @@ def count_composers(journal: list[JournalEntry]):
         df.groupby("Composer").agg(
             Count=("Composer", "size"),
             Stars=("Mark", lambda m: (m == "⭐").sum()),
-            Checks=("Mark", lambda m: (m == "✅").sum())
+            Checks=("Mark", lambda m: (m == "✅").sum()),
+            StarsAndChecks=("Mark", lambda m: ((m == "✅") | (m == "⭐")).sum()),
         ).reset_index()
     )
 
@@ -492,10 +494,11 @@ def count_composers(journal: list[JournalEntry]):
 
 def render_tab_composers(journal: list[JournalEntry]):
     counts = count_composers(journal)
-    counts = counts[['Count', 'Composer', 'Stars', 'Checks']]
+    counts = counts[['Count', 'Composer', 'Stars', 'Checks', 'StarsAndChecks']]
 
     counts = counts.rename(columns={"Stars": "⭐ Stars"})
     counts = counts.rename(columns={"Checks": "✅ Checks"})
+    counts = counts.rename(columns={"StarsAndChecks": "⭐✅ Total"})
 
     st.subheader(
         'Films Seen Per Composer',
@@ -601,10 +604,11 @@ def event_filter_actors(
 
 def render_tab_directors(journal: list[JournalEntry]):
     counts = count_directors(journal)
-    counts = counts[['Count', 'Director', 'Stars', 'Checks']]
+    counts = counts[['Count', 'Director', 'Stars', 'Checks', 'StarsAndChecks']]
 
     counts = counts.rename(columns={"Stars": "⭐ Stars"})
     counts = counts.rename(columns={"Checks": "✅ Checks"})
+    counts = counts.rename(columns={"StarsAndChecks": "⭐✅ Total"})
 
     st.subheader(
         'Films Seen Per Director',
