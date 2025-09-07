@@ -121,11 +121,12 @@ def main():
         st.info("Movie journal file not found or empty.")
         st.stop()
 
-    tab_list, tab_table, tab_hist, tab_directors, tab_composers, tab_cleanup = st.tabs(
+    tab_list, tab_table, tab_hist, tab_actors, tab_directors, tab_composers, tab_cleanup = st.tabs(
         [
             "List",
             "Table",
             "Histogram",
+            "Actors",
             "Directors",
             "Composers",
             "Clean-up",
@@ -137,6 +138,9 @@ def main():
 
     with tab_table:
         render_tab_table(movies)
+
+    with tab_actors:
+        render_tab_actors(movies, cache)
 
     with tab_hist:
         render_tab_histogram(movies)
@@ -500,6 +504,28 @@ def render_tab_composers(journal: list[JournalEntry]):
             '\n'.join(lines) if lines else "_No matching entries._",
             unsafe_allow_html=True
         )
+
+
+def render_tab_actors(journal: list[JournalEntry], cache: Cache):
+
+    actor_films = defaultdict(set)
+    for tid, actors in cache.actors_by_journal.items():
+        for actor in actors:
+            actor_films[actor.nconst].add(tid)
+
+    tid_to_journal = {j.tid: j for j in journal}
+    nconst_to_name = {a.nconst: a.name for a in cache.proto_actors}
+
+    df = pd.DataFrame(
+        [
+            {
+                "actor": nconst_to_name[nconst],
+                "film_count": len(tids)
+            } for nconst, tids in actor_films.items()
+        ]
+    ).sort_values("film_count", ascending=False)
+
+    st.dataframe(df)
 
 
 def render_tab_directors(journal: list[JournalEntry]):
