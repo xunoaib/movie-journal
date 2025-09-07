@@ -548,7 +548,7 @@ def render_tab_actors(
     event = st.dataframe(
         df,
         use_container_width=False,
-        # width=600,
+        width=600,
         # hide_index=True,
         selection_mode="single-row",
         on_select="rerun",
