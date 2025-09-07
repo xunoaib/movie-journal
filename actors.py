@@ -1,4 +1,5 @@
 from collections import defaultdict
+from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
 import polars as pl
@@ -7,6 +8,43 @@ from linker import get_default_mapper
 from models import JournalEntry
 
 ACTORS_CSV = "cache/actors.csv"
+ACTORS_CACHE = "cache/actor_mappings.pkl"
+
+
+@dataclass
+class ProtoActor:
+    nconst: str
+    name: str
+    tids: list[str]
+
+
+def parse_proto_actors():
+    actors = pl.read_csv(ACTORS_CSV)
+    grouped = actors.group_by("nconst").agg(
+        pl.col("actor").first().alias("actor"),
+        pl.col("tconst").sort().alias("films"),
+    ).sort('nconst')
+
+    return [
+        ProtoActor(row['nconst'], row['actor'], row['films'])
+        for row in grouped.iter_rows(named=True)
+    ]
+
+
+def group_actors_by_journal(
+    actors: list[ProtoActor],
+    journal: List[JournalEntry],
+):
+    wanted = {j.tid or (j.imdb.tid if j.imdb else None)
+              for j in journal} - {None}
+    film_actors = {}
+
+    for a in actors:
+        for t in a.tids:
+            if t in wanted:
+                film_actors.setdefault(t, []).append(a)
+
+    return film_actors
 
 
 def build_lookups(journal: List[JournalEntry]):
@@ -51,10 +89,22 @@ def build_lookups(journal: List[JournalEntry]):
 
 
 if __name__ == "__main__":
+    proto_actors = parse_proto_actors()
+    mapper = get_default_mapper()
+    journal = mapper.load_journal()
+    film_actors = group_actors_by_journal(proto_actors, journal)
+    # print(proto_actors[0])
+    # print(film_actors.keys())
+    print(film_actors['tt2125490'])
+
+
+def old_main():
     mapper = get_default_mapper()
     journal = mapper.load_journal()
 
+    print('Building actor lookups...')
     actor_to_films, film_to_actors, actor_id_to_name = build_lookups(journal)
+
     film_tid_to_obj = {j.tid: j for j in journal}
     film_ids = [j.tid for j in journal]
     actor_films = defaultdict(set)
