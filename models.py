@@ -47,6 +47,14 @@ class JournalEntry:
     def __hash__(self):
         return hash((self.position, self.subnum, self.title))
 
+    @property
+    def starred(self):
+        return self.mark == '⭐'
+
+    @property
+    def checked(self):
+        return self.mark == '✅'
+
 
 @dataclass
 class ProtoActor:
