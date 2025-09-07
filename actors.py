@@ -5,17 +5,10 @@ from typing import Dict, List, Tuple
 import polars as pl
 
 from linker import get_default_mapper
-from models import JournalEntry
+from models import JournalEntry, ProtoActor
 
 ACTORS_CSV = "cache/actors.csv"
 ACTORS_CACHE = "cache/actor_mappings.pkl"
-
-
-@dataclass
-class ProtoActor:
-    nconst: str
-    name: str
-    tids: list[str]
 
 
 def parse_proto_actors():

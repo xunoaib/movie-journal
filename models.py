@@ -46,3 +46,10 @@ class JournalEntry:
 
     def __hash__(self):
         return hash((self.position, self.subnum, self.title))
+
+
+@dataclass
+class ProtoActor:
+    nconst: str
+    name: str
+    tids: list[str]
