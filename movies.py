@@ -513,7 +513,6 @@ def render_tab_actors(
     actors_by_journal: dict[str, list[ProtoActor]],
     proto_actors: list[ProtoActor],
 ):
-
     st.subheader(
         'Films Seen Per Actor', help='Click a checkbox to filter by actor!'
     )
@@ -526,11 +525,17 @@ def render_tab_actors(
     tid_to_journal = {j.tid: j for j in journal}
     nconst_to_name = {a.nconst: a.name for a in proto_actors}
 
+    star_tids = {j.tid for j in journal if j.mark == '⭐'}
+    check_tids = {j.tid for j in journal if j.mark == '✅'}
+
     df = pd.DataFrame(
         [
             {
                 "Film Count": len(tids),
                 "Actor": nconst_to_name[nconst],
+                "⭐ Stars": len(star_tids & tids),
+                "✅ Checks": len(check_tids & tids),
+                "⭐✅ Total": len((star_tids | check_tids) & tids),
             } for nconst, tids in actor_films.items()
         ]
     ).sort_values("Film Count", ascending=False)
