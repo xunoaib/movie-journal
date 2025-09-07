@@ -508,6 +508,10 @@ def render_tab_composers(journal: list[JournalEntry]):
 
 def render_tab_actors(journal: list[JournalEntry], cache: Cache):
 
+    st.subheader(
+        'Films Seen Per Actor', help='Click a checkbox to filter by actor!'
+    )
+
     actor_films = defaultdict(set)
     for tid, actors in cache.actors_by_journal.items():
         for actor in actors:
@@ -519,13 +523,25 @@ def render_tab_actors(journal: list[JournalEntry], cache: Cache):
     df = pd.DataFrame(
         [
             {
-                "actor": nconst_to_name[nconst],
-                "film_count": len(tids)
+                "Film Count": len(tids),
+                "Actor": nconst_to_name[nconst],
             } for nconst, tids in actor_films.items()
         ]
-    ).sort_values("film_count", ascending=False)
+    ).sort_values("Film Count", ascending=False)
 
-    st.dataframe(df)
+    df = df.sort_values(["Film Count", "Actor"],
+                        ascending=[False, True]).reset_index(drop=True)
+
+    df.index = df.index + 1
+
+    event = st.dataframe(
+        df,
+        use_container_width=False,
+        # width=600,
+        # hide_index=True,
+        selection_mode="single-row",
+        on_select="rerun",
+    )
 
 
 def render_tab_directors(journal: list[JournalEntry]):
