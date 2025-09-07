@@ -139,11 +139,11 @@ def main():
     with tab_table:
         render_tab_table(movies)
 
-    with tab_actors:
-        render_tab_actors(movies, cache)
-
     with tab_hist:
         render_tab_histogram(movies)
+
+    with tab_actors:
+        render_tab_actors(movies, cache.actors_by_journal, cache.proto_actors)
 
     with tab_directors:
         render_tab_directors(movies)
@@ -508,19 +508,23 @@ def render_tab_composers(journal: list[JournalEntry]):
         )
 
 
-def render_tab_actors(journal: list[JournalEntry], cache: Cache):
+def render_tab_actors(
+    journal: list[JournalEntry],
+    actors_by_journal: dict[str, list[ProtoActor]],
+    proto_actors: list[ProtoActor],
+):
 
     st.subheader(
         'Films Seen Per Actor', help='Click a checkbox to filter by actor!'
     )
 
     actor_films = defaultdict(set)
-    for tid, actors in cache.actors_by_journal.items():
+    for tid, actors in actors_by_journal.items():
         for actor in actors:
             actor_films[actor.nconst].add(tid)
 
     tid_to_journal = {j.tid: j for j in journal}
-    nconst_to_name = {a.nconst: a.name for a in cache.proto_actors}
+    nconst_to_name = {a.nconst: a.name for a in proto_actors}
 
     df = pd.DataFrame(
         [
