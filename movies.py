@@ -303,7 +303,9 @@ def render_tab_histogram(movies: list[JournalEntry]):
             y="Count",
             color=alt.Color(
                 "Mark",
-                legend=alt.Legend(title="Mark"),
+                legend=alt.Legend(orient="bottom", direction="horizontal"),
+                # legend=alt.Legend(title="Mark"),
+                # legend=None,
                 scale=color_scale,
             )
         )
