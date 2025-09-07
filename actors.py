@@ -28,10 +28,9 @@ def group_actors_by_journal(
     actors: list[ProtoActor],
     journal: List[JournalEntry],
 ):
-    wanted = set()
-    for j in journal:
-        if tid := (j.tid or (j.imdb.tid if j.imdb else None)):
-            wanted.add(tid)
+
+    wanted = {j.tid or (j.imdb.tid if j.imdb else None)
+              for j in journal} - {None}
 
     film_actors = {}
 
