@@ -508,6 +508,7 @@ def render_tab_composers(journal: list[JournalEntry]):
     event = st.dataframe(
         counts,
         width=600,
+        height=35 * 20,
         selection_mode="single-row",
         on_select="rerun",
     )
@@ -558,6 +559,7 @@ def render_tab_actors(
         df,
         use_container_width=False,
         width=600,
+        height=35 * 20,
         # hide_index=True,
         selection_mode="single-row",
         on_select="rerun",
@@ -618,6 +620,7 @@ def render_tab_directors(journal: list[JournalEntry]):
     event = st.dataframe(
         counts,
         width=600,
+        height=35 * 20,
         selection_mode="single-row",
         on_select="rerun",
     )
