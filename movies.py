@@ -536,6 +536,9 @@ def render_tab_composers(journal: list[JournalEntry]):
                 f"- {title} · *{m.imdb.year}* {m.mark or ''}{composer}"
             )
 
+        if selected_composers:
+            st.subheader(', '.join(selected_composers))
+
         st.markdown(
             '\n'.join(lines)
             if lines else "_Click a checkbox to show matching films._",
@@ -597,6 +600,9 @@ def event_filter_actors(
 
         lines.append(f"- {title} · *{m.imdb.year}* {m.mark or ''}")
 
+    if actor_names:
+        st.subheader(', '.join(actor_names))
+
     st.markdown(
         '\n'.join(lines)
         if lines else "_Click a checkbox to show matching films._",
@@ -651,6 +657,9 @@ def render_tab_directors(journal: list[JournalEntry]):
             lines.append(
                 f"- {title} · *{m.imdb.year}* {m.mark or ''}{director}"
             )
+
+        if selected_directors:
+            st.subheader(', '.join(selected_directors))
 
         st.markdown(
             '\n'.join(lines)
