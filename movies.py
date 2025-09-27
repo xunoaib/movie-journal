@@ -105,7 +105,7 @@ def main():
 
     st.title("🎬 Movie Journal")
     st.markdown(
-        f"You've seen **{len(movies)-num_duplicates} movies!**",
+        f"Total films: **{len(movies)-num_duplicates}**",
         help=(
             'Some films were logged twice or grouped (e.g., sequels and remakes).\n\n'
             'List numbers may not line up exactly, but the total count is accurate.'
