@@ -511,6 +511,8 @@ def render_tab_composers(journal: list[JournalEntry]):
         help='Click a checkbox to filter by composer!'
     )
 
+    st.text('Click a checkbox to filter films by composer.')
+
     event = st.dataframe(
         counts,
         width=600,
@@ -561,6 +563,8 @@ def render_tab_actors(
         'Films Seen Per Actor',
         help='Click a checkbox to filter by actor!',
     )
+
+    st.text('Click a checkbox to filter films by actor.')
 
     df = count_actors(journal, actors_by_journal, proto_actors)
 
@@ -628,6 +632,8 @@ def render_tab_directors(journal: list[JournalEntry]):
         'Films Seen Per Director',
         help='Click a checkbox to filter by director!'
     )
+
+    st.text('Click a checkbox to filter films by director.')
 
     event = st.dataframe(
         counts,
