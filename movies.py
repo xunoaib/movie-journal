@@ -107,8 +107,13 @@ def main():
     st.markdown(
         f"Total films: **{len(movies)-num_duplicates}**",
         help=(
-            'Some films were logged twice or grouped (e.g., sequels and remakes).\n\n'
-            'List numbers may not line up exactly, but the total count is accurate.'
+            '\n\n'.join(
+                [
+                    '⭐ Stars denote exceptional films.',
+                    '✅ Checks denote solid, noteworthy films.',
+                    '💣 Bombs are films we consider cinematic disasters.',
+                ]
+            )
         )
     )
 
@@ -162,13 +167,6 @@ def create_mark_filter(key: str | None = None, on_change=None):
             "No mark",
         ],
         horizontal=True,
-        help='\n\n'.join(
-            [
-                '⭐ Stars denote particularly exceptional films.',
-                '✅ Checks denote exceptional films.',
-                '💣 Bombs are dangerous. Run!!',
-            ]
-        ),
         on_change=on_change,
         key=key
     )
