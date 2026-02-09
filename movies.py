@@ -75,6 +75,9 @@ def main():
     duplicates = find_duplicates(movies)
     num_duplicates = sum(len(v) - 1 for v in duplicates.values())
 
+    missing_tids = [m for m in movies if m.tid is None]
+    has_cleanup = bool(num_duplicates or missing_tids)
+
     st.set_page_config(
         page_title="Movie Journal", page_icon="🎥", layout="centered"
     )
@@ -121,17 +124,21 @@ def main():
         st.info("Movie journal file not found or empty.")
         st.stop()
 
-    tab_list, tab_table, tab_hist, tab_actors, tab_directors, tab_composers, tab_cleanup = st.tabs(
-        [
-            "List",
-            "Table",
-            "Histogram",
-            "Actors",
-            "Directors",
-            "Composers",
-            "Clean-up",
-        ]
-    )
+    tabs = [
+        "List",
+        "Table",
+        "Histogram",
+        "Actors",
+        "Directors",
+        "Composers",
+    ]
+
+    if has_cleanup:
+        tabs.append("Clean-up")
+
+    tab_objs = st.tabs(tabs)
+
+    tab_list, tab_table, tab_hist, tab_actors, tab_directors, tab_composers, *rest = tab_objs
 
     with tab_list:
         render_tab_list(movies)
@@ -151,9 +158,10 @@ def main():
     with tab_composers:
         render_tab_composers(movies)
 
-    with tab_cleanup:
-        render_duplicates(duplicates)
-        render_missing_tids(movies)
+    if rest:
+        with rest[0]:
+            render_duplicates(duplicates)
+            render_missing_tids(movies)
 
 
 def create_mark_filter(key: str | None = None, on_change=None):
