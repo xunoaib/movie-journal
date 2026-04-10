@@ -16,6 +16,14 @@ from linker import ImdbTidMapper, get_default_mapper
 from models import ImdbEntry, JournalEntry, ProtoActor
 from parsers.log import parse_movie_log
 
+MARK_HELP_TEXT = '\n\n'.join(
+    [
+        '⭐ Stars denote exceptional films.',
+        '✅ Checks denote solid, noteworthy films.',
+        '💣 Bombs are films we consider cinematic disasters.',
+    ]
+)
+
 
 def matches_text(m: JournalEntry, q: str) -> bool:
     if not q:
@@ -108,16 +116,7 @@ def main():
 
     st.title("🎬 Movie Journal")
     st.markdown(
-        f"Total films: **{len(movies)-num_duplicates}**",
-        help=(
-            '\n\n'.join(
-                [
-                    '⭐ Stars denote exceptional films.',
-                    '✅ Checks denote solid, noteworthy films.',
-                    '💣 Bombs are films we consider cinematic disasters.',
-                ]
-            )
-        )
+        f"Total films: **{len(movies)-num_duplicates}**", help=MARK_HELP_TEXT
     )
 
     if not movies:
@@ -176,7 +175,8 @@ def create_mark_filter(key: str | None = None, on_change=None):
         ],
         horizontal=True,
         on_change=on_change,
-        key=key
+        key=key,
+        help=MARK_HELP_TEXT
     )
 
 
