@@ -1,0 +1,17 @@
+[project]
+name = "movie-journal"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=2.3.3",
+    "polars>=1.39.2",
+    "streamlit>=1.55.0",
+    "streamlit-keyup>=0.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

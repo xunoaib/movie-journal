@@ -11,12 +11,23 @@ ratings, with clean visualizations and interactive filters.
 - Clickable IMDb links
 - Exportable table view
 - Histogram of films by release year
-- Filter films by director
+- Filter films by director, composer, and actor
 - Duplicate entry detection and missing IMDb identification
 
 # Initial Setup
 
 - Download the [IMDb Non-Commercial Datasets](https://developer.imdb.com/non-commercial-datasets/) to `./imdb-data/` (in `.tsv.gz` form)
-- Run `python parse_tsv_gzs_to_csv.py` to generate `movie_directors.csv`
-- Optionally run `python linker.py` to generate `cache/imdbs_grouped_by_title_year.pkl`
+- Run `python parse_tsv_to_sqlite.py` to build `cache/imdb_full.db`
 - Run `streamlit run movies.py` or `docker compose up` to serve the application
+
+## Architecture
+
+The app now uses a **SQLite-backed repository** (`imdb_repository.py`) instead of
+CSV + pickle intermediates:
+
+- `parse_tsv_to_sqlite.py` imports raw IMDb `.tsv.gz` files into `cache/imdb_full.db`
+- `linker.py` queries the database on demand to match journal titles to IMDb TIDs
+- `actors.py` pulls actor filmographies directly from the `Principals` and `People` tables
+- `movies.py` lazily loads actor data only when the *Actors* tab is opened
+
+Ambiguous title matches are written to `cache/ambiguous_matches.json` for manual review.
