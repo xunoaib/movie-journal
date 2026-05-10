@@ -50,33 +50,24 @@ def matches(mv: JournalEntry, q):
             ) or (mv.year is not None and q in mv.year.lower())
 
 
-@dataclass
-class Cache:
-    journal: list[JournalEntry]
-    proto_actors: list[ProtoActor]
-    actors_by_journal: dict[str, list[ProtoActor]]
-
-
 @st.cache_resource
-def load_cache():
+def load_journal() -> list[JournalEntry]:
     print('Loading journal...', flush=True)
-    journal = get_default_mapper().load_journal()
+    return get_default_mapper().load_journal()
 
-    print('Loading proto actors...', flush=True)
+
+@st.cache_data
+def load_actor_cache(journal: list[JournalEntry]) -> tuple[list[ProtoActor], dict[str, list[ProtoActor]]]:
+    print('Loading actors...', flush=True)
     tids = {j.tid or (j.imdb.tid if j.imdb else None)
             for j in journal} - {None}
     proto_actors = parse_proto_actors(tids)
-
-    print('Grouping actors by journal...', flush=True)
     actors_by_journal = group_actors_by_journal(proto_actors, journal)
-
-    print('Loaded!', flush=True)
-    return Cache(journal, proto_actors, actors_by_journal)
+    return proto_actors, actors_by_journal
 
 
 def main():
-    cache = load_cache()
-    movies = cache.journal
+    movies = load_journal()
 
     duplicates = find_duplicates(movies)
     num_duplicates = sum(len(v) - 1 for v in duplicates.values())
@@ -147,7 +138,8 @@ def main():
         render_tab_histogram(movies)
 
     with tab_actors:
-        render_tab_actors(movies, cache.actors_by_journal, cache.proto_actors)
+        proto_actors, actors_by_journal = load_actor_cache(movies)
+        render_tab_actors(movies, actors_by_journal, proto_actors)
 
     with tab_directors:
         render_tab_directors(movies)
