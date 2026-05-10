@@ -1,5 +1,5 @@
+import json
 from dataclasses import replace
-import warnings
 from pathlib import Path
 
 from imdb_repository import ImdbRepository
@@ -7,6 +7,7 @@ from models import JournalEntry
 from parsers.log import parse_movie_log
 
 MOVIE_JOURNAL = 'movie_journal.txt'
+AMBIGUITY_LOG = Path('cache/ambiguous_matches.json')
 
 
 class ImdbTidMapper:
@@ -30,6 +31,7 @@ class ImdbTidMapper:
         if all(j.tid is not None for j in journal):
             return journal
 
+        ambiguities = []
         output = []
         for j in journal:
             if j.tid is not None:
@@ -40,13 +42,24 @@ class ImdbTidMapper:
             if len(matches) == 1:
                 output.append(replace(j, _tid=matches[0].tid))
             elif len(matches) > 1:
-                warnings.warn(
-                    f"Multiple IMDb IDs found for {j.title!r} ({j.year}): "
-                    f"{[m.tid for m in matches]}"
-                )
+                ambiguities.append({
+                    'position': j.position,
+                    'title': j.title,
+                    'year': j.year,
+                    'candidates': [
+                        {'tid': m.tid, 'title': m.title, 'year': m.year,
+                         'director': m.director}
+                        for m in matches
+                    ]
+                })
                 output.append(j)
             else:
                 output.append(j)
+
+        if ambiguities:
+            AMBIGUITY_LOG.parent.mkdir(parents=True, exist_ok=True)
+            with open(AMBIGUITY_LOG, 'w') as f:
+                json.dump(ambiguities, f, indent=2)
 
         return output
 
