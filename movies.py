@@ -1,5 +1,4 @@
 import datetime
-import pickle
 import re
 from collections import defaultdict
 from dataclasses import dataclass
@@ -10,9 +9,8 @@ import pandas as pd
 import streamlit as st
 from st_keyup import st_keyup
 
-from actors import (group_actors_by_journal, group_actors_by_journal_cached,
-                    parse_proto_actors)
-from linker import ImdbTidMapper, get_default_mapper
+from actors import group_actors_by_journal, parse_proto_actors
+from linker import get_default_mapper
 from models import ImdbEntry, JournalEntry, ProtoActor
 from parsers.log import parse_movie_log
 
