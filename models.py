@@ -11,7 +11,7 @@ class ImdbEntry:
 
     def __eq__(self, other):
         if not isinstance(other, ImdbEntry):
-            return NotImplementedError
+            return NotImplemented
         return self.tid == other.tid
 
     def __hash__(self):
@@ -35,11 +35,11 @@ class JournalEntry:
 
     def __eq__(self, other):
         if not isinstance(other, JournalEntry):
-            return NotImplementedError
+            return NotImplemented
         return all(
             [
                 self.position == other.position,
-                self.subnum == self.subnum,
+                self.subnum == other.subnum,
                 self.title == other.title,
             ]
         )
