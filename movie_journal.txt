@@ -199,7 +199,7 @@ Forbidden Planet ('1956)
 Our Man in Havana ('1959) *
 Double Indemnity ('1944)
 Dracula: Dead and Loving It ('1995)
-Wait Until Dark ('1967)
+Wait Until Dark ('1967) [tt0062467]
 Destination Tokyo ('1943)
 The Grapes of Wrath ('1940)
 Soylent Green ('1973)
@@ -441,7 +441,7 @@ Cyrano de Bergerac ('1950)
 Boomerang! ('1947)
 An Honest Liar ('2014) *
 Sabotage ('1936) [bf:]
-Apollo 13 ('1995)
+Apollo 13 ('1995) [tt0112384]
 Gentleman's Agreement ('1947) ✓
 Nosferatu: A Symphony of Horror ('1922)
 Faust ('1926)
@@ -589,7 +589,7 @@ The Public Enemy ('1931)
 Scarface ('1932)
 The Private Life of Henry VIII ('1933)
 1776 ('1972)
-Night Must Fall ('1937)
+Night Must Fall ('1937) [tt0029310]
 Elmer Gantry ('1960)
 Brute Force ('1947)
 Three Strangers * ('1946)
@@ -818,7 +818,7 @@ The Silent Partner ('1978)
 Violent Road ('1958)
 Tom Jones ('1963)
 Thunder Road ('1958)
-The Two Mrs. Carrolls ('1947)
+The Two Mrs. Carrolls ('1947) [tt0039926]
 House of Games ('1987) * [bf:]
 Dangerous ('1935)
 Highway 301 ('1950)
@@ -884,7 +884,7 @@ The Man I Love ('1946)
 The Man Who Laughs ('1928)
 First Knight ('1995)
 I Died a Thousand Times ('1955)
-Glory ('1989) [bf:]
+Glory ('1989) [bf:] [tt0097441]
 Detour ('1945)
 Woman in Hiding ('1950) ✓
 U.S. Marshals ('1998)
@@ -1028,7 +1028,7 @@ Ferris Bueller's Day Off ('1986) [bf:]
 Sleeper ('1973) [bf:]
 Mr. Skeffington ('1944) ✓
 Memento ('2000)
-Ransom ('1956)
+Ransom! ('1956)
 It Happened on Fifth Avenue ('1947)
 Holiday Affair ('1949)
 Heaven Can Wait ('1943)
