@@ -105,9 +105,84 @@ def main():
     [data-testid="stDataFrameResizable"] {
         border: 2px solid rgba(250, 250, 250, 0.1) !important;
     }
+
+    /* Extra jitter mitigation: isolate the grid's compositing layer */
+    [data-testid="stDataFrameResizable"],
+    [data-testid="stDataFrameResizable"] canvas {
+        transform: translateZ(0);
+        contain: layout style;
+    }
+
+    /* Pill / segmented-bar tabs */
+    .stTabs [role="tablist"],
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2px;
+        background-color: rgba(151, 166, 195, 0.15);
+        padding: 6px;
+        border-radius: 999px;
+        width: fit-content;
+    }
+
+    .stTabs [data-baseweb="tab-highlight"],
+    .stTabs [data-baseweb="tab-border"],
+    .stTabs .react-aria-SelectionIndicator {
+        display: none;
+    }
+
+    .stTabs [data-testid="stTab"],
+    .stTabs [data-baseweb="tab"] {
+        height: auto;
+        margin: 0;
+        padding: 5px 14px;
+        border-radius: 999px;
+        background-color: transparent;
+        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stTabs [data-testid="stTab"]:hover,
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: rgba(151, 166, 195, 0.3);
+    }
+
+    .stTabs [data-testid="stTab"] p,
+    .stTabs [data-baseweb="tab"] p {
+        opacity: 0.7;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(180deg, #ff6161, #f7374a) !important;
+        box-shadow: 0 2px 6px rgba(247, 55, 74, 0.35);
+    }
+
+    .stTabs [aria-selected="true"]:hover {
+        background: linear-gradient(180deg, #ff6161, #f7374a) !important;
+    }
+
+    .stTabs [aria-selected="true"] p {
+        opacity: 1;
+        color: white;
+        font-weight: 600;
+    }
     </style>
     """,
         unsafe_allow_html=True
+    )
+
+    # Nudges dataframes to re-measure after load, since a resize or rerun
+    # is what usually clears their hover/resize jitter.
+    st.components.v1.html(
+        """
+        <script>
+        const nudge = () => window.parent.dispatchEvent(new Event('resize'));
+        [50, 250, 750, 1500].forEach(ms => setTimeout(nudge, ms));
+        if (window.parent.document.fonts) {
+            window.parent.document.fonts.ready.then(nudge);
+        }
+        </script>
+        """,
+        height=0,
     )
 
     st.title("🎬 Movie Journal")
