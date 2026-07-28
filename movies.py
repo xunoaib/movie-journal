@@ -173,7 +173,7 @@ def main():
 
 def create_mark_filter(key: str | None = None, on_change=None):
     return st.radio(
-        "Filter films by mark", [
+        "Filter films by mark:", [
             "All",
             "⭐",
             "✅",
@@ -198,7 +198,7 @@ def sync_filter_from_list():
 
 def render_tab_list(movies: list[JournalEntry]):
 
-    st.markdown('**Tip:** Click on any film title to visit its IMDb page.')
+    st.markdown("**Tip:** Click on any film's title to visit its IMDb page.")
     mark_filter = create_mark_filter(
         'markFilterList', on_change=sync_filter_from_list
     )
