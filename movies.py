@@ -106,6 +106,13 @@ def main():
         border: 2px solid rgba(250, 250, 250, 0.1) !important;
     }
 
+    /* Extra jitter mitigation: isolate the grid's compositing layer */
+    [data-testid="stDataFrameResizable"],
+    [data-testid="stDataFrameResizable"] canvas {
+        transform: translateZ(0);
+        contain: layout style;
+    }
+
     /* Pill / segmented-bar tabs */
     .stTabs [role="tablist"],
     .stTabs [data-baseweb="tab-list"] {
@@ -161,6 +168,21 @@ def main():
     </style>
     """,
         unsafe_allow_html=True
+    )
+
+    # Nudges dataframes to re-measure after load, since a resize or rerun
+    # is what usually clears their hover/resize jitter.
+    st.components.v1.html(
+        """
+        <script>
+        const nudge = () => window.parent.dispatchEvent(new Event('resize'));
+        [50, 250, 750, 1500].forEach(ms => setTimeout(nudge, ms));
+        if (window.parent.document.fonts) {
+            window.parent.document.fonts.ready.then(nudge);
+        }
+        </script>
+        """,
+        height=0,
     )
 
     st.title("🎬 Movie Journal")
