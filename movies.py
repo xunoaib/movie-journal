@@ -99,6 +99,12 @@ def main():
     a.no-style:hover {
         text-decoration: underline !important;
     }
+
+    /* Non-default border breaks the subpixel-rounding jitter loop
+       dataframes get stuck in on hover (streamlit/streamlit#6900) */
+    [data-testid="stDataFrameResizable"] {
+        border: 2px solid rgba(250, 250, 250, 0.1) !important;
+    }
     </style>
     """,
         unsafe_allow_html=True
