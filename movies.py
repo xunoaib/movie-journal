@@ -113,6 +113,7 @@ def main():
         background-color: rgba(151, 166, 195, 0.15);
         padding: 6px;
         border-radius: 999px;
+        width: fit-content;
     }
 
     .stTabs [data-baseweb="tab-highlight"],
