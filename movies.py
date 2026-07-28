@@ -501,6 +501,39 @@ def count_composers(journal: list[JournalEntry]):
     return counts
 
 
+def render_collapsible_selection_table(
+    df: pd.DataFrame, key_prefix: str, label: str, **dataframe_kwargs
+):
+    '''A single-row-selectable dataframe that auto-collapses into an
+    expander once a row is selected, and re-expands once deselected.'''
+
+    table_key = f'{key_prefix}Table'
+    expander_key = f'{key_prefix}TableExpander'
+    prev_selected_key = f'{key_prefix}TablePrevSelectedRow'
+
+    selected_rows = st.session_state.get(table_key,
+                                          {}).get('selection',
+                                                   {}).get('rows', [])
+    selected_row = selected_rows[0] if selected_rows else None
+    has_selection = selected_row is not None
+
+    # Only force expanded/collapsed when selection changes, so we don't fight a manual reopen.
+    if selected_row != st.session_state.get(prev_selected_key, '__unset__'):
+        st.session_state[expander_key] = not has_selection
+    st.session_state[prev_selected_key] = selected_row
+
+    with st.expander(label, key=expander_key, on_change="rerun"):
+        event = st.dataframe(
+            df,
+            selection_mode="single-row",
+            on_select="rerun",
+            key=table_key,
+            **dataframe_kwargs,
+        )
+
+    return event
+
+
 def render_tab_composers(journal: list[JournalEntry]):
     counts = count_composers(journal)
     counts = counts[['Count', 'Composer', 'Stars', 'Checks', 'StarsAndChecks']]
@@ -516,12 +549,8 @@ def render_tab_composers(journal: list[JournalEntry]):
 
     st.text('Click a checkbox to filter films by composer.')
 
-    event = st.dataframe(
-        counts,
-        width=650,
-        height=35 * 20,
-        selection_mode="single-row",
-        on_select="rerun",
+    event = render_collapsible_selection_table(
+        counts, 'composers', 'Composer table', width=650, height=35 * 20
     )
 
     if event and 'selection' in event:
@@ -571,13 +600,8 @@ def render_tab_actors(
 
     df = count_actors(journal, actors_by_journal, proto_actors)
 
-    event = st.dataframe(
-        df,
-        width=650,
-        height=35 * 20,
-        # hide_index=True,
-        selection_mode="single-row",
-        on_select="rerun",
+    event = render_collapsible_selection_table(
+        df, 'actors', 'Actor table', width=650, height=35 * 20
     )
 
     if event and 'selection' in event:
@@ -637,12 +661,8 @@ def render_tab_directors(journal: list[JournalEntry]):
 
     st.text('Click a checkbox to filter films by director.')
 
-    event = st.dataframe(
-        counts,
-        width=650,
-        height=35 * 20,
-        selection_mode="single-row",
-        on_select="rerun",
+    event = render_collapsible_selection_table(
+        counts, 'directors', 'Director table', width=650, height=35 * 20
     )
 
     if event and 'selection' in event:
