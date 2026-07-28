@@ -192,6 +192,7 @@ def sync_filter_from_list():
 
 def render_tab_list(movies: list[JournalEntry]):
 
+    st.markdown('**Tip:** Click on any film title to visit its IMDb page.')
     mark_filter = create_mark_filter(
         'markFilterList', on_change=sync_filter_from_list
     )
