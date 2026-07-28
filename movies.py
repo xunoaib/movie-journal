@@ -109,7 +109,7 @@ def main():
     /* Pill / segmented-bar tabs */
     .stTabs [role="tablist"],
     .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
+        gap: 2px;
         background-color: rgba(151, 166, 195, 0.15);
         padding: 6px;
         border-radius: 999px;
@@ -125,7 +125,7 @@ def main():
     .stTabs [data-baseweb="tab"] {
         height: auto;
         margin: 0;
-        padding: 8px 22px;
+        padding: 5px 14px;
         border-radius: 999px;
         background-color: transparent;
         transition: background-color 0.2s ease, box-shadow 0.2s ease;
