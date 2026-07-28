@@ -110,7 +110,8 @@ def main():
     st.markdown(
         '- ⭐ Stars denote personal favorites -- the rare, outstanding few.\n'
         '- ✅ Checks denote standouts, just short of a star.\n'
-        '- *(Unmarked) -- everything else, including plenty of great films.*'
+        '- *(Unmarked) -- everything else, including plenty of great films.*\n\n'
+        '> Note: Films are numbered by viewing order.\n'
     )
 
     if not movies:
