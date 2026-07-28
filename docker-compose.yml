@@ -6,6 +6,8 @@ services:
       - .:/app
     ports:
       - "40000:40000"
+    environment:
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
     restart: always
     stop_grace_period: 2s
 
