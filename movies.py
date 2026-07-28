@@ -113,8 +113,6 @@ def main():
         '- *(Unmarked) -- everything else, including plenty of great films.*'
     )
 
-    st.markdown('💻 [Source Code](https://github.com/xunoaib/movie-journal)')
-
     if not movies:
         st.info("Movie journal file not found or empty.")
         st.stop()
@@ -122,10 +120,11 @@ def main():
     tabs = [
         "List",
         "Table",
-        "Histogram",
+        "Histograms",
         "Actors",
         "Directors",
         "Composers",
+        "About",
     ]
 
     if has_cleanup:
@@ -133,7 +132,7 @@ def main():
 
     tab_objs = st.tabs(tabs)
 
-    tab_list, tab_table, tab_hist, tab_actors, tab_directors, tab_composers, *rest = tab_objs
+    tab_list, tab_table, tab_hist, tab_actors, tab_directors, tab_composers, about, *rest = tab_objs
 
     with tab_list:
         render_tab_list(movies)
@@ -154,6 +153,11 @@ def main():
     with tab_composers:
         render_tab_composers(movies)
 
+    with about:
+        st.markdown(
+            'Source code for this site can be found [here](https://github.com/xunoaib/movie-journal), on GitHub!'
+        )
+
     if rest:
         with rest[0]:
             render_duplicates(duplicates)
@@ -162,7 +166,7 @@ def main():
 
 def create_mark_filter(key: str | None = None, on_change=None):
     return st.radio(
-        "Filter by mark", [
+        "Filter films by mark", [
             "All",
             "⭐",
             "✅",
@@ -195,7 +199,7 @@ def render_tab_list(movies: list[JournalEntry]):
     query = st_keyup(
         "Search",
         key="query",
-        placeholder="Type to filter...",
+        placeholder="Type to filter by title...",
     ) or ""
     query = query.lower()
 
