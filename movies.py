@@ -16,9 +16,10 @@ from parsers.log import parse_movie_log
 
 MARK_HELP_TEXT = '\n\n'.join(
     [
-        '⭐ Stars denote exceptional films.',
-        '✅ Checks denote solid, noteworthy films.',
+        '⭐ Stars denote personal favorites -- the rare, outstanding few.',
+        '✅ Checks denote standouts, just short of a star.',
         '💣 Bombs are films we consider cinematic disasters.',
+        '*(Unmarked) -- everything else, including plenty of great films.*',
     ]
 )
 
@@ -104,9 +105,15 @@ def main():
     )
 
     st.title("🎬 Movie Journal")
+    st.markdown(f'**{len(movies)-num_duplicates}** films seen, with extra marks for extra special films!', help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.')
+
     st.markdown(
-        f"Total films: **{len(movies)-num_duplicates}**", help=MARK_HELP_TEXT
+        '- ⭐ Stars denote personal favorites -- the rare, outstanding few.\n'
+        '- ✅ Checks denote standouts, just short of a star.\n'
+        '- *(Unmarked) -- everything else, including plenty of great films.*'
     )
+
+    st.markdown('💻 [Source Code](https://github.com/xunoaib/movie-journal)')
 
     if not movies:
         st.info("Movie journal file not found or empty.")
