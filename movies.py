@@ -156,7 +156,7 @@ def main():
 
     with about:
         st.markdown(
-            'Source code for this site can be found [here](https://github.com/xunoaib/movie-journal), on GitHub!'
+            'Source code for this site can be found on [GitHub](https://github.com/xunoaib/movie-journal)'
         )
 
     if rest:
