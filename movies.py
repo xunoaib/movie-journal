@@ -105,6 +105,58 @@ def main():
     [data-testid="stDataFrameResizable"] {
         border: 2px solid rgba(250, 250, 250, 0.1) !important;
     }
+
+    /* Pill / segmented-bar tabs */
+    .stTabs [role="tablist"],
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 6px;
+        background-color: rgba(151, 166, 195, 0.15);
+        padding: 6px;
+        border-radius: 999px;
+    }
+
+    .stTabs [data-baseweb="tab-highlight"],
+    .stTabs [data-baseweb="tab-border"],
+    .stTabs .react-aria-SelectionIndicator {
+        display: none;
+    }
+
+    .stTabs [data-testid="stTab"],
+    .stTabs [data-baseweb="tab"] {
+        height: auto;
+        margin: 0;
+        padding: 8px 22px;
+        border-radius: 999px;
+        background-color: transparent;
+        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stTabs [data-testid="stTab"]:hover,
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: rgba(151, 166, 195, 0.3);
+    }
+
+    .stTabs [data-testid="stTab"] p,
+    .stTabs [data-baseweb="tab"] p {
+        opacity: 0.7;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(180deg, #ff6161, #f7374a) !important;
+        box-shadow: 0 2px 6px rgba(247, 55, 74, 0.35);
+    }
+
+    .stTabs [aria-selected="true"]:hover {
+        background: linear-gradient(180deg, #ff6161, #f7374a) !important;
+    }
+
+    .stTabs [aria-selected="true"] p {
+        opacity: 1;
+        color: white;
+        font-weight: 600;
+    }
     </style>
     """,
         unsafe_allow_html=True
