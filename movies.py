@@ -194,12 +194,13 @@ def main():
         st.info("Movie journal file not found or empty.")
         st.stop()
 
-    st.markdown(
-        "- Films are numbered by viewing order.\n",
-        help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.'
-    )
+    with st.container(gap=0):
+        st.markdown(
+            "- Films are numbered by viewing order.\n",
+            help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.'
+        )
 
-    st.markdown("- Click any film title to visit its IMDb page.")
+        st.markdown("- Click any film title to visit its IMDb page.")
 
     tabs = [
         "List",
