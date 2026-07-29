@@ -507,16 +507,16 @@ def count_actors(
     df = pd.DataFrame(
         [
             {
-                "Film Count": len(tids),
+                "Count": len(tids),
                 "Actor": nconst_to_name[nconst],
                 "⭐ Stars": len(star_tids & tids),
                 "✅ Checks": len(check_tids & tids),
                 "⭐✅ Total": len((star_tids | check_tids) & tids),
             } for nconst, tids in actor_films.items()
         ]
-    ).sort_values("Film Count", ascending=False)
+    ).sort_values("Count", ascending=False)
 
-    df = df.sort_values(["Film Count", "Actor"],
+    df = df.sort_values(["Count", "Actor"],
                         ascending=[False, True]).reset_index(drop=True)
 
     df.index = df.index + 1
