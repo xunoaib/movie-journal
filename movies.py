@@ -186,17 +186,20 @@ def main():
     )
 
     st.title("🎬 Movie Journal")
-    st.markdown(f'**{len(movies)-num_duplicates}** films seen, with extra marks for extra special films!')
+    st.markdown(
+        f'Personal movie journal -- **{len(movies)-num_duplicates}** films seen, with extra marks for extra special films!'
+    )
 
     if not movies:
         st.info("Movie journal file not found or empty.")
         st.stop()
 
     st.markdown(
-        "- Click any film title to visit its IMDb page.\n"
         "- Films are numbered by viewing order.\n",
         help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.'
     )
+
+    st.markdown("- Click any film title to visit its IMDb page.")
 
     tabs = [
         "List",
