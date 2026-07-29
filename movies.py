@@ -433,7 +433,7 @@ def render_tab_table(movies: list[JournalEntry]):
     df_display = df_subset.rename(
         columns={
             "position": "Watch #",
-            "year": "Release Year",
+            "year": "Year",
             "title": "Title",
             "mark": "Mark",
             "director": "Director",
