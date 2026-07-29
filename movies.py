@@ -186,18 +186,17 @@ def main():
     )
 
     st.title("🎬 Movie Journal")
-    st.markdown(f'**{len(movies)-num_duplicates}** films seen, with extra marks for extra special films!', help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.')
-
-    st.markdown(
-        '- ⭐ Stars denote personal favorites -- the rare, outstanding few.\n'
-        '- ✅ Checks denote standouts, just short of a star.\n'
-        '- *(Unmarked) -- everything else, including plenty of great films.*\n\n'
-        '> Note: Films are numbered by viewing order.\n'
-    )
+    st.markdown(f'**{len(movies)-num_duplicates}** films seen, with extra marks for extra special films!')
 
     if not movies:
         st.info("Movie journal file not found or empty.")
         st.stop()
+
+    st.markdown(
+        "- Click any film title to visit its IMDb page.\n"
+        "- Films are numbered by viewing order.\n",
+        help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.'
+    )
 
     tabs = [
         "List",
@@ -237,7 +236,7 @@ def main():
 
     with about:
         st.markdown(
-            'Source code for this site can be found on [GitHub](https://github.com/xunoaib/movie-journal)'
+            'Source code is available on [GitHub](https://github.com/xunoaib/movie-journal)'
         )
 
     if rest:
@@ -248,7 +247,7 @@ def main():
 
 def create_mark_filter(key: str | None = None, on_change=None):
     return st.radio(
-        "Filter films by mark:", [
+        "Filter by mark:", [
             "All",
             "⭐",
             "✅",
@@ -273,7 +272,6 @@ def sync_filter_from_list():
 
 def render_tab_list(movies: list[JournalEntry]):
 
-    st.markdown("**Tip:** Click on any film's title to visit its IMDb page.")
     mark_filter = create_mark_filter(
         'markFilterList', on_change=sync_filter_from_list
     )
@@ -603,7 +601,10 @@ def render_collapsible_selection_table(
         st.session_state[expander_key] = not has_selection
     st.session_state[prev_selected_key] = selected_row
 
-    with st.expander(label, key=expander_key, on_change="rerun"):
+    with st.expander(label, type="compact", icon=":material/menu:", key=expander_key, on_change="rerun"):
+
+        st.text(f'Click a checkbox to filter by {key_prefix[:-1]}.')
+
         event = st.dataframe(
             df,
             selection_mode="single-row",
@@ -623,12 +624,7 @@ def render_tab_composers(journal: list[JournalEntry]):
     counts = counts.rename(columns={"Checks": "✅ Checks"})
     counts = counts.rename(columns={"StarsAndChecks": "⭐✅ Total"})
 
-    st.subheader(
-        'Films Seen Per Composer',
-        help='Click a checkbox to filter by composer!'
-    )
-
-    st.text('Click a checkbox to filter films by composer.')
+    st.subheader('Films Seen Per Composer')
 
     event = render_collapsible_selection_table(
         counts, 'composers', 'Composer table', width=650, height=35 * 20
@@ -672,12 +668,7 @@ def render_tab_actors(
     actors_by_journal: dict[str, list[ProtoActor]],
     proto_actors: list[ProtoActor],
 ):
-    st.subheader(
-        'Films Seen Per Actor',
-        help='Click a checkbox to filter by actor!',
-    )
-
-    st.text('Click a checkbox to filter films by actor.')
+    st.subheader('Films Seen Per Actor')
 
     df = count_actors(journal, actors_by_journal, proto_actors)
 
@@ -735,12 +726,7 @@ def render_tab_directors(journal: list[JournalEntry]):
     counts = counts.rename(columns={"Checks": "✅ Checks"})
     counts = counts.rename(columns={"StarsAndChecks": "⭐✅ Total"})
 
-    st.subheader(
-        'Films Seen Per Director',
-        help='Click a checkbox to filter by director!'
-    )
-
-    st.text('Click a checkbox to filter films by director.')
+    st.subheader('Films Seen Per Director')
 
     event = render_collapsible_selection_table(
         counts, 'directors', 'Director table', width=650, height=35 * 20
