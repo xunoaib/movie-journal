@@ -657,8 +657,7 @@ def render_tab_composers(journal: list[JournalEntry]):
             st.subheader(', '.join(selected_composers))
 
         st.markdown(
-            '\n'.join(lines)
-            if lines else "_Click a checkbox to show matching films._",
+            '\n'.join(lines),
             unsafe_allow_html=True
         )
 
@@ -712,8 +711,7 @@ def event_filter_actors(
         st.subheader(', '.join(actor_names))
 
     st.markdown(
-        '\n'.join(lines)
-        if lines else "_Click a checkbox to show matching films._",
+        '\n'.join(lines),
         unsafe_allow_html=True
     )
 
@@ -763,8 +761,7 @@ def render_tab_directors(journal: list[JournalEntry]):
             st.subheader(', '.join(selected_directors))
 
         st.markdown(
-            '\n'.join(lines)
-            if lines else "_Click a checkbox to show matching films._",
+            '\n'.join(lines),
             unsafe_allow_html=True
         )
 
