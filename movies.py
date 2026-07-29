@@ -354,7 +354,7 @@ def render_tab_histogram(movies: list[JournalEntry]):
         )
     )
 
-    st.subheader("Number of Films by Release Date")
+    st.subheader("Films by Release Date")
     st.altair_chart(chart_total, use_container_width=True)
 
     df_marks = pd.DataFrame(
@@ -394,7 +394,7 @@ def render_tab_histogram(movies: list[JournalEntry]):
         )
     )
 
-    st.subheader("Number of Marked Films by Release Date")
+    st.subheader("Marked Films by Release Date")
 
     st.altair_chart(chart_marked, use_container_width=True)
 
