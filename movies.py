@@ -13,6 +13,7 @@ from actors import group_actors_by_journal, parse_proto_actors
 from linker import get_default_mapper
 from models import ImdbEntry, JournalEntry, ProtoActor
 from parsers.log import parse_movie_log
+from rss import write_feed
 
 MARK_HELP_TEXT = '\n\n'.join(
     [
@@ -54,7 +55,14 @@ def matches(mv: JournalEntry, q):
 @st.cache_resource
 def load_journal() -> list[JournalEntry]:
     print('Loading journal...', flush=True)
-    return get_default_mapper().load_journal()
+    movies = get_default_mapper().load_journal()
+
+    try:
+        write_feed(movies)
+    except Exception as e:
+        print(f'Failed to write RSS feed: {e}', flush=True)
+
+    return movies
 
 
 @st.cache_data
