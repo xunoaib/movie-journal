@@ -197,7 +197,7 @@ def main():
     with st.container(gap=0):
         st.markdown(
             "- Films are numbered by viewing order.\n",
-            help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.'
+            help='Some entries share a number in our notebook, so the **total** count differs from the **latest** entry number.\n\n"↵" indicates backfilled entries (those seen in the past, true position unknown).'
         )
 
         st.markdown("- Click any film title to visit its IMDb page.")
