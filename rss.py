@@ -15,7 +15,7 @@ from models import JournalEntry
 FEED_TITLE = '🎬 Movie Journal'
 FEED_DESCRIPTION = 'Recently watched films, in viewing order.'
 MAX_ITEMS = 50
-SITE_URL = os.environ.get('FEED_SITE_URL', 'https://movies.xikkub.com')
+SITE_URL = os.environ.get('FEED_SITE_URL', '/')
 
 
 def get_line_dates(path: Path) -> list[datetime.date]:
