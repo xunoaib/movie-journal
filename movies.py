@@ -216,6 +216,15 @@ def main():
                 display: 'none',
             });
             doc.body.appendChild(img);
+
+            // Tracks which poster is currently wanted, so a slow-loading
+            // image from a title the mouse has already left (or moved
+            // past, onto another title) never gets shown.
+            let wanted = null;
+
+            img.onload = () => {
+                if (img.src === wanted) img.style.display = 'block';
+            };
             img.onerror = () => { img.style.display = 'none'; };
 
             const place = (e) => {
@@ -231,8 +240,9 @@ def main():
             doc.addEventListener('mouseover', (e) => {
                 const link = e.target.closest('a.no-style[data-poster]');
                 if (!link) return;
-                img.src = link.dataset.poster;
-                img.style.display = 'block';
+                wanted = link.dataset.poster;
+                img.style.display = 'none';
+                img.src = wanted;
                 place(e);
             });
 
@@ -243,6 +253,7 @@ def main():
             doc.addEventListener('mouseout', (e) => {
                 const link = e.target.closest('a.no-style[data-poster]');
                 if (link && !link.contains(e.relatedTarget)) {
+                    wanted = null;
                     img.style.display = 'none';
                 }
             });
