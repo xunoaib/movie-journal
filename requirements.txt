@@ -1,3 +1,4 @@
 streamlit==1.60.0
 streamlit-keyup==0.3.0
 polars==1.43.1
+requests==2.32.5

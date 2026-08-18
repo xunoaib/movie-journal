@@ -13,6 +13,7 @@ from actors import group_actors_by_journal, parse_proto_actors
 from linker import get_default_mapper
 from models import ImdbEntry, JournalEntry, ProtoActor
 from parsers.log import parse_movie_log
+from poster_cache import get_poster_urls
 from rss import write_feed
 
 MARK_HELP_TEXT = '\n\n'.join(
@@ -193,6 +194,64 @@ def main():
         height=0,
     )
 
+    # Hover-to-preview posters: images are only fetched by the browser
+    # once a linked title is actually hovered (via data-poster), never
+    # up front. Guarded against re-init since Streamlit reruns this block.
+    st.components.v1.html(
+        """
+        <script>
+        const doc = window.parent.document;
+        if (!doc.__posterPreviewInit) {
+            doc.__posterPreviewInit = true;
+
+            const img = doc.createElement('img');
+            Object.assign(img.style, {
+                position: 'fixed',
+                zIndex: 9999,
+                maxWidth: '200px',
+                maxHeight: '300px',
+                borderRadius: '6px',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                pointerEvents: 'none',
+                display: 'none',
+            });
+            doc.body.appendChild(img);
+            img.onerror = () => { img.style.display = 'none'; };
+
+            const place = (e) => {
+                const pad = 16;
+                let x = e.clientX + pad;
+                let y = e.clientY + pad;
+                if (x + 200 > window.parent.innerWidth) x = e.clientX - 200 - pad;
+                if (y + 300 > window.parent.innerHeight) y = e.clientY - 300 - pad;
+                img.style.left = `${x}px`;
+                img.style.top = `${y}px`;
+            };
+
+            doc.addEventListener('mouseover', (e) => {
+                const link = e.target.closest('a.no-style[data-poster]');
+                if (!link) return;
+                img.src = link.dataset.poster;
+                img.style.display = 'block';
+                place(e);
+            });
+
+            doc.addEventListener('mousemove', (e) => {
+                if (img.style.display === 'block') place(e);
+            });
+
+            doc.addEventListener('mouseout', (e) => {
+                const link = e.target.closest('a.no-style[data-poster]');
+                if (link && !link.contains(e.relatedTarget)) {
+                    img.style.display = 'none';
+                }
+            });
+        }
+        </script>
+        """,
+        height=0,
+    )
+
     st.title("🎬 Movie Journal")
     st.markdown(
         f'Personal movie journal -- **{len(movies)-num_duplicates}** films seen, with extra marks for extra special films!'
@@ -312,18 +371,34 @@ def render_tab_list(movies: list[JournalEntry]):
     st.caption(f"Showing {len(filtered)} of {len(movies)}")
 
 
+def render_title_link(title: str, tid: str | None, poster_urls: dict[str, str]) -> str:
+    '''Builds the (optionally IMDb-linked) title HTML for a journal entry,
+    tagging it with a data-poster URL so it can be hover-previewed
+    without loading any poster images up front.'''
+
+    out = f"**{title.replace('*', '&#42;')}**"
+
+    if not tid:
+        return out
+
+    poster_attr = ''
+    poster_url = poster_urls.get(tid)
+    if poster_url:
+        poster_attr = f' data-poster="{poster_url}"'
+
+    return f'<a class="no-style" href="https://www.imdb.com/title/{tid}"{poster_attr}>{out}<a>'
+
+
 def render_journal_list(journal: list[JournalEntry]):
     '''Renders a list of journal entries'''
+
+    poster_urls = get_poster_urls([mv.tid for mv in journal if mv.tid])
 
     for mv in journal:
         num = mv.position
         icon = mv.mark or ''
 
-        # Escape asterisks from markdown
-        out = f"**{mv.title.replace('*', '&#42;')}**"
-
-        if mv.tid:
-            out = f'<a class="no-style" href="https://www.imdb.com/title/{mv.tid}">{out}<a>'
+        out = render_title_link(mv.title, mv.tid, poster_urls)
 
         if mv.backfill is not None:
             out += ' <span title="This entry was backfilled (original position unknown)">↵</span> '
@@ -659,11 +734,11 @@ def render_tab_composers(journal: list[JournalEntry]):
 
         matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
 
+        poster_urls = get_poster_urls([m.tid for m in matches if m.tid])
+
         lines = []
         for m in matches:
-            title = f"**{m.title.replace('*', '&#42;')}**"
-            if m.tid:
-                title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
+            title = render_title_link(m.title, m.tid, poster_urls)
             composer = f' – {m.imdb.composer}' if ',' in m.imdb.composer else ''
             lines.append(
                 f"- {title} · *{m.imdb.year}* {m.mark or ''}{composer}"
@@ -713,14 +788,12 @@ def event_filter_actors(
     matches = [j for j in journal if j.imdb and j.tid in match_proto_tids]
     matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
 
+    poster_urls = get_poster_urls([m.tid for m in matches if m.tid])
+
     lines = []
 
     for m in matches:
-        title = f"**{m.title.replace('*', '&#42;')}**"
-
-        if m.tid:
-            title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
-
+        title = render_title_link(m.title, m.tid, poster_urls)
         lines.append(f"- {title} · *{m.imdb.year}* {m.mark or ''}")
 
     if actor_names:
@@ -759,14 +832,12 @@ def render_tab_directors(journal: list[JournalEntry]):
 
         matches.sort(key=lambda e: (e.imdb.year, e.imdb.title), reverse=True)
 
+        poster_urls = get_poster_urls([m.tid for m in matches if m.tid])
+
         lines = []
 
         for m in matches:
-            title = f"**{m.title.replace('*', '&#42;')}**"
-
-            if m.tid:
-                title = f'<a class="no-style" href="https://www.imdb.com/title/{m.tid}">{title}<a>'
-
+            title = render_title_link(m.title, m.tid, poster_urls)
             director = f' – {m.imdb.director}' if ',' in m.imdb.director else ''
 
             lines.append(
