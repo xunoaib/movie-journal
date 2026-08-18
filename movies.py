@@ -250,6 +250,9 @@ def main():
         st.markdown(
             'Source code is available on [GitHub](https://github.com/xunoaib/movie-journal)'
         )
+        st.markdown(
+            'Subscribe to newly watched films via our [RSS feed](app/static/feed.xml)'
+        )
 
     if rest:
         with rest[0]:
